@@ -12,7 +12,9 @@ import java.util.Map;
  */
 public interface MediaContainer {
 
-    void init();
+    void tryLoadFromSavedResource();
+
+    void loadInformation();
 
     Map<String, List<Media>> getAll();
 

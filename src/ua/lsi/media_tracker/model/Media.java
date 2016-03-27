@@ -9,7 +9,7 @@ import javafx.beans.property.SimpleStringProperty;
  */
 public class Media {
 
-//    private final SimpleStringProperty firstName = new SimpleStringProperty("");
+    //    private final SimpleStringProperty firstName = new SimpleStringProperty("");
     private String section;
 
     private String name;
@@ -48,6 +48,18 @@ public class Media {
 
     public void setEpisode(int episode) {
         this.episode = episode;
+    }
+
+    public void change(String property, String sign) {
+        int change = 1;
+        if ("-".equals(sign)) {
+            change = -change;
+        }
+        if ("Episode".equals(property)) {
+            episode += change;
+        } else if ("Season".equals(property)) {
+            season += change;
+        }
     }
 
     @Override

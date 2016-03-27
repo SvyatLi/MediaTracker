@@ -9,9 +9,12 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 
-<AnchorPane prefHeight="444.0" prefWidth="554.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.lsi.media_tracker.Controller">
-   <children>
-		<Button layoutX="471.0" layoutY="405.0" mnemonicParsing="false" onAction="#loadData" text="Load data" textOverrun="CLIP" />
-      <ScrollPane layoutX="14.0" layoutY="14.0" prefHeight="385.0" prefWidth="532.0" />
-   </children>
+<AnchorPane prefHeight="444.0" prefWidth="554.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ua.lsi.media_tracker.Controller">
+	<children>
+		<Button layoutX="471.0" layoutY="405.0" mnemonicParsing="false" onAction="#loadData" text="Load data"
+		        textOverrun="CLIP"/>
+		<ScrollPane layoutX="14.0" layoutY="14.0" prefHeight="385.0" prefWidth="532.0"/>
+		<Button fx:id="saveButton" onAction="#saveData" visible="false" layoutX="411.0" layoutY="405.0" mnemonicParsing="false" text="Save"/>
+	</children>
 </AnchorPane>
