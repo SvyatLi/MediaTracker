@@ -2,7 +2,7 @@ package ua.lsi.media_tracker.dao;
 
 import javafx.stage.FileChooser;
 import ua.lsi.media_tracker.model.Media;
-import ua.lsi.media_tracker.utils.FileParser;
+import ua.lsi.media_tracker.utils.FileParserAndSaver;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,8 +49,8 @@ public class FileLoader implements MediaContainer {
 
     private void parseFileToMap(File file) {
         if (file != null && file.exists()) {
-            FileParser fileParser = new FileParser();
-            mediaMap = fileParser.getMapOfMediaFromFile(file);
+            FileParserAndSaver fileParserAndSaver = new FileParserAndSaver();
+            mediaMap = fileParserAndSaver.getMapOfMediaFromFile(file);
         } else {
             mediaMap = Collections.EMPTY_MAP;
         }
@@ -76,5 +76,7 @@ public class FileLoader implements MediaContainer {
     @Override
     public void saveAll() {
         System.out.println(file);
+        FileParserAndSaver fileParserAndSaver = new FileParserAndSaver();
+        fileParserAndSaver.saveMapToFile(mediaMap,file);
     }
 }

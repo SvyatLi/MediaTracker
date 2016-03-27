@@ -2,6 +2,9 @@ package ua.lsi.media_tracker.model;
 
 import javafx.beans.property.SimpleStringProperty;
 
+import java.text.NumberFormat;
+import java.text.spi.NumberFormatProvider;
+
 /**
  * Created by LSI on 26.03.2016.
  *
@@ -9,22 +12,11 @@ import javafx.beans.property.SimpleStringProperty;
  */
 public class Media {
 
-    //    private final SimpleStringProperty firstName = new SimpleStringProperty("");
-    private String section;
-
     private String name;
 
     private int season;
 
     private int episode;
-
-    public String getSection() {
-        return section;
-    }
-
-    public void setSection(String section) {
-        this.section = section;
-    }
 
     public String getName() {
         return name;
@@ -64,11 +56,8 @@ public class Media {
 
     @Override
     public String toString() {
-        return "Media{" +
-                "section='" + section + '\'' +
-                ", name='" + name + '\'' +
-                ", season=" + season +
-                ", episode=" + episode +
-                '}';
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMinimumIntegerDigits(2);
+        return  name + " - " + "s" + nf.format(season) +"e" + nf.format(episode);
     }
 }

@@ -10,12 +10,12 @@ import java.util.*;
  *
  * @author LSI
  */
-public class FileParser {
+public class FileParserAndSaver {
 
     private final static String sectionStarter = "//";
     private final static String matcher = ".*\\s\\-\\ss\\d*e\\d*";
     private final static String matcherSeparator = "\\s\\-\\s";
-    private String currentSection;
+    private String currentSection ="Default";
 
     public Map<String,List<Media>> getMapOfMediaFromFile(File file) {
         Map<String,List<Media>> mediaMap = new LinkedHashMap<>();
@@ -40,6 +40,26 @@ public class FileParser {
         return mediaMap;
     }
 
+    public void saveMapToFile(Map<String,List<Media>> mediaMap,File file){
+
+        try ( BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF8"))) {
+            for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
+                bw.newLine();
+                bw.write("//" + entry.getKey());
+                bw.newLine();
+                for (Media media : entry.getValue()){
+                    bw.write(media.toString());
+                    bw.newLine();
+                }
+            }
+        }catch (FileNotFoundException e) {
+            System.err.println("Should never happen");
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Media parseMediaFromString(String line) {
         if (line == null || line.isEmpty()) {
             return null;
@@ -49,7 +69,6 @@ public class FileParser {
             return null;
         }
         Media media = new Media();
-        media.setSection(currentSection);
         boolean match = line.matches(matcher);
         if (match) {
             String[] mediaParts = line.split(matcherSeparator);
