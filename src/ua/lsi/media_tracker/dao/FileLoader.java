@@ -75,8 +75,12 @@ public class FileLoader implements MediaContainer {
 
     @Override
     public void saveAll() {
-        System.out.println(file);
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(file.getParentFile());
+        fileChooser.setInitialFileName(file.getName());
+        File fileToSaveTo = fileChooser.showSaveDialog(null);
+        System.out.println(fileToSaveTo);
         FileParserAndSaver fileParserAndSaver = new FileParserAndSaver();
-        fileParserAndSaver.saveMapToFile(mediaMap,file);
+        fileParserAndSaver.saveMapToFile(mediaMap,fileToSaveTo);
     }
 }
