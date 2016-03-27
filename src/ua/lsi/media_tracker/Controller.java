@@ -1,5 +1,6 @@
 package ua.lsi.media_tracker;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,6 +28,7 @@ import ua.lsi.media_tracker.model.Media;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -68,22 +70,22 @@ public class Controller implements Initializable {
         Scene scene = stage.getScene();
         Parent root = scene.getRoot();
 
-        List<Media> list = container.getAll();
-
-        TableView<Media> table = createTable(list);
-
-
-
         if (root instanceof Pane) {
+            Map<String, List<Media>> mediaMap = container.getAll();
+
             ObservableList<Node> nodes = ((Pane) root).getChildren();
             ScrollPane scrollPane = (ScrollPane) nodes.filtered(node -> node instanceof ScrollPane).get(0);
             VBox box = new VBox();
             box.setAlignment(Pos.CENTER);
-            Label label = new Label("First");
-            label.setFont(Font.font(24));
-            box.getChildren().add(label);
-            box.getChildren().add(table);
-            box.getChildren().add(createTable(Collections.EMPTY_LIST));//need reworking of data holder
+
+            for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
+                Label label = new Label(entry.getKey());
+                label.setFont(Font.font(24));
+                box.getChildren().add(label);
+                TableView<Media> table = createTable(entry.getValue());
+                box.getChildren().add(table);
+
+            }
             scrollPane.setContent(box);
         }
 
@@ -99,6 +101,7 @@ public class Controller implements Initializable {
         name.setCellValueFactory(new PropertyValueFactory<>("name"));
         table.getColumns().add(name);
 
+
         TableColumn<Media, String> season = new TableColumn<>("Season");
         season.setMinWidth(100);
         season.setCellValueFactory(new PropertyValueFactory<>("season"));
@@ -110,6 +113,11 @@ public class Controller implements Initializable {
         table.getColumns().add(episode);
 
         table.getItems().setAll(list);
+
+        table.setFixedCellSize(25);
+        table.prefHeightProperty().bind(table.fixedCellSizeProperty().multiply(Bindings.size(table.getItems()).add(1.01)));
+        table.minHeightProperty().bind(table.prefHeightProperty());
+        table.maxHeightProperty().bind(table.prefHeightProperty());
         return table;
     }
 

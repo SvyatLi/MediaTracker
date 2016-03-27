@@ -3,8 +3,7 @@ package ua.lsi.media_tracker.utils;
 import ua.lsi.media_tracker.model.Media;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by LSI on 26.03.2016.
@@ -18,15 +17,17 @@ public class FileParser {
     private final static String matcherSeparator = "\\s\\-\\s";
     private String currentSection;
 
-    public List<Media> parseMediaFromFile(File file) {
-        List<Media> mediaList = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"))) {
+    public Map<String,List<Media>> getMapOfMediaFromFile(File file) {
+        Map<String,List<Media>> mediaMap = new LinkedHashMap<>();
 
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"))) {
             String line = br.readLine();
             while (line != null) {
                 Media media = parseMediaFromString(line);
                 if (media != null) {
+                    List<Media> mediaList= mediaMap.getOrDefault(currentSection, new ArrayList<>());
                     mediaList.add(media);
+                    mediaMap.put(currentSection,mediaList);
                 }
                 line = br.readLine();
             }
@@ -36,7 +37,7 @@ public class FileParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return mediaList;
+        return mediaMap;
     }
 
     private Media parseMediaFromString(String line) {

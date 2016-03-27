@@ -5,10 +5,7 @@ import ua.lsi.media_tracker.model.Media;
 import ua.lsi.media_tracker.utils.FileParser;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by LSI on 26.03.2016.
@@ -18,7 +15,7 @@ import java.util.List;
 public class FileLoader implements MediaContainer {
 
     private File file = null;
-    private List<Media> medias = null;
+    private Map<String,List<Media>> mediaMap = null;
 
     @Override
     public void init() {
@@ -27,15 +24,15 @@ public class FileLoader implements MediaContainer {
         System.out.println(file);
         if (file != null) {
             FileParser fileParser = new FileParser();
-            medias = fileParser.parseMediaFromFile(file);
+            mediaMap = fileParser.getMapOfMediaFromFile(file);
         } else {
-            medias = Collections.EMPTY_LIST;
+            mediaMap = Collections.EMPTY_MAP;
         }
     }
 
     @Override
-    public List<Media> getAll() {
-        return medias;
+    public Map<String, List<Media>> getAll() {
+        return mediaMap;
     }
 
     @Override
