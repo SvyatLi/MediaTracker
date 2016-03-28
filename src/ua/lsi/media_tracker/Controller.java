@@ -30,9 +30,11 @@ import java.util.Map;
  */
 public class Controller {
 
+    @FXML
+    Button saveButton;
+    @FXML
+    Label statusLabel;
     private Stage stage;
-    @FXML Button saveButton;
-    @FXML Label statusLabel;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -52,7 +54,7 @@ public class Controller {
         createView(container);
     }
 
-    public void saveData(){
+    public void saveData() {
         MediaContainer container = ObjectProvider.getMediaContainer(StorageType.FILE);
         String statusMessage = container.saveAll();
         statusLabel.setText(statusMessage);
@@ -85,9 +87,9 @@ public class Controller {
     private TableView<Media> createTable(List<Media> list) {
         TableView<Media> table = new TableView<>();
 
-        createAndAddNameColumnToTable(table);
-        createColumnWithMinusAndPlus(table, "Season");
-        createColumnWithMinusAndPlus(table, "Episode");
+        createAndAddToTableSimpleColumn(table, "Name");
+        createAndAddToTableColumnWithMinusAndPlus(table, "Season");
+        createAndAddToTableColumnWithMinusAndPlus(table, "Episode");
 
         table.getItems().setAll(list);
 
@@ -96,14 +98,14 @@ public class Controller {
         return table;
     }
 
-    private void createAndAddNameColumnToTable(TableView<Media> table) {
-        TableColumn<Media, String> name = new TableColumn<>("Name");
+    private void createAndAddToTableSimpleColumn(TableView<Media> table, String columnName) {
+        TableColumn<Media, String> name = new TableColumn<>(columnName);
         name.setMinWidth(250);
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
+        name.setCellValueFactory(new PropertyValueFactory<>(columnName.toLowerCase()));
         table.getColumns().add(name);
     }
 
-    private void createColumnWithMinusAndPlus(TableView<Media> table, String columnName) {
+    private void createAndAddToTableColumnWithMinusAndPlus(TableView<Media> table, String columnName) {
         TableColumn<Media, String> wrapper = new TableColumn<>(columnName);
         wrapper.setMinWidth(100);
 

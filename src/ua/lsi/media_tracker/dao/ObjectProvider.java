@@ -9,17 +9,16 @@ import ua.lsi.media_tracker.enums.StorageType;
  */
 public class ObjectProvider {
 
-    private static class FileMediaContainer{
-        private static final MediaContainer CONTAINER = new FileLoader();
-    }
-
-
-    public static MediaContainer getMediaContainer(StorageType type){
-        switch (type){
+    public static MediaContainer getMediaContainer(StorageType type) {
+        switch (type) {
             case FILE:
                 return FileMediaContainer.CONTAINER;
             default:
                 return FileMediaContainer.CONTAINER;
         }
+    }
+
+    private static class FileMediaContainer {
+        private static final MediaContainer CONTAINER = new FileLoader();
     }
 }

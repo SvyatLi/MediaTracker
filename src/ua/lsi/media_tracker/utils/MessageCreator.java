@@ -11,28 +11,28 @@ import java.io.File;
  * @author LSI
  */
 public class MessageCreator {
-    private static class CreatorHolder{
-        public static final MessageCreator MESSAGECREATOR = new MessageCreator();
-    }
-
-    public static MessageCreator getInstance(){
+    public static MessageCreator getInstance() {
         return CreatorHolder.MESSAGECREATOR;
     }
 
-    public String getMessageRelatedToCodeAndFile(MessageCode code, File file){
+    public String getMessageRelatedToCodeAndFile(MessageCode code, File file) {
         StringBuilder sb = new StringBuilder();
         sb.append(MessageHolder.getInstance().getMessage(code));
-        switch (code){
+        switch (code) {
             case AUTO_LOAD_SUCCESSFUL:
             case LOAD_SUCCESSFUL:
             case SAVE_SUCCESSFUL:
                 sb.append(file.getAbsolutePath());
                 break;
-            case AUTO_LOAD_NOT_SUCCESSFUL:
-            case LOAD_NOT_SUCCESSFUL:
-            case SAVE_NOT_SUCCESSFUL:
+            case AUTO_LOAD_UNSUCCESSFUL:
+            case LOAD_UNSUCCESSFUL:
+            case SAVE_UNSUCCESSFUL:
             default:
         }
         return sb.toString();
+    }
+
+    private static class CreatorHolder {
+        public static final MessageCreator MESSAGECREATOR = new MessageCreator();
     }
 }
