@@ -4,15 +4,19 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import ua.lsi.media_tracker.dao.MediaContainer;
@@ -20,6 +24,7 @@ import ua.lsi.media_tracker.dao.ObjectProvider;
 import ua.lsi.media_tracker.enums.StorageType;
 import ua.lsi.media_tracker.model.Media;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +35,6 @@ import java.util.Map;
  */
 public class Controller {
 
-    @FXML
-    Button saveButton;
     @FXML
     Label statusLabel;
     private Stage stage;
@@ -60,6 +63,18 @@ public class Controller {
         statusLabel.setText(statusMessage);
     }
 
+    public void openSettings() throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/settings_dialog.fxml"));
+        AnchorPane page =  loader.load();
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.setTitle("Settings");
+        dialog.initOwner(stage);
+        Scene dialogScene = new Scene(page, page.getPrefWidth(), page.getPrefHeight());
+        dialog.setScene(dialogScene);
+        dialog.show();
+    }
+
     private void createView(MediaContainer container) {
         Scene scene = stage.getScene();
         Parent root = scene.getRoot();
@@ -81,7 +96,6 @@ public class Controller {
             }
             scrollPane.setContent(box);
         }
-        saveButton.setVisible(true);
     }
 
     private TableView<Media> createTable(List<Media> list) {

@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -20,10 +21,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
-        Parent root = loader.load();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/media_tracker.fxml"));
+        AnchorPane root = loader.load();
         primaryStage.setTitle("Media Tracker");
-        primaryStage.setScene(new Scene(root, ((Pane) root).getPrefWidth(), ((Pane) root).getPrefHeight()));
+        primaryStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
         primaryStage.show();
 
         Controller controller = loader.getController();
