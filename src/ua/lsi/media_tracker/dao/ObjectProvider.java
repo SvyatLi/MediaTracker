@@ -1,6 +1,6 @@
 package ua.lsi.media_tracker.dao;
 
-import ua.lsi.media_tracker.emuns.StorageType;
+import ua.lsi.media_tracker.enums.StorageType;
 
 /**
  * Created by LSI on 26.03.2016.

@@ -1,4 +1,4 @@
-package ua.lsi.media_tracker.emuns;
+package ua.lsi.media_tracker.enums;
 
 /**
  * Created by ID69 on 26.03.2016.

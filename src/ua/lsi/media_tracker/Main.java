@@ -6,9 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import ua.lsi.media_tracker.dao.MediaContainer;
-import ua.lsi.media_tracker.dao.ObjectProvider;
-import ua.lsi.media_tracker.emuns.StorageType;
 
 /**
  * Created by LSI on 26.03.2016.
@@ -28,7 +25,6 @@ public class Main extends Application {
         Controller controller = loader.getController();
         controller.setStage(primaryStage);
         controller.autoLoad();
-
     }
 
 

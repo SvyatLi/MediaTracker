@@ -1,8 +1,10 @@
 package ua.lsi.media_tracker.dao;
 
 import javafx.stage.FileChooser;
+import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
 import ua.lsi.media_tracker.utils.FileParserAndSaver;
+import ua.lsi.media_tracker.utils.MessageCreator;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,11 +25,11 @@ public class FileLoader implements MediaContainer {
     private Map<String, List<Media>> mediaMap = null;
 
     @Override
-    public void tryLoadFromSavedResource() {
+    public String tryLoadFromSavedResource() {
         try {
             Path savedFilePath = Paths.get(System.getProperty("java.io.tmpdir"), "MediaTracker.txt");
             File savedFile = savedFilePath.toFile();
-            if (savedFile!=null && savedFile.exists()) {
+            if (savedFile != null && savedFile.exists()) {
                 List<String> savedLines = Files.readAllLines(savedFilePath, Charset.forName("UTF-8"));
                 if (savedLines != null && !savedLines.isEmpty()) {
                     file = new File(savedLines.get(0));
@@ -37,14 +39,28 @@ public class FileLoader implements MediaContainer {
             e.printStackTrace();
         }
         parseFileToMap(file);
+        String returnedMessage;
+        if(file ==null ||!file.exists()){
+            returnedMessage = createMessage(MessageCode.AUTO_LOAD_NOT_SUCCESSFUL, file);
+        }else{
+            returnedMessage = createMessage(MessageCode.AUTO_LOAD_SUCCESSFUL, file);
+        }
+        return returnedMessage;
     }
 
     @Override
-    public void loadInformation() {
+    public String loadInformation() {
         FileChooser fileChooser = new FileChooser();
         file = fileChooser.showOpenDialog(null);
         parseFileToMap(file);
         savePathToFile(file);
+        String returnedMessage;
+        if(file ==null ||!file.exists()){
+            returnedMessage = createMessage(MessageCode.LOAD_NOT_SUCCESSFUL, file);
+        }else{
+            returnedMessage = createMessage(MessageCode.LOAD_SUCCESSFUL,file);
+        }
+        return returnedMessage;
     }
 
     private void parseFileToMap(File file) {
@@ -67,6 +83,9 @@ public class FileLoader implements MediaContainer {
             }
         }
     }
+    private String createMessage(MessageCode code,File file){
+        return MessageCreator.getInstance().getMessageRelatedToCodeAndFile(code,file);
+    }
 
     @Override
     public Map<String, List<Media>> getAll() {
@@ -74,13 +93,19 @@ public class FileLoader implements MediaContainer {
     }
 
     @Override
-    public void saveAll() {
+    public String saveAll() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(file.getParentFile());
         fileChooser.setInitialFileName(file.getName());
         File fileToSaveTo = fileChooser.showSaveDialog(null);
-        System.out.println(fileToSaveTo);
-        FileParserAndSaver fileParserAndSaver = new FileParserAndSaver();
-        fileParserAndSaver.saveMapToFile(mediaMap,fileToSaveTo);
+        String returnedMessage;
+        if (fileToSaveTo != null && fileToSaveTo.exists()) {
+            FileParserAndSaver fileParserAndSaver = new FileParserAndSaver();
+            fileParserAndSaver.saveMapToFile(mediaMap, fileToSaveTo);
+            returnedMessage = createMessage(MessageCode.SAVE_SUCCESSFUL, fileToSaveTo);
+        }else{
+            returnedMessage = createMessage(MessageCode.SAVE_NOT_SUCCESSFUL,fileToSaveTo);
+        }
+        return returnedMessage;
     }
 }

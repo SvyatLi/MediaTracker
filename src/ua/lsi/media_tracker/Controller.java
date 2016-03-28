@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import ua.lsi.media_tracker.dao.MediaContainer;
 import ua.lsi.media_tracker.dao.ObjectProvider;
-import ua.lsi.media_tracker.emuns.StorageType;
+import ua.lsi.media_tracker.enums.StorageType;
 import ua.lsi.media_tracker.model.Media;
 
 import java.util.List;
@@ -32,6 +32,7 @@ public class Controller {
 
     private Stage stage;
     @FXML Button saveButton;
+    @FXML Label statusLabel;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -39,14 +40,22 @@ public class Controller {
 
     public void autoLoad() {
         MediaContainer container = ObjectProvider.getMediaContainer(StorageType.FILE);
-        container.tryLoadFromSavedResource();
+        String statusMessage = container.tryLoadFromSavedResource();
+        statusLabel.setText(statusMessage);
         createView(container);
     }
 
     public void loadData() {
         MediaContainer container = ObjectProvider.getMediaContainer(StorageType.FILE);
-        container.loadInformation();
+        String statusMessage = container.loadInformation();
+        statusLabel.setText(statusMessage);
         createView(container);
+    }
+
+    public void saveData(){
+        MediaContainer container = ObjectProvider.getMediaContainer(StorageType.FILE);
+        String statusMessage = container.saveAll();
+        statusLabel.setText(statusMessage);
     }
 
     private void createView(MediaContainer container) {
@@ -54,13 +63,13 @@ public class Controller {
         Parent root = scene.getRoot();
 
         if (root instanceof Pane) {
-            Map<String, List<Media>> mediaMap = container.getAll();
 
             ObservableList<Node> nodes = ((Pane) root).getChildren();
             ScrollPane scrollPane = (ScrollPane) nodes.filtered(node -> node instanceof ScrollPane).get(0);
             VBox box = new VBox();
             box.setAlignment(Pos.CENTER);
 
+            Map<String, List<Media>> mediaMap = container.getAll();
             for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
                 Label label = new Label(entry.getKey());
                 label.setFont(Font.font(24));
@@ -159,10 +168,5 @@ public class Controller {
                 return cell;
             }
         };
-    }
-
-    public void saveData(){
-        MediaContainer container = ObjectProvider.getMediaContainer(StorageType.FILE);
-        container.saveAll();
     }
 }
