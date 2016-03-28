@@ -6,7 +6,7 @@
 
 <AnchorPane prefHeight="330.0" prefWidth="387.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.lsi.media_tracker.Controller">
    <children>
-      <Button layoutX="321.0" layoutY="291.0" mnemonicParsing="false" text="Cancel" />
       <Button layoutX="269.0" layoutY="291.0" mnemonicParsing="false" text="Save" />
+      <Button layoutX="321.0" layoutY="291.0" mnemonicParsing="false" text="Cancel" />
    </children>
 </AnchorPane>
