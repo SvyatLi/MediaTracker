@@ -1,4 +1,4 @@
-package ua.lsi.media_tracker;
+package ua.lsi.media_tracker.controllers;
 
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -33,7 +33,7 @@ import java.util.Map;
  *
  * @author LSI
  */
-public class Controller {
+public class MediaTrackerController {
 
     @FXML
     Label statusLabel;

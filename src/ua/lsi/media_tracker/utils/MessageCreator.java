@@ -1,7 +1,7 @@
 package ua.lsi.media_tracker.utils;
 
 import ua.lsi.media_tracker.enums.MessageCode;
-import ua.lsi.media_tracker.model.MessageHolder;
+import ua.lsi.media_tracker.model.Messages;
 
 import java.io.File;
 
@@ -17,7 +17,7 @@ public class MessageCreator {
 
     public String getMessageRelatedToCodeAndFile(MessageCode code, File file) {
         StringBuilder sb = new StringBuilder();
-        sb.append(MessageHolder.getInstance().getMessage(code));
+        sb.append(Messages.getInstance().getMessage(code));
         switch (code) {
             case AUTO_LOAD_SUCCESSFUL:
             case LOAD_SUCCESSFUL:

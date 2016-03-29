@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="444.0" prefWidth="554.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.lsi.media_tracker.Controller">
+<AnchorPane prefHeight="444.0" prefWidth="554.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.lsi.media_tracker.controllers.MediaTrackerController">
 	<children>
       <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="554.0">
         <menus>

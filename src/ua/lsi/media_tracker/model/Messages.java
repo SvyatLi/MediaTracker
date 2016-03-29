@@ -10,10 +10,10 @@ import java.util.Map;
  *
  * @author LSI
  */
-public class MessageHolder {
+public class Messages {
     private Map<MessageCode, String> messages;
 
-    public MessageHolder() {
+    public Messages() {
         messages = new HashMap<>();
         messages.put(MessageCode.AUTO_LOAD_UNSUCCESSFUL, "Automatic load not successful");
         messages.put(MessageCode.AUTO_LOAD_SUCCESSFUL, "Automatic load successful, file : ");
@@ -21,11 +21,11 @@ public class MessageHolder {
         messages.put(MessageCode.LOAD_UNSUCCESSFUL, "File not selected");
         messages.put(MessageCode.SAVE_SUCCESSFUL, "Data saved to file : ");
         messages.put(MessageCode.SAVE_UNSUCCESSFUL, "File to save not selected");
-        messages.put(MessageCode.TEMP_FILENAME, "MediaTracker.txt");
+        messages.put(MessageCode.PROPERTIES_FILE, "MediaTracker.properties");
         messages.put(MessageCode.DEFAULT_SECTION_NAME, "Default");
     }
 
-    public static MessageHolder getInstance() {
+    public static Messages getInstance() {
         return Holder.INSTANCE;
     }
 
@@ -34,6 +34,6 @@ public class MessageHolder {
     }
 
     private static class Holder {
-        public static final MessageHolder INSTANCE = new MessageHolder();
+        public static final Messages INSTANCE = new Messages();
     }
 }

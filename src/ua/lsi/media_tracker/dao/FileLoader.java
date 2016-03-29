@@ -3,7 +3,7 @@ package ua.lsi.media_tracker.dao;
 import javafx.stage.FileChooser;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
-import ua.lsi.media_tracker.model.MessageHolder;
+import ua.lsi.media_tracker.model.Messages;
 import ua.lsi.media_tracker.utils.FileParserAndSaver;
 import ua.lsi.media_tracker.utils.MessageCreator;
 
@@ -88,7 +88,7 @@ public class FileLoader implements MediaContainer {
     }
 
     private Path getTempFilePath() {
-        return Paths.get(System.getProperty("java.io.tmpdir"), MessageHolder.getInstance().getMessage(TEMP_FILENAME));
+        return Paths.get(System.getProperty("java.io.tmpdir"), Messages.getInstance().getMessage(PROPERTIES_FILE));
     }
 
     private String createMessage(MessageCode code, File file) {

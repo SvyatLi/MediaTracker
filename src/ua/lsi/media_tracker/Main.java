@@ -2,11 +2,10 @@ package ua.lsi.media_tracker;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import ua.lsi.media_tracker.controllers.MediaTrackerController;
 
 /**
  * Created by LSI on 26.03.2016.
@@ -27,8 +26,8 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
         primaryStage.show();
 
-        Controller controller = loader.getController();
-        controller.setStage(primaryStage);
-        controller.autoLoad();
+        MediaTrackerController mediaTrackerController = loader.getController();
+        mediaTrackerController.setStage(primaryStage);
+        mediaTrackerController.autoLoad();
     }
 }
