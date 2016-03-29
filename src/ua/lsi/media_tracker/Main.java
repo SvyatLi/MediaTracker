@@ -28,6 +28,6 @@ public class Main extends Application {
 
         MediaTrackerController mediaTrackerController = loader.getController();
         mediaTrackerController.setStage(primaryStage);
-        mediaTrackerController.autoLoad();
+        mediaTrackerController.autoLoad(); // long running , make asynchronous
     }
 }

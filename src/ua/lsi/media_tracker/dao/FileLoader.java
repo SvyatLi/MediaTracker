@@ -4,6 +4,7 @@ import javafx.stage.FileChooser;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
 import ua.lsi.media_tracker.model.Messages;
+import ua.lsi.media_tracker.model.Settings;
 import ua.lsi.media_tracker.utils.FileParserAndSaver;
 import ua.lsi.media_tracker.utils.MessageCreator;
 
@@ -29,24 +30,17 @@ public class FileLoader implements MediaContainer {
 
     @Override
     public String tryLoadFromSavedResource() {
-        try {
-            Path savedFilePath = getTempFilePath();
-            File savedFile = savedFilePath.toFile();
-            if (savedFile != null && savedFile.exists()) {
-                List<String> savedLines = Files.readAllLines(savedFilePath, Charset.forName("UTF-8"));
-                if (savedLines != null && !savedLines.isEmpty()) {
-                    file = new File(savedLines.get(0));
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        parseFileToMap(file);
         String returnedMessage;
-        if (file == null || !file.exists()) {
-            returnedMessage = createMessage(AUTO_LOAD_UNSUCCESSFUL, file);
-        } else {
-            returnedMessage = createMessage(AUTO_LOAD_SUCCESSFUL, file);
+        file = Settings.getInstance().getDefaultInfoFile();
+        parseFileToMap(file);
+        if (Settings.getInstance().isAutomaticLoadEnabled()) {
+            if (file != null && file.exists()) {
+                returnedMessage = createMessage(AUTO_LOAD_SUCCESSFUL, file);
+            } else {
+                returnedMessage = createMessage(AUTO_LOAD_UNSUCCESSFUL);
+            }
+        }else{
+            returnedMessage = createMessage(AUTO_LOAD_DISABLED);
         }
         return returnedMessage;
     }
@@ -56,7 +50,6 @@ public class FileLoader implements MediaContainer {
         FileChooser fileChooser = new FileChooser();
         file = fileChooser.showOpenDialog(null);
         parseFileToMap(file);
-        savePathToFile(file);
         String returnedMessage;
         if (file == null || !file.exists()) {
             returnedMessage = createMessage(LOAD_UNSUCCESSFUL, file);
@@ -64,35 +57,6 @@ public class FileLoader implements MediaContainer {
             returnedMessage = createMessage(LOAD_SUCCESSFUL, file);
         }
         return returnedMessage;
-    }
-
-    private void parseFileToMap(File file) {
-        if (file != null && file.exists()) {
-            FileParserAndSaver fileParserAndSaver = new FileParserAndSaver();
-            mediaMap = fileParserAndSaver.getMapOfMediaFromFile(file);
-        } else {
-            mediaMap = Collections.EMPTY_MAP;
-        }
-    }
-
-    private void savePathToFile(File file) {
-        if (file != null && file.exists()) {
-            try {
-                Path savedFilePath = getTempFilePath();
-                List<String> lines = Collections.singletonList(file.getAbsolutePath());
-                Files.write(savedFilePath, lines, Charset.forName("UTF-8"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private Path getTempFilePath() {
-        return Paths.get(System.getProperty("java.io.tmpdir"), Messages.getInstance().getMessage(PROPERTIES_FILE));
-    }
-
-    private String createMessage(MessageCode code, File file) {
-        return MessageCreator.getInstance().getMessageRelatedToCodeAndFile(code, file);
     }
 
     @Override
@@ -115,5 +79,22 @@ public class FileLoader implements MediaContainer {
             returnedMessage = createMessage(MessageCode.SAVE_UNSUCCESSFUL, fileToSaveTo);
         }
         return returnedMessage;
+    }
+
+    private void parseFileToMap(File file) {
+        if (file != null && file.exists()) {
+            FileParserAndSaver fileParserAndSaver = new FileParserAndSaver();
+            mediaMap = fileParserAndSaver.getMapOfMediaFromFile(file);
+        } else {
+            mediaMap = Collections.EMPTY_MAP;
+        }
+    }
+
+    private String createMessage(MessageCode code, File file) {
+        return MessageCreator.getInstance().getMessageRelatedToCodeAndFile(code, file);
+    }
+
+    private String createMessage(MessageCode code) {
+        return Messages.getInstance().getMessage(code);
     }
 }

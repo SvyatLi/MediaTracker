@@ -12,7 +12,7 @@ import java.io.File;
  */
 public class MessageCreator {
     public static MessageCreator getInstance() {
-        return CreatorHolder.MESSAGECREATOR;
+        return CreatorHolder.INSTANCE;
     }
 
     public String getMessageRelatedToCodeAndFile(MessageCode code, File file) {
@@ -24,15 +24,12 @@ public class MessageCreator {
             case SAVE_SUCCESSFUL:
                 sb.append(file.getAbsolutePath());
                 break;
-            case AUTO_LOAD_UNSUCCESSFUL:
-            case LOAD_UNSUCCESSFUL:
-            case SAVE_UNSUCCESSFUL:
             default:
         }
         return sb.toString();
     }
 
     private static class CreatorHolder {
-        public static final MessageCreator MESSAGECREATOR = new MessageCreator();
+        public static final MessageCreator INSTANCE = new MessageCreator();
     }
 }

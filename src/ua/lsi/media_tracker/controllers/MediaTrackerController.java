@@ -19,6 +19,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import ua.lsi.media_tracker.Main;
 import ua.lsi.media_tracker.dao.MediaContainer;
 import ua.lsi.media_tracker.dao.ObjectProvider;
 import ua.lsi.media_tracker.enums.StorageType;
@@ -64,7 +65,7 @@ public class MediaTrackerController {
     }
 
     public void openSettings() throws IOException{
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/settings_dialog.fxml"));
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/settings_dialog.fxml"));
         AnchorPane page =  loader.load();
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);

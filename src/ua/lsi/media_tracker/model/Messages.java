@@ -15,6 +15,7 @@ public class Messages {
 
     public Messages() {
         messages = new HashMap<>();
+        messages.put(MessageCode.AUTO_LOAD_DISABLED, "Automatic load disabled");
         messages.put(MessageCode.AUTO_LOAD_UNSUCCESSFUL, "Automatic load not successful");
         messages.put(MessageCode.AUTO_LOAD_SUCCESSFUL, "Automatic load successful, file : ");
         messages.put(MessageCode.LOAD_SUCCESSFUL, "File : ");
@@ -22,6 +23,8 @@ public class Messages {
         messages.put(MessageCode.SAVE_SUCCESSFUL, "Data saved to file : ");
         messages.put(MessageCode.SAVE_UNSUCCESSFUL, "File to save not selected");
         messages.put(MessageCode.PROPERTIES_FILE, "MediaTracker.properties");
+        messages.put(MessageCode.SETTINGS_SAVED, "Settings saved");
+        messages.put(MessageCode.SETTINGS_NOT_SAVED, "Settings not saved");
         messages.put(MessageCode.DEFAULT_SECTION_NAME, "Default");
     }
 

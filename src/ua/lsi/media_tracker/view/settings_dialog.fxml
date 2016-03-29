@@ -6,7 +6,11 @@
 
 <AnchorPane prefHeight="330.0" prefWidth="387.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.lsi.media_tracker.controllers.SettingsDialogController">
    <children>
-      <Button layoutX="269.0" layoutY="291.0" mnemonicParsing="false" text="Save" />
-      <Button layoutX="321.0" layoutY="291.0" mnemonicParsing="false" text="Cancel" />
+      <Label fx:id="defaultFilePath" layoutX="79.0" layoutY="142.0" prefHeight="17.0" prefWidth="148.0" text="File not set" wrapText="true" />
+      <CheckBox fx:id="automaticLoadEnabled" layoutX="79.0" layoutY="76.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="17.0" prefWidth="231.0" text="Automatic load enabled" />
+      <Button layoutX="258.0" layoutY="138.0" mnemonicParsing="false" onAction="#loadFile" text="Set file" />
+      <Button layoutX="269.0" layoutY="291.0" mnemonicParsing="false" onAction="#saveSettings" text="Save" />
+      <Button fx:id="closeButton" cancelButton="true" layoutX="321.0" layoutY="291.0" mnemonicParsing="false" onAction="#close" text="Close" />
+      <Label fx:id="settingsSavedLabel" layoutX="79.0" layoutY="31.0" />
    </children>
 </AnchorPane>
