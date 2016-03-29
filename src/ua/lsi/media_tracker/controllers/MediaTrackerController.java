@@ -59,6 +59,7 @@ public class MediaTrackerController {
             statusLabel.setText(task.getValue());
             createView(container);
         });
+        //TODO: add progressbar
         new Thread(task).start();
     }
 

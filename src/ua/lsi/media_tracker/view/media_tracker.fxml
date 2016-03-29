@@ -34,7 +34,7 @@
           </Menu>
         </menus>
       </MenuBar>
-		<Label fx:id="statusLabel" layoutX="14.0" layoutY="404.0" prefHeight="25.0" prefWidth="458.0" text="Status" wrapText="true">
+		<Label fx:id="statusLabel" layoutX="14.0" layoutY="404.0" prefHeight="25.0" prefWidth="458.0" text="" wrapText="true">
          <font>
             <Font size="16.0" />
          </font>

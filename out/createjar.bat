@@ -1,1 +1,1 @@
-javafxpackager -createjar -appclass ua.lsi.media_tracker.Main -srcdir production\MediaTracker -outdir MediaTracker -outfile MediaTracker -v
+javafxpackager -createjar -appclass ua.lsi.media_tracker.Main -srcdir production\MediaTracker -outdir MediaTracker -outfile z_MediaTracker -v
