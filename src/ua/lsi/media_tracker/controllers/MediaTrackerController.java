@@ -2,7 +2,10 @@ package ua.lsi.media_tracker.controllers;
 
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -46,11 +49,20 @@ public class MediaTrackerController {
 
     public void autoLoad() {
         MediaContainer container = ObjectProvider.getMediaContainer(StorageType.FILE);
-        String statusMessage = container.tryLoadFromSavedResource();
-        statusLabel.setText(statusMessage);
-        createView(container);
+        Task<String> task = new Task<String>() {
+            @Override
+            protected String call() throws Exception {
+                return container.tryLoadFromSavedResource();
+            }
+        };
+        task.setOnSucceeded(event -> {
+            statusLabel.setText(task.getValue());
+            createView(container);
+        });
+        new Thread(task).start();
     }
 
+    @FXML
     public void loadData() {
         MediaContainer container = ObjectProvider.getMediaContainer(StorageType.FILE);
         String statusMessage = container.loadInformation();
@@ -58,12 +70,14 @@ public class MediaTrackerController {
         createView(container);
     }
 
+    @FXML
     public void saveData() {
         MediaContainer container = ObjectProvider.getMediaContainer(StorageType.FILE);
         String statusMessage = container.saveAll();
         statusLabel.setText(statusMessage);
     }
 
+    @FXML
     public void openSettings() throws IOException{
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/settings_dialog.fxml"));
         AnchorPane page =  loader.load();
