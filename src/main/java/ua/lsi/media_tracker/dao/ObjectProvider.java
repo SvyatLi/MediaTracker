@@ -12,13 +12,13 @@ public class ObjectProvider {
     public static MediaContainer getMediaContainer(StorageType type) {
         switch (type) {
             case FILE:
-                return FileMediaContainer.CONTAINER;
+                return ObjectProvider.FileMediaContainer.CONTAINER;
             default:
-                return FileMediaContainer.CONTAINER;
+                return ObjectProvider.FileMediaContainer.CONTAINER;
         }
     }
 
     private static class FileMediaContainer {
-        private static final MediaContainer CONTAINER = new FileLoader();
+        private static final MediaContainer CONTAINER = new ua.lsi.media_tracker.dao.FileMediaContainer();
     }
 }

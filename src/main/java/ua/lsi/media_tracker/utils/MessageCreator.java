@@ -29,6 +29,10 @@ public class MessageCreator {
         return sb.toString();
     }
 
+    public String getMessageRelatedToCode(MessageCode code) {
+        return Messages.getInstance().getMessage(code);
+    }
+
     private static class CreatorHolder {
         public static final MessageCreator INSTANCE = new MessageCreator();
     }

@@ -19,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -28,6 +29,7 @@ import ua.lsi.media_tracker.dao.ObjectProvider;
 import ua.lsi.media_tracker.enums.StorageType;
 import ua.lsi.media_tracker.model.Media;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -59,7 +61,6 @@ public class MediaTrackerController {
             statusLabel.setText(task.getValue());
             createView(container);
         });
-        //TODO: add progressbar
         new Thread(task).start();
     }
 

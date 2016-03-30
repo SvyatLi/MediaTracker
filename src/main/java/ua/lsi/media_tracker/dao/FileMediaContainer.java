@@ -1,20 +1,18 @@
 package ua.lsi.media_tracker.dao;
 
-import javafx.stage.FileChooser;
+
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
-import ua.lsi.media_tracker.model.Messages;
 import ua.lsi.media_tracker.model.Settings;
 import ua.lsi.media_tracker.utils.FileParserAndSaver;
+import ua.lsi.media_tracker.utils.FileProvider;
 import ua.lsi.media_tracker.utils.MessageCreator;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 
 import static ua.lsi.media_tracker.enums.MessageCode.*;
 
@@ -23,10 +21,12 @@ import static ua.lsi.media_tracker.enums.MessageCode.*;
  *
  * @author LSI
  */
-public class FileLoader implements MediaContainer {
+public class FileMediaContainer implements MediaContainer {
 
-    private File file = null;
-    private Map<String, List<Media>> mediaMap = null;
+    private File file;
+    private Map<String, List<Media>> mediaMap;
+
+    private FileProvider fileProvider;
 
     @Override
     public String tryLoadFromSavedResource() {
@@ -39,7 +39,7 @@ public class FileLoader implements MediaContainer {
             } else {
                 returnedMessage = createMessage(AUTO_LOAD_UNSUCCESSFUL);
             }
-        }else{
+        } else {
             returnedMessage = createMessage(AUTO_LOAD_DISABLED);
         }
         return returnedMessage;
@@ -47,14 +47,13 @@ public class FileLoader implements MediaContainer {
 
     @Override
     public String loadInformation() {
-        FileChooser fileChooser = new FileChooser();
-        file = fileChooser.showOpenDialog(null);
+        file = getFileProvider().getFileForLoad();
         parseFileToMap(file);
         String returnedMessage;
-        if (file == null || !file.exists()) {
-            returnedMessage = createMessage(LOAD_UNSUCCESSFUL, file);
-        } else {
+        if (file != null && file.exists()) {
             returnedMessage = createMessage(LOAD_SUCCESSFUL, file);
+        } else {
+            returnedMessage = createMessage(LOAD_UNSUCCESSFUL);
         }
         return returnedMessage;
     }
@@ -66,17 +65,14 @@ public class FileLoader implements MediaContainer {
 
     @Override
     public String saveAll() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(file.getParentFile());
-        fileChooser.setInitialFileName(file.getName());
-        File fileToSaveTo = fileChooser.showSaveDialog(null);
+        File fileToSaveTo = getFileProvider().getFileForSave(file);
         String returnedMessage;
         if (fileToSaveTo != null && fileToSaveTo.exists()) {
             FileParserAndSaver fileParserAndSaver = new FileParserAndSaver();
             fileParserAndSaver.saveMapToFile(mediaMap, fileToSaveTo);
             returnedMessage = createMessage(MessageCode.SAVE_SUCCESSFUL, fileToSaveTo);
         } else {
-            returnedMessage = createMessage(MessageCode.SAVE_UNSUCCESSFUL, fileToSaveTo);
+            returnedMessage = createMessage(MessageCode.SAVE_UNSUCCESSFUL);
         }
         return returnedMessage;
     }
@@ -95,6 +91,17 @@ public class FileLoader implements MediaContainer {
     }
 
     private String createMessage(MessageCode code) {
-        return Messages.getInstance().getMessage(code);
+        return MessageCreator.getInstance().getMessageRelatedToCode(code);
+    }
+
+    private FileProvider getFileProvider() {
+        if (fileProvider==null){
+            fileProvider = FileProvider.getInstance();
+        }
+        return fileProvider;
+    }
+
+    public void setFileProvider(FileProvider fileProvider){
+        this.fileProvider = fileProvider;
     }
 }

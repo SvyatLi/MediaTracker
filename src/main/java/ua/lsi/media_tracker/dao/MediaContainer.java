@@ -2,6 +2,7 @@ package ua.lsi.media_tracker.dao;
 
 import ua.lsi.media_tracker.model.Media;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
