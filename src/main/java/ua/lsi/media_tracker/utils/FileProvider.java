@@ -1,6 +1,8 @@
 package ua.lsi.media_tracker.utils;
 
 import javafx.stage.FileChooser;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 
@@ -9,10 +11,12 @@ import java.io.File;
  *
  * @author LSI
  */
+@Component
 public class FileProvider {
 
-    public static FileProvider getInstance() {
-        return FileProviderHolder.INSTANCE;
+    @Bean
+    public FileProvider getFileProvider() {
+        return new FileProvider();
     }
 
     public File getFileForLoad() {
@@ -27,9 +31,5 @@ public class FileProvider {
             fileChooser.setInitialFileName(loadedFromFile.getName());
         }
         return fileChooser.showSaveDialog(null);
-    }
-
-    private static class FileProviderHolder {
-        public static final FileProvider INSTANCE = new FileProvider();
     }
 }

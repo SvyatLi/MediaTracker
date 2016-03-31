@@ -1,6 +1,8 @@
 package ua.lsi.media_tracker.dao;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
 import ua.lsi.media_tracker.model.Settings;
@@ -13,7 +15,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-
 import static ua.lsi.media_tracker.enums.MessageCode.*;
 
 /**
@@ -21,6 +22,7 @@ import static ua.lsi.media_tracker.enums.MessageCode.*;
  *
  * @author LSI
  */
+@Component
 public class FileMediaContainer implements MediaContainer {
 
     private File file;
@@ -32,14 +34,16 @@ public class FileMediaContainer implements MediaContainer {
     public String tryLoadFromSavedResource() {
         String returnedMessage;
         file = Settings.getInstance().getDefaultInfoFile();
-        parseFileToMap(file);
         if (Settings.getInstance().isAutomaticLoadEnabled()) {
             if (file != null && file.exists()) {
+                parseFileToMap(file);
                 returnedMessage = createMessage(AUTO_LOAD_SUCCESSFUL, file);
             } else {
+                mediaMap = Collections.EMPTY_MAP;
                 returnedMessage = createMessage(AUTO_LOAD_UNSUCCESSFUL);
             }
         } else {
+            mediaMap = Collections.EMPTY_MAP;
             returnedMessage = createMessage(AUTO_LOAD_DISABLED);
         }
         return returnedMessage;
@@ -47,7 +51,7 @@ public class FileMediaContainer implements MediaContainer {
 
     @Override
     public String loadInformation() {
-        file = getFileProvider().getFileForLoad();
+        file = fileProvider.getFileForLoad();
         parseFileToMap(file);
         String returnedMessage;
         if (file != null && file.exists()) {
@@ -65,7 +69,7 @@ public class FileMediaContainer implements MediaContainer {
 
     @Override
     public String saveAll() {
-        File fileToSaveTo = getFileProvider().getFileForSave(file);
+        File fileToSaveTo = fileProvider.getFileForSave(file);
         String returnedMessage;
         if (fileToSaveTo != null && fileToSaveTo.exists()) {
             FileParserAndSaver fileParserAndSaver = new FileParserAndSaver();
@@ -94,14 +98,8 @@ public class FileMediaContainer implements MediaContainer {
         return MessageCreator.getInstance().getMessageRelatedToCode(code);
     }
 
-    private FileProvider getFileProvider() {
-        if (fileProvider==null){
-            fileProvider = FileProvider.getInstance();
-        }
-        return fileProvider;
-    }
-
-    public void setFileProvider(FileProvider fileProvider){
+    @Autowired
+    public void setFileProvider(FileProvider fileProvider) {
         this.fileProvider = fileProvider;
     }
 }
