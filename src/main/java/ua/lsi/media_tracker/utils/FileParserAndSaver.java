@@ -2,7 +2,7 @@ package ua.lsi.media_tracker.utils;
 
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
-import ua.lsi.media_tracker.model.Messages;
+import ua.lsi.media_tracker.creators.Messages;
 
 import java.io.*;
 import java.util.*;

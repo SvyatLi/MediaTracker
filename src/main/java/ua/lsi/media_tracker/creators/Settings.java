@@ -1,4 +1,8 @@
-package ua.lsi.media_tracker.model;
+package ua.lsi.media_tracker.creators;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.Properties;
@@ -13,13 +17,17 @@ import static ua.lsi.media_tracker.enums.SettingsKey.*;
  *
  * @author LSI
  */
+@Component
 public class Settings {
+    private static Settings settings;
+
     private Boolean automaticLoadEnabled;
     private Properties properties;
     private File defaultInfoFile;
     private File settingsFile;
 
     public Settings() {
+        //TODO: find a way to make this better
         properties = new Properties();
         String fileName = Messages.getInstance().getMessage(PROPERTIES_FILE);
         String tempFolderPath = System.getProperty("java.io.tmpdir");
@@ -44,10 +52,6 @@ public class Settings {
         }
     }
 
-    public static Settings getInstance() {
-        return SettingsHolder.INSTANCE;
-    }
-
     public String saveSettings() {
         String resultMessage = Messages.getInstance().getMessage(SETTINGS_SAVED);
         properties.setProperty(AUTOMATIC_LOAD_ENABLED.name(), automaticLoadEnabled.toString());
@@ -63,9 +67,9 @@ public class Settings {
             }
             if (fileExists) {
                 try (OutputStream outputStream = new FileOutputStream(settingsFile)) {
-                    properties.store(outputStream,null);
+                    properties.store(outputStream, null);
                 }
-            }else{
+            } else {
                 resultMessage = Messages.getInstance().getMessage(SETTINGS_NOT_SAVED);
             }
         } catch (IOException e) {
@@ -91,7 +95,17 @@ public class Settings {
         this.automaticLoadEnabled = automaticLoadEnabled;
     }
 
-    private static class SettingsHolder {
-        public static final Settings INSTANCE = new Settings();
+    public static Settings getInstance() {
+        return settings;
+    }
+
+    @Bean
+    public Settings getSettings() {
+        return new Settings();
+    }
+
+    @Autowired
+    public void setSettings(Settings settings) {
+        Settings.settings = settings;
     }
 }

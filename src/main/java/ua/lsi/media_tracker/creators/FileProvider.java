@@ -1,4 +1,4 @@
-package ua.lsi.media_tracker.utils;
+package ua.lsi.media_tracker.creators;
 
 import javafx.stage.FileChooser;
 import org.springframework.context.annotation.Bean;

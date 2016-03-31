@@ -1,19 +1,16 @@
 package ua.lsi.media_tracker.dao;
 
-import javafx.stage.FileChooser;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
-import ua.lsi.media_tracker.model.Messages;
-import ua.lsi.media_tracker.utils.FileProvider;
-import ua.lsi.media_tracker.utils.MessageCreator;
+import ua.lsi.media_tracker.creators.FileProvider;
+import ua.lsi.media_tracker.creators.MessageCreator;
 
 import java.io.File;
 
 import static org.mockito.Mockito.*;
 import static ua.lsi.media_tracker.enums.MessageCode.LOAD_SUCCESSFUL;
-import static ua.lsi.media_tracker.enums.MessageCode.LOAD_UNSUCCESSFUL;
 
 /**
  * Created by LSI on 30.03.2016.

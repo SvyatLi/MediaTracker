@@ -1,7 +1,9 @@
-package ua.lsi.media_tracker.utils;
+package ua.lsi.media_tracker.creators;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.enums.MessageCode;
-import ua.lsi.media_tracker.model.Messages;
 
 import java.io.File;
 
@@ -10,9 +12,13 @@ import java.io.File;
  *
  * @author LSI
  */
+@Component
 public class MessageCreator {
+
+    private static MessageCreator messageCreator;
+
     public static MessageCreator getInstance() {
-        return CreatorHolder.INSTANCE;
+        return messageCreator;
     }
 
     public String getMessageRelatedToCodeAndFile(MessageCode code, File file) {
@@ -33,7 +39,14 @@ public class MessageCreator {
         return Messages.getInstance().getMessage(code);
     }
 
-    private static class CreatorHolder {
-        public static final MessageCreator INSTANCE = new MessageCreator();
+    @Bean
+    public MessageCreator getMessageCreator() {
+        return new MessageCreator();
     }
+
+    @Autowired
+    public void setSettings(MessageCreator messageCreator) {
+        MessageCreator.messageCreator = messageCreator;
+    }
+
 }

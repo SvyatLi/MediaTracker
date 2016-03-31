@@ -1,8 +1,10 @@
-package ua.lsi.media_tracker.dao;
+package ua.lsi.media_tracker.creators;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import ua.lsi.media_tracker.dao.FileMediaContainer;
+import ua.lsi.media_tracker.dao.MediaContainer;
 import ua.lsi.media_tracker.enums.StorageType;
 
 /**

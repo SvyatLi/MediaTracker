@@ -9,8 +9,8 @@ import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import ua.lsi.media_tracker.enums.MessageCode;
-import ua.lsi.media_tracker.model.Messages;
-import ua.lsi.media_tracker.model.Settings;
+import ua.lsi.media_tracker.creators.Messages;
+import ua.lsi.media_tracker.creators.Settings;
 
 import java.io.File;
 import java.net.URL;
