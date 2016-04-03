@@ -70,7 +70,7 @@ public class MediaTrackerController {
     @FXML
     public void saveData() {
         MediaContainer container = ObjectProvider.getMediaContainer(StorageType.FILE);
-        String statusMessage = container.saveAll();
+        String statusMessage = container.saveMediaMap();
         statusLabel.setText(statusMessage);
     }
 
@@ -98,7 +98,7 @@ public class MediaTrackerController {
             VBox box = new VBox();
             box.setAlignment(Pos.CENTER);
 
-            Map<String, List<Media>> mediaMap = container.getAll();
+            Map<String, List<Media>> mediaMap = container.getSectionToMediaMap();
             for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
                 Label label = new Label(entry.getKey());
                 label.setFont(Font.font(24));

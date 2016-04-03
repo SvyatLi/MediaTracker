@@ -64,12 +64,12 @@ public class FileMediaContainer implements MediaContainer {
     }
 
     @Override
-    public Map<String, List<Media>> getAll() {
+    public Map<String, List<Media>> getSectionToMediaMap() {
         return mediaMap;
     }
 
     @Override
-    public String saveAll() {
+    public String saveMediaMap() {
         File fileToSaveTo = fileProvider.getFileForSave(file);
         String returnedMessage;
         if (fileToSaveTo != null && fileToSaveTo.exists()) {
