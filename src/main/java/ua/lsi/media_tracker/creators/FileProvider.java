@@ -1,9 +1,6 @@
 package ua.lsi.media_tracker.creators;
 
 import javafx.stage.FileChooser;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
 import java.io.File;
 
 /**
@@ -11,13 +8,7 @@ import java.io.File;
  *
  * @author LSI
  */
-@Component
 public class FileProvider {
-
-    @Bean
-    public FileProvider getFileProvider() {
-        return new FileProvider();
-    }
 
     public File getFileForLoad() {
         FileChooser fileChooser = new FileChooser();

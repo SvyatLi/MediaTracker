@@ -19,23 +19,6 @@ public class ObjectProvider {
 
     private FileMediaContainer fileMediaContainer;
 
-    @Bean
-    public ObjectProvider getObjectProvider(){
-        return new ObjectProvider();
-    }
-
-    @Autowired
-    public void setObjectProvider(ObjectProvider objectProvider){
-        ObjectProvider.objectProvider = objectProvider;
-    }
-
-
-    @Autowired
-    public void setFileMediaContainer(FileMediaContainer fileMediaContainer) {
-        this.fileMediaContainer = fileMediaContainer;
-    }
-
-
     public static MediaContainer getMediaContainer(StorageType type) {
         switch (type) {
             case FILE:
@@ -43,5 +26,15 @@ public class ObjectProvider {
             default:
                 return objectProvider.fileMediaContainer;
         }
+    }
+
+    @Autowired
+    public void setObjectProvider(ObjectProvider objectProvider) {
+        ObjectProvider.objectProvider = objectProvider;
+    }
+
+    @Autowired
+    public void setFileMediaContainer(FileMediaContainer fileMediaContainer) {
+        this.fileMediaContainer = fileMediaContainer;
     }
 }

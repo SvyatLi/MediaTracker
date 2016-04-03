@@ -29,6 +29,7 @@ public class FileMediaContainer implements MediaContainer {
     private Map<String, List<Media>> mediaMap;
 
     private FileProvider fileProvider;
+    private MessageCreator messageCreator;
 
     @Override
     public String tryLoadFromSavedResource() {
@@ -91,12 +92,18 @@ public class FileMediaContainer implements MediaContainer {
     }
 
     private String createMessage(MessageCode code, File file) {
-        return MessageCreator.getInstance().getMessageRelatedToCodeAndFile(code, file);
+        return messageCreator.getMessageRelatedToCodeAndFile(code, file);
     }
 
     private String createMessage(MessageCode code) {
-        return MessageCreator.getInstance().getMessageRelatedToCode(code);
+        return messageCreator.getMessageRelatedToCode(code);
     }
+
+    @Autowired
+    public void setMessageCreator(MessageCreator messageCreator) {
+        this.messageCreator = messageCreator;
+    }
+
 
     @Autowired
     public void setFileProvider(FileProvider fileProvider) {

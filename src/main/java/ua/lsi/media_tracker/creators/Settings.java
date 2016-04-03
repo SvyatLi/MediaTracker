@@ -26,30 +26,12 @@ public class Settings {
     private File defaultInfoFile;
     private File settingsFile;
 
-    public Settings() {
-        //TODO: find a way to make this better
+    private Settings() {
         properties = new Properties();
-        String fileName = Messages.getInstance().getMessage(PROPERTIES_FILE);
-        String tempFolderPath = System.getProperty("java.io.tmpdir");
-        try {
-            settingsFile = new File(tempFolderPath + fileName);
-            boolean fileExists = true;
-            if (!settingsFile.exists()) {
-                fileExists = settingsFile.createNewFile();
-            }
-            if (fileExists) {
-                try (InputStream inputStream = new FileInputStream(settingsFile)) {
-                    properties.load(inputStream);
-                    automaticLoadEnabled = Boolean.parseBoolean(properties.getProperty(AUTOMATIC_LOAD_ENABLED.name()));
-                    String defaultInfoFilePath = properties.getProperty(DEFAULT_INFO_FILE.name());
-                    if (defaultInfoFilePath != null) {
-                        defaultInfoFile = new File(defaultInfoFilePath);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    }
+
+    public static Settings getInstance() {
+        return settings;
     }
 
     public String saveSettings() {
@@ -95,17 +77,43 @@ public class Settings {
         this.automaticLoadEnabled = automaticLoadEnabled;
     }
 
-    public static Settings getInstance() {
-        return settings;
-    }
+    public static class Builder {
+        private Settings instance;
 
-    @Bean
-    public Settings getSettings() {
-        return new Settings();
+        public Builder() {
+            instance = new Settings();
+        }
+
+        public Settings build() {
+            String fileName = Messages.getInstance().getMessage(PROPERTIES_FILE);
+            String tempFolderPath = System.getProperty("java.io.tmpdir");
+            try {
+                instance.settingsFile = new File(tempFolderPath + fileName);
+                boolean fileExists = true;
+                if (!instance.settingsFile.exists()) {
+                    fileExists = instance.settingsFile.createNewFile();
+                }
+                if (fileExists) {
+                    try (InputStream inputStream = new FileInputStream(instance.settingsFile)) {
+                        instance.properties.load(inputStream);
+                        instance.automaticLoadEnabled = Boolean.parseBoolean(instance.properties.getProperty(AUTOMATIC_LOAD_ENABLED.name()));
+                        String defaultInfoFilePath = instance.properties.getProperty(DEFAULT_INFO_FILE.name());
+                        if (defaultInfoFilePath != null) {
+                            instance.defaultInfoFile = new File(defaultInfoFilePath);
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new IllegalStateException("Error initializing settings" + e.getMessage());
+            }
+            return instance;
+        }
     }
 
     @Autowired
     public void setSettings(Settings settings) {
         Settings.settings = settings;
     }
+
 }

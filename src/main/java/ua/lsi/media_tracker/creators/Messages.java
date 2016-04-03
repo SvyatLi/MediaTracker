@@ -41,13 +41,8 @@ public class Messages {
         return messagesMap.get(code);
     }
 
-    @Bean
-    public Messages getMessages() {
-        return new Messages();
-    }
-
     @Autowired
-    public void setSettings(Messages messages) {
+    public void setMessages(Messages messages) {
         Messages.messages = messages;
     }
 

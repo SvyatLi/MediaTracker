@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import ua.lsi.media_tracker.creators.FileProvider;
 import ua.lsi.media_tracker.creators.MessageCreator;
+import ua.lsi.media_tracker.enums.MessageCode;
 
 import java.io.File;
 
@@ -40,8 +41,9 @@ public class FileMediaContainerTest {
         when(fileProvider.getFileForLoad()).thenReturn(file);
         container.setFileProvider(fileProvider);
         String returnedMessage = container.loadInformation();
+        MessageCreator messageCreator = new MessageCreator();
 
-        Assert.assertEquals(MessageCreator.getInstance().getMessageRelatedToCodeAndFile(LOAD_SUCCESSFUL, file),returnedMessage);
+        Assert.assertEquals(messageCreator.getMessageRelatedToCodeAndFile(LOAD_SUCCESSFUL, file),returnedMessage);
 //        file = new File("F:\\torrent\\notExist.txt");
 //        returnedMessage = container.loadInformation();
 //        Assert.assertEquals(Messages.getInstance().getMessage(LOAD_UNSUCCESSFUL),returnedMessage);
