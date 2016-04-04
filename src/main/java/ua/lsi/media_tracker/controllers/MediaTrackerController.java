@@ -56,6 +56,9 @@ public class MediaTrackerController {
             statusLabel.setText(task.getValue());
             createView(container);
         });
+        task.setOnFailed(event -> {
+            event.getSource().getException().printStackTrace();
+        });
         new Thread(task).start();
     }
 

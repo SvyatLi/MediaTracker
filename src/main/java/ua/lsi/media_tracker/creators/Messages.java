@@ -33,6 +33,7 @@ public class Messages {
         messagesMap.put(MessageCode.DEFAULT_SECTION_NAME, "Default");
     }
 
+    //Used in javaFX and builder
     public static Messages getInstance() {
         return messages;
     }
