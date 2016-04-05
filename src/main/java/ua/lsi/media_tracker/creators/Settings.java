@@ -1,25 +1,21 @@
 package ua.lsi.media_tracker.creators;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-
+import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.Properties;
 
-import static ua.lsi.media_tracker.enums.MessageCode.PROPERTIES_FILE;
-import static ua.lsi.media_tracker.enums.MessageCode.SETTINGS_NOT_SAVED;
-import static ua.lsi.media_tracker.enums.MessageCode.SETTINGS_SAVED;
-import static ua.lsi.media_tracker.enums.SettingsKey.*;
+import static ua.lsi.media_tracker.enums.MessageCode.*;
+import static ua.lsi.media_tracker.enums.SettingsKey.AUTOMATIC_LOAD_ENABLED;
+import static ua.lsi.media_tracker.enums.SettingsKey.DEFAULT_INFO_FILE;
 
 /**
  * Created by LSI on 29.03.2016.
  *
  * @author LSI
  */
-@Component
 public class Settings {
     private static Settings settings;
+    private Settings settingsToSaveInStatic;
 
     private Boolean automaticLoadEnabled;
     private Properties properties;
@@ -28,6 +24,7 @@ public class Settings {
 
     private Settings() {
         properties = new Properties();
+        settingsToSaveInStatic = this;
     }
 
     public static Settings getInstance() {
@@ -77,6 +74,11 @@ public class Settings {
         this.automaticLoadEnabled = automaticLoadEnabled;
     }
 
+    @PostConstruct
+    public void saveInstance() {
+        Settings.settings = settingsToSaveInStatic;
+    }
+
     public static class Builder {
         private Settings instance;
 
@@ -109,11 +111,6 @@ public class Settings {
             }
             return instance;
         }
-    }
-
-    @Autowired
-    public void setSettings(Settings settings) {
-        Settings.settings = settings;
     }
 
 }

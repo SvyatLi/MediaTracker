@@ -1,10 +1,9 @@
 package ua.lsi.media_tracker.creators;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.enums.MessageCode;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +15,7 @@ import java.util.Map;
 @Component
 public class Messages {
     private static Messages messages;
+    private Messages messagesToSaveInStatic;
     private Map<MessageCode, String> messagesMap;
 
     public Messages() {
@@ -31,6 +31,7 @@ public class Messages {
         messagesMap.put(MessageCode.SETTINGS_SAVED, "Settings saved");
         messagesMap.put(MessageCode.SETTINGS_NOT_SAVED, "Settings not saved");
         messagesMap.put(MessageCode.DEFAULT_SECTION_NAME, "Default");
+        messagesToSaveInStatic = this;
     }
 
     //Used in javaFX and builder
@@ -42,9 +43,9 @@ public class Messages {
         return messagesMap.get(code);
     }
 
-    @Autowired
-    public void setMessages(Messages messages) {
-        Messages.messages = messages;
+    @PostConstruct
+    public void saveInstance() {
+        Messages.messages = messagesToSaveInStatic;
     }
 
 }

@@ -3,12 +3,12 @@ package ua.lsi.media_tracker.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ua.lsi.media_tracker.enums.MessageCode;
-import ua.lsi.media_tracker.model.Media;
-import ua.lsi.media_tracker.creators.Settings;
-import ua.lsi.media_tracker.utils.FileParserAndSaver;
 import ua.lsi.media_tracker.creators.FileProvider;
 import ua.lsi.media_tracker.creators.MessageCreator;
+import ua.lsi.media_tracker.creators.Settings;
+import ua.lsi.media_tracker.enums.MessageCode;
+import ua.lsi.media_tracker.model.Media;
+import ua.lsi.media_tracker.utils.FileParserAndSaver;
 
 import java.io.File;
 import java.util.Collections;
@@ -103,7 +103,6 @@ public class FileMediaContainer implements MediaContainer {
     public void setMessageCreator(MessageCreator messageCreator) {
         this.messageCreator = messageCreator;
     }
-
 
     @Autowired
     public void setFileProvider(FileProvider fileProvider) {

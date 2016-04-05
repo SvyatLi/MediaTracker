@@ -1,11 +1,12 @@
 package ua.lsi.media_tracker.creators;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.dao.FileMediaContainer;
 import ua.lsi.media_tracker.dao.MediaContainer;
 import ua.lsi.media_tracker.enums.StorageType;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Created by LSI on 26.03.2016.
@@ -16,8 +17,13 @@ import ua.lsi.media_tracker.enums.StorageType;
 public class ObjectProvider {
 
     private static ObjectProvider objectProvider;
+    private ObjectProvider objectProviderToSaveInStatic;
 
     private FileMediaContainer fileMediaContainer;
+
+    public ObjectProvider() {
+        objectProviderToSaveInStatic = this;
+    }
 
     public static MediaContainer getMediaContainer(StorageType type) {
         switch (type) {
@@ -28,9 +34,9 @@ public class ObjectProvider {
         }
     }
 
-    @Autowired
-    public void setObjectProvider(ObjectProvider objectProvider) {
-        ObjectProvider.objectProvider = objectProvider;
+    @PostConstruct
+    public void saveInstance() {
+        ObjectProvider.objectProvider = objectProviderToSaveInStatic;
     }
 
     @Autowired

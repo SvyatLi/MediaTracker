@@ -2,7 +2,6 @@ package ua.lsi.media_tracker.dao;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 import ua.lsi.media_tracker.creators.FileProvider;
@@ -31,27 +30,27 @@ public class FileMediaContainerTest {
         messageCreator = new MessageCreator();
         container.setMessageCreator(messageCreator);
         Messages messages = new Messages();
-        messages.setMessages(messages);
+        messages.saveInstance();
 
     }
 
     @Test
     public void testTryLoadFromSavedResource() throws Exception {
-        Settings settings = new Settings.Builder().build();
-        Settings settingsMock = Mockito.mock(Settings.class);
-        settings.setSettings(settingsMock);
-        
-        when(settingsMock.isAutomaticLoadEnabled()).thenReturn(false);
+        Settings settings = spy(new Settings.Builder().build());
+        settings.saveInstance();
+
+
+        when(settings.isAutomaticLoadEnabled()).thenReturn(false);
         String returnedMessage = container.tryLoadFromSavedResource();
         Assert.assertEquals(messageCreator.getMessageRelatedToCode(AUTO_LOAD_DISABLED), returnedMessage);
 
-        when(settingsMock.isAutomaticLoadEnabled()).thenReturn(true);
+        when(settings.isAutomaticLoadEnabled()).thenReturn(true);
         returnedMessage = container.tryLoadFromSavedResource();
         Assert.assertEquals(messageCreator.getMessageRelatedToCode(AUTO_LOAD_UNSUCCESSFUL), returnedMessage);
 
         URL url = this.getClass().getResource("/z_Serials.txt");
         File file = new File(url.getFile());
-        when(settingsMock.getDefaultInfoFile()).thenReturn(file);
+        when(settings.getDefaultInfoFile()).thenReturn(file);
         returnedMessage = container.tryLoadFromSavedResource();
         Assert.assertEquals(messageCreator.getMessageRelatedToCodeAndFile(AUTO_LOAD_SUCCESSFUL,file), returnedMessage);
     }

@@ -1,6 +1,8 @@
 package ua.lsi.media_tracker.creators;
 
 import javafx.stage.FileChooser;
+import org.springframework.stereotype.Component;
+
 import java.io.File;
 
 /**
@@ -8,6 +10,7 @@ import java.io.File;
  *
  * @author LSI
  */
+@Component
 public class FileProvider {
 
     public File getFileForLoad() {
