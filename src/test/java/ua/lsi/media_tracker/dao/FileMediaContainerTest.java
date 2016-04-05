@@ -24,52 +24,65 @@ public class FileMediaContainerTest {
 
     FileMediaContainer container = new FileMediaContainer();
     Messages messages;
+    FileProvider fileProvider;
+    Settings settingsMock;
 
     @Before
     public void init() {
         messages = new Messages();
         container.setMessages(messages);
+        fileProvider = Mockito.mock(FileProvider.class);
+        container.setFileProvider(fileProvider);
+        settingsMock = mock(Settings.class);
+        container.setSettings(settingsMock);
     }
 
     @Test
-    public void testTryLoadFromSavedResource() throws Exception {
-        Settings settingsMock = mock(Settings.class);
-        container.setSettings(settingsMock);
-
+    public void testTryLoadFromSavedResource_loadDisabled() throws Exception {
         when(settingsMock.isAutomaticLoadEnabled()).thenReturn(false);
         String returnedMessage = container.tryLoadFromSavedResource();
         Assert.assertEquals(messages.getMessage(AUTO_LOAD_DISABLED), returnedMessage);
+    }
 
+    @Test
+    public void testTryLoadFromSavedResource_fileNotSet() throws Exception {
         when(settingsMock.isAutomaticLoadEnabled()).thenReturn(true);
-        returnedMessage = container.tryLoadFromSavedResource();
+        String returnedMessage = container.tryLoadFromSavedResource();
         Assert.assertEquals(messages.getMessage(AUTO_LOAD_UNSUCCESSFUL), returnedMessage);
+    }
 
+    @Test
+    public void testTryLoadFromSavedResource_correctFileSet() throws Exception {
         URL url = this.getClass().getResource("/z_Serials.txt");
         File file = new File(url.getFile());
+        when(settingsMock.isAutomaticLoadEnabled()).thenReturn(true);
         when(settingsMock.getDefaultInfoFile()).thenReturn(file);
-        returnedMessage = container.tryLoadFromSavedResource();
+        String returnedMessage = container.tryLoadFromSavedResource();
         Assert.assertEquals(messages.getMessageRelatedToFile(AUTO_LOAD_SUCCESSFUL, file), returnedMessage);
     }
 
     @Test
-    public void testLoadInformation() throws Exception {
-        FileProvider fileProvider = Mockito.mock(FileProvider.class);
+    public void testLoadInformation_nullFile() throws Exception {
+        when(fileProvider.getFileForLoad()).thenReturn(null);
+        String returnedMessage = container.loadInformation();
+        Assert.assertEquals(messages.getMessage(LOAD_UNSUCCESSFUL), returnedMessage);
+    }
+
+    @Test
+    public void testLoadInformation_notExistingFile() throws Exception {
+        File file = new File("/notExist.txt");
+        when(fileProvider.getFileForLoad()).thenReturn(file);
+        String returnedMessage = container.loadInformation();
+        Assert.assertEquals(messages.getMessage(LOAD_UNSUCCESSFUL), returnedMessage);
+    }
+
+    @Test
+    public void testLoadInformation_correctFile() throws Exception {
         URL url = this.getClass().getResource("/z_Serials.txt");
         File file = new File(url.getFile());
-
         when(fileProvider.getFileForLoad()).thenReturn(file);
-        container.setFileProvider(fileProvider);
         String returnedMessage = container.loadInformation();
         Assert.assertEquals(messages.getMessageRelatedToFile(LOAD_SUCCESSFUL, file), returnedMessage);
-
-        file = new File("/notExist.txt");
-        when(fileProvider.getFileForLoad()).thenReturn(file);
-        returnedMessage = container.loadInformation();
-        Assert.assertEquals(messages.getMessage(LOAD_UNSUCCESSFUL), returnedMessage);
-
-        when(fileProvider.getFileForLoad()).thenReturn(null);
-        returnedMessage = container.loadInformation();
-        Assert.assertEquals(messages.getMessage(LOAD_UNSUCCESSFUL), returnedMessage);
     }
 
     @Test
