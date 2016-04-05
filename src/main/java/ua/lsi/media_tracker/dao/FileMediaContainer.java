@@ -4,7 +4,7 @@ package ua.lsi.media_tracker.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.FileProvider;
-import ua.lsi.media_tracker.creators.MessageCreator;
+import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
@@ -29,7 +29,7 @@ public class FileMediaContainer implements MediaContainer {
     private Map<String, List<Media>> mediaMap;
 
     private FileProvider fileProvider;
-    private MessageCreator messageCreator;
+    private Messages messages;
     private Settings settings;
 
     @Override
@@ -93,16 +93,16 @@ public class FileMediaContainer implements MediaContainer {
     }
 
     private String createMessage(MessageCode code, File file) {
-        return messageCreator.getMessageRelatedToCodeAndFile(code, file);
+        return messages.getMessageRelatedToFile(code, file);
     }
 
     private String createMessage(MessageCode code) {
-        return messageCreator.getMessageRelatedToCode(code);
+        return messages.getMessage(code);
     }
 
     @Autowired
-    public void setMessageCreator(MessageCreator messageCreator) {
-        this.messageCreator = messageCreator;
+    public void setMessages(Messages messages) {
+        this.messages = messages;
     }
 
     @Autowired

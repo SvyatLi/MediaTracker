@@ -5,14 +5,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import ua.lsi.media_tracker.creators.FileProvider;
-import ua.lsi.media_tracker.creators.MessageCreator;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.creators.Settings;
 
 import java.io.File;
 import java.net.URL;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static ua.lsi.media_tracker.enums.MessageCode.*;
 
 /**
@@ -23,15 +23,12 @@ import static ua.lsi.media_tracker.enums.MessageCode.*;
 public class FileMediaContainerTest {
 
     FileMediaContainer container = new FileMediaContainer();
-    MessageCreator messageCreator;
+    Messages messages;
 
     @Before
     public void init() {
-        messageCreator = new MessageCreator();
-        messageCreator.setMessages(new Messages());
-        container.setMessageCreator(messageCreator);
-
-
+        messages = new Messages();
+        container.setMessages(messages);
     }
 
     @Test
@@ -41,17 +38,17 @@ public class FileMediaContainerTest {
 
         when(settingsMock.isAutomaticLoadEnabled()).thenReturn(false);
         String returnedMessage = container.tryLoadFromSavedResource();
-        Assert.assertEquals(messageCreator.getMessageRelatedToCode(AUTO_LOAD_DISABLED), returnedMessage);
+        Assert.assertEquals(messages.getMessage(AUTO_LOAD_DISABLED), returnedMessage);
 
         when(settingsMock.isAutomaticLoadEnabled()).thenReturn(true);
         returnedMessage = container.tryLoadFromSavedResource();
-        Assert.assertEquals(messageCreator.getMessageRelatedToCode(AUTO_LOAD_UNSUCCESSFUL), returnedMessage);
+        Assert.assertEquals(messages.getMessage(AUTO_LOAD_UNSUCCESSFUL), returnedMessage);
 
         URL url = this.getClass().getResource("/z_Serials.txt");
         File file = new File(url.getFile());
         when(settingsMock.getDefaultInfoFile()).thenReturn(file);
         returnedMessage = container.tryLoadFromSavedResource();
-        Assert.assertEquals(messageCreator.getMessageRelatedToCodeAndFile(AUTO_LOAD_SUCCESSFUL,file), returnedMessage);
+        Assert.assertEquals(messages.getMessageRelatedToFile(AUTO_LOAD_SUCCESSFUL, file), returnedMessage);
     }
 
     @Test
@@ -63,16 +60,16 @@ public class FileMediaContainerTest {
         when(fileProvider.getFileForLoad()).thenReturn(file);
         container.setFileProvider(fileProvider);
         String returnedMessage = container.loadInformation();
-        Assert.assertEquals(messageCreator.getMessageRelatedToCodeAndFile(LOAD_SUCCESSFUL, file), returnedMessage);
+        Assert.assertEquals(messages.getMessageRelatedToFile(LOAD_SUCCESSFUL, file), returnedMessage);
 
         file = new File("/notExist.txt");
         when(fileProvider.getFileForLoad()).thenReturn(file);
         returnedMessage = container.loadInformation();
-        Assert.assertEquals(messageCreator.getMessageRelatedToCode(LOAD_UNSUCCESSFUL),returnedMessage);
+        Assert.assertEquals(messages.getMessage(LOAD_UNSUCCESSFUL), returnedMessage);
 
         when(fileProvider.getFileForLoad()).thenReturn(null);
         returnedMessage = container.loadInformation();
-        Assert.assertEquals(messageCreator.getMessageRelatedToCode(LOAD_UNSUCCESSFUL),returnedMessage);
+        Assert.assertEquals(messages.getMessage(LOAD_UNSUCCESSFUL), returnedMessage);
     }
 
     @Test

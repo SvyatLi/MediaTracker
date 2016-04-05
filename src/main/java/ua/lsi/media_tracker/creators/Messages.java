@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.enums.MessageCode;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +41,20 @@ public class Messages {
 
     public String getMessage(MessageCode code) {
         return messagesMap.get(code);
+    }
+
+    public String getMessageRelatedToFile(MessageCode code, File file) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getMessage(code));
+        switch (code) {
+            case AUTO_LOAD_SUCCESSFUL:
+            case LOAD_SUCCESSFUL:
+            case SAVE_SUCCESSFUL:
+                sb.append(file.getAbsolutePath());
+                break;
+            default:
+        }
+        return sb.toString();
     }
 
     @PostConstruct
