@@ -30,12 +30,13 @@ public class FileMediaContainer implements MediaContainer {
 
     private FileProvider fileProvider;
     private MessageCreator messageCreator;
+    private Settings settings;
 
     @Override
     public String tryLoadFromSavedResource() {
         String returnedMessage;
-        file = Settings.getInstance().getDefaultInfoFile();
-        if (Settings.getInstance().isAutomaticLoadEnabled()) {
+        file = settings.getDefaultInfoFile();
+        if (settings.isAutomaticLoadEnabled()) {
             if (file != null && file.exists()) {
                 parseFileToMap(file);
                 returnedMessage = createMessage(AUTO_LOAD_SUCCESSFUL, file);
@@ -107,5 +108,10 @@ public class FileMediaContainer implements MediaContainer {
     @Autowired
     public void setFileProvider(FileProvider fileProvider) {
         this.fileProvider = fileProvider;
+    }
+
+    @Autowired
+    public void setSettings(Settings settings) {
+        this.settings = settings;
     }
 }

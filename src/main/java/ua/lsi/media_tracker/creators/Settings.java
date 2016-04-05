@@ -1,5 +1,7 @@
 package ua.lsi.media_tracker.creators;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.Properties;
@@ -22,6 +24,8 @@ public class Settings {
     private File defaultInfoFile;
     private File settingsFile;
 
+    private Messages messages;
+
     private Settings() {
         properties = new Properties();
         settingsToSaveInStatic = this;
@@ -31,8 +35,13 @@ public class Settings {
         return settings;
     }
 
+    @Autowired
+    public void setFileMediaContainer(Messages messages) {
+        this.messages = messages;
+    }
+
     public String saveSettings() {
-        String resultMessage = Messages.getInstance().getMessage(SETTINGS_SAVED);
+        String resultMessage = messages.getMessage(SETTINGS_SAVED);
         properties.setProperty(AUTOMATIC_LOAD_ENABLED.name(), automaticLoadEnabled.toString());
         String defaultFileAbsolutePath = "";
         if (defaultInfoFile != null && defaultInfoFile.exists()) {
@@ -49,7 +58,7 @@ public class Settings {
                     properties.store(outputStream, null);
                 }
             } else {
-                resultMessage = Messages.getInstance().getMessage(SETTINGS_NOT_SAVED);
+                resultMessage = messages.getMessage(SETTINGS_NOT_SAVED);
             }
         } catch (IOException e) {
             e.printStackTrace();
