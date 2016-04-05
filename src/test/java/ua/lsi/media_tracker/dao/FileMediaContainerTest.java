@@ -28,9 +28,7 @@ public class FileMediaContainerTest {
     @Before
     public void init() {
         messageCreator = new MessageCreator();
-        Messages messages = new Messages();
-        messages.saveInstance();//FIXME: looks like bad architecture
-        messageCreator.setMessages(messages);
+        messageCreator.setMessages(new Messages());
         container.setMessageCreator(messageCreator);
 
 
@@ -70,11 +68,11 @@ public class FileMediaContainerTest {
         file = new File("/notExist.txt");
         when(fileProvider.getFileForLoad()).thenReturn(file);
         returnedMessage = container.loadInformation();
-        Assert.assertEquals(Messages.getInstance().getMessage(LOAD_UNSUCCESSFUL),returnedMessage);
+        Assert.assertEquals(messageCreator.getMessageRelatedToCode(LOAD_UNSUCCESSFUL),returnedMessage);
 
         when(fileProvider.getFileForLoad()).thenReturn(null);
         returnedMessage = container.loadInformation();
-        Assert.assertEquals(Messages.getInstance().getMessage(LOAD_UNSUCCESSFUL),returnedMessage);
+        Assert.assertEquals(messageCreator.getMessageRelatedToCode(LOAD_UNSUCCESSFUL),returnedMessage);
     }
 
     @Test

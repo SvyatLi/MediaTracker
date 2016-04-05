@@ -1,6 +1,5 @@
 package ua.lsi.media_tracker.utils;
 
-import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
 
@@ -24,7 +23,7 @@ public class FileParserAndSaver {
 
     public Map<String, List<Media>> getMapOfMediaFromFile(File file) {
         Map<String, List<Media>> mediaMap = new LinkedHashMap<>();
-        currentSection = Messages.getInstance().getMessage(MessageCode.DEFAULT_SECTION_NAME);
+        currentSection = MessageCode.DEFAULT_SECTION.name();
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"))) {
             String line = br.readLine();

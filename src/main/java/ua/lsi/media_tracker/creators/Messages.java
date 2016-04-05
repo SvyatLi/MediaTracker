@@ -30,7 +30,6 @@ public class Messages {
         messagesMap.put(MessageCode.PROPERTIES_FILE, "MediaTracker.properties");
         messagesMap.put(MessageCode.SETTINGS_SAVED, "Settings saved");
         messagesMap.put(MessageCode.SETTINGS_NOT_SAVED, "Settings not saved");
-        messagesMap.put(MessageCode.DEFAULT_SECTION_NAME, "Default");
         messagesToSaveInStatic = this;
     }
 
