@@ -7,9 +7,13 @@ import org.mockito.Mockito;
 import ua.lsi.media_tracker.creators.FileProvider;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.creators.Settings;
+import ua.lsi.media_tracker.model.Media;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -86,12 +90,36 @@ public class FileMediaContainerTest {
     }
 
     @Test
-    public void testGetSectionToMediaMap() throws Exception {
-        Assert.fail("not written");
+    public void testGetSectionToMediaMap_containerIsNotSetUp() throws Exception {
+        Map<String, List<Media>> resultMap = container.getSectionToMediaMap();
+        Assert.assertNull(resultMap);
+    }
+
+    @Test
+    public void testGetSectionToMediaMap_containerSetCorrect() throws Exception {
+        URL url = this.getClass().getResource("/z_Serials.txt");
+        File file = new File(url.getFile());
+        when(fileProvider.getFileForLoad()).thenReturn(file);
+        container.loadInformation();
+        Map<String, List<Media>> resultMap = container.getSectionToMediaMap();
+        Assert.assertNotNull(resultMap);
+        Assert.assertNotEquals(0,resultMap.size());
+    }
+
+    @Test
+    public void testGetSectionToMediaMap_containerSetEmpty() throws Exception {
+        File file = new File("/notExist.txt");
+        when(fileProvider.getFileForLoad()).thenReturn(file);
+        container.loadInformation();
+        Map<String, List<Media>> resultMap = container.getSectionToMediaMap();
+        Assert.assertNotNull(resultMap);
+        Assert.assertEquals(0, resultMap.size());
+        Assert.assertEquals(Collections.EMPTY_MAP, resultMap);
     }
 
     @Test
     public void testSaveMediaMap() throws Exception {
+        container.saveMediaMap(); //FIXME: rewrite this to make testable
         Assert.fail("not written");
     }
 }
