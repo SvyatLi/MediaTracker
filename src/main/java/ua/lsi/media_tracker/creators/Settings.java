@@ -36,7 +36,7 @@ public class Settings {
     }
 
     @Autowired
-    public void setFileMediaContainer(Messages messages) {
+    public void setMessages(Messages messages) {
         this.messages = messages;
     }
 

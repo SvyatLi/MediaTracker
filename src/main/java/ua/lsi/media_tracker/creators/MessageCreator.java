@@ -35,7 +35,7 @@ public class MessageCreator {
     }
 
     @Autowired
-    public void setFileMediaContainer(Messages messages) {
+    public void setMessages(Messages messages) {
         this.messages = messages;
     }
 }
