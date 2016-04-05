@@ -28,29 +28,30 @@ public class FileMediaContainerTest {
     @Before
     public void init() {
         messageCreator = new MessageCreator();
-        container.setMessageCreator(messageCreator);
         Messages messages = new Messages();
-        messages.saveInstance();
+        messages.saveInstance();//FIXME: looks like bad architecture
+        messageCreator.setMessages(messages);
+        container.setMessageCreator(messageCreator);
+
 
     }
 
     @Test
     public void testTryLoadFromSavedResource() throws Exception {
-        Settings settings = spy(new Settings.Builder().build());
-        settings.saveInstance();
+        Settings settingsMock = mock(Settings.class);
+        container.setSettings(settingsMock);
 
-
-        when(settings.isAutomaticLoadEnabled()).thenReturn(false);
+        when(settingsMock.isAutomaticLoadEnabled()).thenReturn(false);
         String returnedMessage = container.tryLoadFromSavedResource();
         Assert.assertEquals(messageCreator.getMessageRelatedToCode(AUTO_LOAD_DISABLED), returnedMessage);
 
-        when(settings.isAutomaticLoadEnabled()).thenReturn(true);
+        when(settingsMock.isAutomaticLoadEnabled()).thenReturn(true);
         returnedMessage = container.tryLoadFromSavedResource();
         Assert.assertEquals(messageCreator.getMessageRelatedToCode(AUTO_LOAD_UNSUCCESSFUL), returnedMessage);
 
         URL url = this.getClass().getResource("/z_Serials.txt");
         File file = new File(url.getFile());
-        when(settings.getDefaultInfoFile()).thenReturn(file);
+        when(settingsMock.getDefaultInfoFile()).thenReturn(file);
         returnedMessage = container.tryLoadFromSavedResource();
         Assert.assertEquals(messageCreator.getMessageRelatedToCodeAndFile(AUTO_LOAD_SUCCESSFUL,file), returnedMessage);
     }
