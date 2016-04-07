@@ -1,14 +1,9 @@
 package ua.lsi.media_tracker;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ua.lsi.media_tracker.configs.SpringAppConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 
 /**
@@ -16,14 +11,11 @@ import ua.lsi.media_tracker.controllers.MediaTrackerController;
  *
  * @author LSI
  */
-public class Main extends Application {
-    protected ApplicationContext context;
+@Service
+public class Main extends AbstractJavaFxApplicationSupport {
 
-    @Override
-    public void init() throws Exception {
-        context = new AnnotationConfigApplicationContext(SpringAppConfig.class);
-        context.getAutowireCapableBeanFactory().autowireBean(this);
-    }
+    @Autowired
+    private ConfigurationControllers.View view;
 
     public static void main(String[] args) {
         launch(args);
@@ -31,13 +23,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/media_tracker.fxml"));
-        AnchorPane root = loader.load();
         primaryStage.setTitle("Media Tracker");
-        primaryStage.setScene(new Scene(root, root.getPrefWidth(), root.getPrefHeight()));
+        primaryStage.setScene(new Scene(view.getView()));
         primaryStage.show();
 
-        MediaTrackerController mediaTrackerController = loader.getController();
+        MediaTrackerController mediaTrackerController = context.getBean(MediaTrackerController.class);
         mediaTrackerController.setStage(primaryStage);
         mediaTrackerController.autoLoad();
     }
