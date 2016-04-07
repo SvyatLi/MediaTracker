@@ -19,6 +19,8 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ua.lsi.media_tracker.Main;
 import ua.lsi.media_tracker.dao.MediaContainer;
 import ua.lsi.media_tracker.creators.ObjectProvider;
@@ -34,11 +36,18 @@ import java.util.Map;
  *
  * @author LSI
  */
+@Service
 public class MediaTrackerController {
 
     @FXML
     Label statusLabel;
     private Stage stage;
+    private ObjectProvider objectProvider;
+
+    @Autowired
+    public void setObjectProvider(ObjectProvider objectProvider) {
+        this.objectProvider = objectProvider;
+    }
 
     public void setStage(Stage stage) {
         this.stage = stage;

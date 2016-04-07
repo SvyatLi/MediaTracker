@@ -2,6 +2,7 @@ package ua.lsi.media_tracker.dao;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 import ua.lsi.media_tracker.creators.FileProvider;
@@ -118,6 +119,7 @@ public class FileMediaContainerTest {
     }
 
     @Test
+    @Ignore("rewrite this to make testable")
     public void testSaveMediaMap() throws Exception {
         container.saveMediaMap(); //FIXME: rewrite this to make testable
         Assert.fail("not written");

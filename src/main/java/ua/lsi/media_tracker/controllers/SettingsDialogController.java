@@ -8,6 +8,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.creators.Settings;
@@ -21,6 +23,7 @@ import java.util.ResourceBundle;
  *
  * @author LSI
  */
+@Service
 public class SettingsDialogController implements Initializable {
 
     @FXML
@@ -34,6 +37,11 @@ public class SettingsDialogController implements Initializable {
 
     private Settings settings;
     private File defaultFile;
+
+    @Autowired
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
