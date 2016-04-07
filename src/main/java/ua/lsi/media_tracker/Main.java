@@ -3,6 +3,7 @@ package ua.lsi.media_tracker;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 
@@ -14,6 +15,8 @@ import ua.lsi.media_tracker.controllers.MediaTrackerController;
 @Service
 public class Main extends AbstractJavaFxApplicationSupport {
 
+
+    @Qualifier("mediaTrackerView")
     @Autowired
     private ConfigurationControllers.View view;
 

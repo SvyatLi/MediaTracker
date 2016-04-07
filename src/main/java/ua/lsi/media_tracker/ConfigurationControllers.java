@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
+import ua.lsi.media_tracker.controllers.SettingsDialogController;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,8 +18,8 @@ import java.io.InputStream;
 @Configuration
 public class ConfigurationControllers {
 
-    @Bean(name = "mainView")
-    public View getMainView() throws IOException {
+    @Bean(name = "mediaTrackerView")
+    public View getMediaTrackerView() throws IOException {
         return loadView("view/media_tracker.fxml");
     }
 
@@ -28,7 +29,7 @@ public class ConfigurationControllers {
      */
     @Bean
     public MediaTrackerController mediaTrackerController() throws IOException {
-        return (MediaTrackerController) getMainView().getController();
+        return (MediaTrackerController) getMediaTrackerView().getController();
     }
 
     /**

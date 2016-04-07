@@ -43,6 +43,7 @@ public class SettingsDialogController implements Initializable {
         this.settings = settings;
     }
 
+    //TODO: rewrite to use org.springframework.context.ApplicationContextAware
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         settings = Settings.getInstance();
