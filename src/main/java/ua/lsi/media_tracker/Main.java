@@ -6,7 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ua.lsi.media_tracker.configs.SpringAppConfig;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 
 /**
@@ -15,9 +17,15 @@ import ua.lsi.media_tracker.controllers.MediaTrackerController;
  * @author LSI
  */
 public class Main extends Application {
+    protected ApplicationContext context;
+
+    @Override
+    public void init() throws Exception {
+        context = new AnnotationConfigApplicationContext(SpringAppConfig.class);
+        context.getAutowireCapableBeanFactory().autowireBean(this);
+    }
 
     public static void main(String[] args) {
-        ApplicationContext context = new ClassPathXmlApplicationContext("MediaTracker-config.xml");
         launch(args);
     }
 
