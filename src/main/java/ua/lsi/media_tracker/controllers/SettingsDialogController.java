@@ -39,11 +39,17 @@ public class SettingsDialogController extends AbstractController implements Init
     Label settingsSavedLabel;
 
     private Settings settings;
+    private Messages messages;
     private File defaultFile;
 
     @Autowired
     public void setSettings(Settings settings) {
         this.settings = settings;
+    }
+
+    @Autowired
+    public void setMessages(Messages messages) {
+        this.messages = messages;
     }
 
     @Override
@@ -63,7 +69,7 @@ public class SettingsDialogController extends AbstractController implements Init
         if (defaultFile == null || !defaultFile.exists()) {
             automaticLoadEnabled.setSelected(false);
         }
-        settingsSavedLabel.setText(Messages.getInstance().getMessage(MessageCode.SETTINGS_SAVED));
+        settingsSavedLabel.setText(messages.getMessage(MessageCode.SETTINGS_SAVED));
     }
 
     @FXML

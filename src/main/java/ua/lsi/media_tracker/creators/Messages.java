@@ -15,8 +15,6 @@ import java.util.Map;
  */
 @Component
 public class Messages {
-    private static Messages messages;
-    private Messages messagesToSaveInStatic;
     private Map<MessageCode, String> messagesMap;
 
     public Messages() {
@@ -28,15 +26,8 @@ public class Messages {
         messagesMap.put(MessageCode.LOAD_UNSUCCESSFUL, "File not selected");
         messagesMap.put(MessageCode.SAVE_SUCCESSFUL, "Data saved to file : ");
         messagesMap.put(MessageCode.SAVE_UNSUCCESSFUL, "File to save not selected");
-        messagesMap.put(MessageCode.PROPERTIES_FILE, "MediaTracker.properties");
         messagesMap.put(MessageCode.SETTINGS_SAVED, "Settings saved");
         messagesMap.put(MessageCode.SETTINGS_NOT_SAVED, "Settings not saved");
-        messagesToSaveInStatic = this;
-    }
-
-    //Used in javaFX and builder
-    public static Messages getInstance() {
-        return messages;
     }
 
     public String getMessage(MessageCode code) {
@@ -55,11 +46,6 @@ public class Messages {
             default:
         }
         return sb.toString();
-    }
-
-    @PostConstruct
-    public void saveInstance() {
-        Messages.messages = messagesToSaveInStatic;
     }
 
 }
