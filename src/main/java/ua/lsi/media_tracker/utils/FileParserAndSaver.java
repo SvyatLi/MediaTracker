@@ -25,15 +25,19 @@ public class FileParserAndSaver {
     private final static String matcher = ".*\\s\\-\\ss\\d*e\\d*";
     private final static String matcherSeparator = "\\s\\-\\s";
     private static Logger LOG = Logger.getLogger(FileParserAndSaver.class);
-    private String currentSection;
     private Messages messages;
 
     public Map<String, List<Media>> getMapOfMediaFromFile(File file) {
         Map<String, List<Media>> mediaMap = new LinkedHashMap<>();
-        currentSection = MessageCode.DEFAULT_SECTION.name();
+        String currentSection = messages.getMessage(MessageCode.DEFAULT_SECTION);
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"))) {
             String line = br.readLine();
             while (line != null) {
+                if (line.contains(sectionStarter)) {
+                    currentSection = line.substring(line.indexOf(sectionStarter) + sectionStarter.length());
+                    line = br.readLine();
+                    continue;
+                }
                 Media media = parseMediaFromString(line);
                 if (media != null) {
                     List<Media> mediaList = mediaMap.getOrDefault(currentSection, new ArrayList<>());
@@ -74,10 +78,6 @@ public class FileParserAndSaver {
 
     private Media parseMediaFromString(String line) {
         if (line == null || line.isEmpty()) {
-            return null;
-        }
-        if (line.contains(sectionStarter)) {
-            currentSection = line.substring(line.indexOf(sectionStarter) + sectionStarter.length());
             return null;
         }
         Media media = new Media();

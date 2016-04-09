@@ -1,7 +1,6 @@
 package ua.lsi.media_tracker.utils;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.enums.MessageCode;
@@ -33,7 +32,7 @@ public class FileParserAndSaverTest {
         fileParserAndSaver.setMessages(messages);
         String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(resourceFolderPath + "canBeCreated.txt");
-        if (file.exists()){
+        if (file.exists()) {
             file.delete();
         }
     }
@@ -45,7 +44,8 @@ public class FileParserAndSaverTest {
 
     @Test
     public void testGetMapOfMediaFromFile_notExistingFile() throws Exception {
-        File file = new File("/notExist.txt");
+        String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+        File file = new File(resourceFolderPath + "notExist.txt");
         Map<String, List<Media>> result = fileParserAndSaver.getMapOfMediaFromFile(file);
         assertNotNull(result);
         assertEquals(0, result.size());
@@ -69,7 +69,6 @@ public class FileParserAndSaverTest {
     public void testSaveMapToFile_fileNotExist_nullMap() throws Exception {
         String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(resourceFolderPath + "canBeCreated.txt");
-        file.setWritable(true);
         fileParserAndSaver.saveMapToFile(null, file);
     }
 

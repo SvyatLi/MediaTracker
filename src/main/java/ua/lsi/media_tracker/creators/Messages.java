@@ -30,6 +30,7 @@ public class Messages {
         messagesMap.put(MessageCode.SAVE_ERROR, "Error occurred during saving, see log for more information");
         messagesMap.put(MessageCode.SETTINGS_SAVED, "Settings saved");
         messagesMap.put(MessageCode.SETTINGS_NOT_SAVED, "Settings not saved");
+        messagesMap.put(MessageCode.DEFAULT_SECTION, "Default");
     }
 
     public String getMessage(MessageCode code) {
