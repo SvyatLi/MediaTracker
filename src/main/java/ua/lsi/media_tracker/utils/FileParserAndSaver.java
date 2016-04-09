@@ -1,6 +1,8 @@
 package ua.lsi.media_tracker.utils;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
 
@@ -15,6 +17,7 @@ import java.util.Map;
  *
  * @author LSI
  */
+@Component
 public class FileParserAndSaver {
     private static Logger LOG = Logger.getLogger(FileParserAndSaver.class);
     private final static String sectionStarter = "//";

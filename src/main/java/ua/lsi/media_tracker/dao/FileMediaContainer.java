@@ -31,6 +31,7 @@ public class FileMediaContainer implements MediaContainer {
     private FileProvider fileProvider;
     private Messages messages;
     private Settings settings;
+    private FileParserAndSaver fileParserAndSaver;
 
     @Override
     public String tryLoadFromSavedResource() {
@@ -74,7 +75,6 @@ public class FileMediaContainer implements MediaContainer {
         File fileToSaveTo = fileProvider.getFileForSave(file);
         String returnedMessage;
         if (fileToSaveTo != null && fileToSaveTo.exists()) {
-            FileParserAndSaver fileParserAndSaver = new FileParserAndSaver();
             fileParserAndSaver.saveMapToFile(mediaMap, fileToSaveTo);
             returnedMessage = createMessage(MessageCode.SAVE_SUCCESSFUL, fileToSaveTo);
         } else {
@@ -85,7 +85,6 @@ public class FileMediaContainer implements MediaContainer {
 
     private void parseFileToMap(File file) {
         if (file != null && file.exists()) {
-            FileParserAndSaver fileParserAndSaver = new FileParserAndSaver();
             mediaMap = fileParserAndSaver.getMapOfMediaFromFile(file);
         } else {
             mediaMap = Collections.EMPTY_MAP;
@@ -113,5 +112,10 @@ public class FileMediaContainer implements MediaContainer {
     @Autowired
     public void setSettings(Settings settings) {
         this.settings = settings;
+    }
+
+    @Autowired
+    public void setFileParserAndSaver(FileParserAndSaver fileParserAndSaver) {
+        this.fileParserAndSaver = fileParserAndSaver;
     }
 }
