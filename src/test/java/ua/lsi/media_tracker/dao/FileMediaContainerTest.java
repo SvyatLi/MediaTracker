@@ -2,7 +2,6 @@ package ua.lsi.media_tracker.dao;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import ua.lsi.media_tracker.creators.FileProvider;
 import ua.lsi.media_tracker.creators.Messages;
@@ -15,7 +14,6 @@ import java.net.URL;
 import java.util.*;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyMap;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static ua.lsi.media_tracker.enums.MessageCode.*;
@@ -105,7 +103,9 @@ public class FileMediaContainerTest {
         File file = new File(url.getFile());
         when(fileProviderMock.getFileForLoad()).thenReturn(file);
         Map<String, List<Media>> mediaMap = new HashMap<>();
-        mediaMap.put("default",new ArrayList<Media>(){{add(new Media());}});
+        mediaMap.put("default", new ArrayList<Media>() {{
+            add(new Media());
+        }});
         when(fileParserAndSaverMock.getMapOfMediaFromFile(file)).thenReturn(mediaMap);
         container.loadInformation();
         Map<String, List<Media>> resultMap = container.getSectionToMediaMap();
@@ -145,6 +145,6 @@ public class FileMediaContainerTest {
         File file = new File(url.getFile());
         when(fileProviderMock.getFileForSave(any())).thenReturn(file);
         String returnedMessage = container.saveMediaMap();
-        Assert.assertEquals(messages.getMessageRelatedToFile(SAVE_SUCCESSFUL,file), returnedMessage);
+        Assert.assertEquals(messages.getMessageRelatedToFile(SAVE_SUCCESSFUL, file), returnedMessage);
     }
 }
