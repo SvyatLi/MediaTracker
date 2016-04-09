@@ -48,7 +48,6 @@ public class SettingsDialogController extends AbstractController implements Init
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        settings = Settings.getInstance();
         defaultFile = settings.getDefaultInfoFile();
         if (defaultFile != null && defaultFile.exists()) {
             defaultFilePath.setText(defaultFile.getAbsolutePath());

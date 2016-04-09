@@ -3,7 +3,6 @@ package ua.lsi.media_tracker.creators;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.Properties;
 
@@ -18,8 +17,6 @@ import static ua.lsi.media_tracker.enums.SettingsKey.DEFAULT_INFO_FILE;
  */
 public class Settings {
     private static Logger LOG = Logger.getLogger(Settings.class);
-    private static Settings settings;
-    private Settings settingsToSaveInStatic;
 
     private Boolean automaticLoadEnabled;
     private Properties properties;
@@ -30,11 +27,6 @@ public class Settings {
 
     private Settings() {
         properties = new Properties();
-        settingsToSaveInStatic = this;
-    }
-
-    public static Settings getInstance() {
-        return settings;
     }
 
     @Autowired
@@ -83,11 +75,6 @@ public class Settings {
 
     public void setAutomaticLoadEnabled(Boolean automaticLoadEnabled) {
         this.automaticLoadEnabled = automaticLoadEnabled;
-    }
-
-    @PostConstruct
-    public void saveInstance() {
-        Settings.settings = settingsToSaveInStatic;
     }
 
     public static class Builder {
