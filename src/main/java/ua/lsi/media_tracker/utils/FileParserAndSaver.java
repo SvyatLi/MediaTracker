@@ -1,5 +1,6 @@
 package ua.lsi.media_tracker.utils;
 
+import org.apache.log4j.Logger;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  * @author LSI
  */
 public class FileParserAndSaver {
-
+    private static Logger LOG = Logger.getLogger(FileParserAndSaver.class);
     private final static String sectionStarter = "//";
     private final static String matcher = ".*\\s\\-\\ss\\d*e\\d*";
     private final static String matcherSeparator = "\\s\\-\\s";
@@ -37,10 +38,10 @@ public class FileParserAndSaver {
                 line = br.readLine();
             }
         } catch (FileNotFoundException e) {
-            System.err.println("Should never happen");
-            e.printStackTrace();
+            LOG.error("Should never happen");
+            LOG.error(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
         return mediaMap;
     }
@@ -58,10 +59,10 @@ public class FileParserAndSaver {
                 }
             }
         } catch (FileNotFoundException e) {
-            System.err.println("Should never happen");
-            e.printStackTrace();
+            LOG.error("Should never happen");
+            LOG.error(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
     }
 

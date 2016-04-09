@@ -1,5 +1,6 @@
 package ua.lsi.media_tracker.creators;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +17,7 @@ import static ua.lsi.media_tracker.enums.SettingsKey.DEFAULT_INFO_FILE;
  * @author LSI
  */
 public class Settings {
+    private static Logger LOG = Logger.getLogger(Settings.class);
     private static Settings settings;
     private Settings settingsToSaveInStatic;
 
@@ -61,7 +63,7 @@ public class Settings {
                 resultMessage = messages.getMessage(SETTINGS_NOT_SAVED);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error(e);
         }
 
         return resultMessage;
@@ -115,7 +117,7 @@ public class Settings {
                     }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error(e);
                 throw new IllegalStateException("Error initializing settings" + e.getMessage());
             }
             return instance;

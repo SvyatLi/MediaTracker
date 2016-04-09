@@ -17,6 +17,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.lsi.media_tracker.SpringFXMLLoader;
@@ -36,7 +37,7 @@ import java.util.Map;
  */
 @Service
 public class MediaTrackerController extends AbstractController {
-
+    private static Logger LOG = Logger.getLogger(MediaTrackerController.class);
     @FXML
     Label statusLabel;
     private Stage stage;
@@ -63,9 +64,7 @@ public class MediaTrackerController extends AbstractController {
             statusLabel.setText(task.getValue());
             createView(container);
         });
-        task.setOnFailed(event -> {
-            event.getSource().getException().printStackTrace();
-        });
+        task.setOnFailed(event -> LOG.error(event.getSource().getException()));
         new Thread(task).start();
     }
 
