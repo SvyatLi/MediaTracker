@@ -11,8 +11,7 @@ import org.springframework.core.env.Environment;
  * @author LSI
  */
 @Configuration
-@ComponentScan(basePackages = {"ua.lsi.media_tracker.creators", "ua.lsi.media_tracker.dao", "ua.lsi.media_tracker.configs"
-        , "ua.lsi.media_tracker.controllers", "ua.lsi.media_tracker"})
+@ComponentScan(basePackages = {"ua.lsi.media_tracker.*"})
 public class SpringAppConfig {
 
     private Environment environment;
