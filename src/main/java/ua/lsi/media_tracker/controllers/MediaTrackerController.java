@@ -5,14 +5,12 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -21,9 +19,9 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.lsi.media_tracker.Main;
-import ua.lsi.media_tracker.dao.MediaContainer;
+import ua.lsi.media_tracker.SpringFXMLLoader;
 import ua.lsi.media_tracker.creators.ObjectProvider;
+import ua.lsi.media_tracker.dao.MediaContainer;
 import ua.lsi.media_tracker.enums.StorageType;
 import ua.lsi.media_tracker.model.Media;
 
@@ -37,7 +35,7 @@ import java.util.Map;
  * @author LSI
  */
 @Service
-public class MediaTrackerController {
+public class MediaTrackerController extends AbstractController {
 
     @FXML
     Label statusLabel;
@@ -49,7 +47,7 @@ public class MediaTrackerController {
         this.objectProvider = objectProvider;
     }
 
-    public void setStage(Stage stage) {
+    public void init(Stage stage) {
         this.stage = stage;
     }
 
@@ -87,15 +85,14 @@ public class MediaTrackerController {
     }
 
     @FXML
-    public void openSettings() throws IOException{
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/settings_dialog.fxml"));
-        AnchorPane page =  loader.load();
+    public void openSettings() throws IOException {
+        SettingsDialogController settingsDialogController = (SettingsDialogController) SpringFXMLLoader.load("view/settings_dialog.fxml");
+        Scene scene = new Scene((Parent) settingsDialogController.getView());
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.setTitle("Settings");
         dialog.initOwner(stage);
-        Scene dialogScene = new Scene(page, page.getPrefWidth(), page.getPrefHeight());
-        dialog.setScene(dialogScene);
+        dialog.setScene(scene);
         dialog.show();
     }
 

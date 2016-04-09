@@ -1,10 +1,9 @@
 package ua.lsi.media_tracker;
 
+import javafx.application.Application;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 
 /**
@@ -12,13 +11,7 @@ import ua.lsi.media_tracker.controllers.MediaTrackerController;
  *
  * @author LSI
  */
-@Service
-public class Main extends AbstractJavaFxApplicationSupport {
-
-
-    @Qualifier("mediaTrackerView")
-    @Autowired
-    private ConfigurationControllers.View view;
+public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
@@ -26,12 +19,13 @@ public class Main extends AbstractJavaFxApplicationSupport {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        MediaTrackerController mediaTrackerController = (MediaTrackerController) SpringFXMLLoader.load("view/media_tracker.fxml");
+        Scene scene = new Scene((Parent) mediaTrackerController.getView());
         primaryStage.setTitle("Media Tracker");
-        primaryStage.setScene(new Scene(view.getView()));
+        primaryStage.setScene(scene);
         primaryStage.show();
 
-        MediaTrackerController mediaTrackerController = context.getBean(MediaTrackerController.class);
-        mediaTrackerController.setStage(primaryStage);
+        mediaTrackerController.init(primaryStage);
         mediaTrackerController.autoLoad();
     }
 }

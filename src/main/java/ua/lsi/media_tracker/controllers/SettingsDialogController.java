@@ -8,11 +8,12 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import ua.lsi.media_tracker.enums.MessageCode;
+import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.creators.Settings;
+import ua.lsi.media_tracker.enums.MessageCode;
 
 import java.io.File;
 import java.net.URL;
@@ -23,8 +24,10 @@ import java.util.ResourceBundle;
  *
  * @author LSI
  */
-@Service
-public class SettingsDialogController implements Initializable {
+@Component
+public class SettingsDialogController extends AbstractController implements Initializable {
+
+    private static Logger LOG = Logger.getLogger(SettingsDialogController.class);
 
     @FXML
     CheckBox automaticLoadEnabled;
@@ -43,7 +46,6 @@ public class SettingsDialogController implements Initializable {
         this.settings = settings;
     }
 
-    //TODO: rewrite to use org.springframework.context.ApplicationContextAware
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         settings = Settings.getInstance();
