@@ -1,8 +1,10 @@
 package ua.lsi.media_tracker.utils;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
 
@@ -19,16 +21,16 @@ import java.util.Map;
  */
 @Component
 public class FileParserAndSaver {
-    private static Logger LOG = Logger.getLogger(FileParserAndSaver.class);
     private final static String sectionStarter = "//";
     private final static String matcher = ".*\\s\\-\\ss\\d*e\\d*";
     private final static String matcherSeparator = "\\s\\-\\s";
+    private static Logger LOG = Logger.getLogger(FileParserAndSaver.class);
     private String currentSection;
+    private Messages messages;
 
     public Map<String, List<Media>> getMapOfMediaFromFile(File file) {
         Map<String, List<Media>> mediaMap = new LinkedHashMap<>();
         currentSection = MessageCode.DEFAULT_SECTION.name();
-
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"))) {
             String line = br.readLine();
             while (line != null) {
@@ -40,17 +42,15 @@ public class FileParserAndSaver {
                 }
                 line = br.readLine();
             }
-        } catch (FileNotFoundException e) {
-            LOG.error("Should never happen");
-            LOG.error(e);
         } catch (IOException e) {
             LOG.error(e);
         }
         return mediaMap;
     }
 
-    public void saveMapToFile(Map<String, List<Media>> mediaMap, File file) {
-
+    public String saveMapToFile(Map<String, List<Media>> mediaMap, File file) {
+        String statusMessage = messages.getMessage(MessageCode.SAVE_NOT_SAVED);
+        boolean somethingSaved = false;
         try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF8"))) {
             for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
                 bw.newLine();
@@ -59,14 +59,17 @@ public class FileParserAndSaver {
                 for (Media media : entry.getValue()) {
                     bw.write(media.toString());
                     bw.newLine();
+                    somethingSaved = true;
                 }
             }
-        } catch (FileNotFoundException e) {
-            LOG.error("Should never happen");
-            LOG.error(e);
+            if(somethingSaved) {
+                statusMessage = messages.getMessageRelatedToFile(MessageCode.SAVE_SUCCESSFUL, file);
+            }
         } catch (IOException e) {
             LOG.error(e);
+            statusMessage = messages.getMessage(MessageCode.SAVE_ERROR);
         }
+        return statusMessage;
     }
 
     private Media parseMediaFromString(String line) {
@@ -93,4 +96,8 @@ public class FileParserAndSaver {
         return media;
     }
 
+    @Autowired
+    public void setMessages(Messages messages) {
+        this.messages = messages;
+    }
 }

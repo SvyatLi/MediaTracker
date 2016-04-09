@@ -32,7 +32,7 @@ public class FileMediaContainerTest {
     FileParserAndSaver fileParserAndSaverMock;
 
     @Before
-    public void init() {
+    public void setUp() {
         messages = new Messages();
         container.setMessages(messages);
         fileProviderMock = mock(FileProvider.class);
@@ -41,6 +41,11 @@ public class FileMediaContainerTest {
         container.setSettings(settingsMock);
         fileParserAndSaverMock = mock(FileParserAndSaver.class);
         container.setFileParserAndSaver(fileParserAndSaverMock);
+        String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+        File file = new File(resourceFolderPath + "notExist.txt");
+        if (file.exists()){
+            file.delete();
+        }
     }
 
     @Test
@@ -76,7 +81,8 @@ public class FileMediaContainerTest {
 
     @Test
     public void testLoadInformation_notExistingFile() throws Exception {
-        File file = new File("/notExist.txt");
+        String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+        File file = new File(resourceFolderPath + "notExist.txt");
         when(fileProviderMock.getFileForLoad()).thenReturn(file);
         String returnedMessage = container.loadInformation();
         Assert.assertEquals(messages.getMessage(LOAD_UNSUCCESSFUL), returnedMessage);
@@ -115,7 +121,8 @@ public class FileMediaContainerTest {
 
     @Test
     public void testGetSectionToMediaMap_containerSetEmpty() throws Exception {
-        File file = new File("/notExist.txt");
+        String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+        File file = new File(resourceFolderPath + "notExist.txt");
         when(fileProviderMock.getFileForLoad()).thenReturn(file);
         container.loadInformation();
         Map<String, List<Media>> resultMap = container.getSectionToMediaMap();
@@ -133,7 +140,8 @@ public class FileMediaContainerTest {
 
     @Test
     public void testSaveMediaMap_fileToSaveNotExist() throws Exception {
-        File file = new File("/notExist.txt");
+        String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+        File file = new File(resourceFolderPath + "notExist.txt");
         when(fileProviderMock.getFileForSave(any())).thenReturn(file);
         String returnedMessage = container.saveMediaMap();
         Assert.assertEquals(messages.getMessage(SAVE_UNSUCCESSFUL), returnedMessage);

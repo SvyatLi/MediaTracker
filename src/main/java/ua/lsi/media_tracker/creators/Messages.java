@@ -26,6 +26,8 @@ public class Messages {
         messagesMap.put(MessageCode.LOAD_UNSUCCESSFUL, "File not selected");
         messagesMap.put(MessageCode.SAVE_SUCCESSFUL, "Data saved to file : ");
         messagesMap.put(MessageCode.SAVE_UNSUCCESSFUL, "File to save not selected");
+        messagesMap.put(MessageCode.SAVE_NOT_SAVED, "Data not saved");
+        messagesMap.put(MessageCode.SAVE_ERROR, "Error occurred during saving, see log for more information");
         messagesMap.put(MessageCode.SETTINGS_SAVED, "Settings saved");
         messagesMap.put(MessageCode.SETTINGS_NOT_SAVED, "Settings not saved");
     }
