@@ -1,6 +1,7 @@
 package ua.lsi.media_tracker.utils;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.enums.MessageCode;
@@ -24,6 +25,17 @@ public class FileParserAndSaverTest {
 
     FileParserAndSaver fileParserAndSaver;
     Messages messages;
+
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+        String resourceFolderPath = FileParserAndSaverTest.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        File readOnly = new File(resourceFolderPath + "readOnly.txt");
+        boolean fileCreated = false;
+        if (!readOnly.exists()) {
+            fileCreated = readOnly.createNewFile();
+        }
+        boolean fileSetReadOnly = readOnly.setReadOnly();
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -76,7 +88,6 @@ public class FileParserAndSaverTest {
     public void testSaveMapToFile_fileNotExistAndNOTWritable() throws Exception {
         String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(resourceFolderPath + "readOnly.txt");
-        file.setWritable(false);
         String returnedMessage = fileParserAndSaver.saveMapToFile(null, file);
         assertEquals(messages.getMessage(MessageCode.SAVE_ERROR), returnedMessage);
     }

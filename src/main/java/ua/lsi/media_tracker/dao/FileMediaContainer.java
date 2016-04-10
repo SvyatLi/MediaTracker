@@ -1,6 +1,7 @@
 package ua.lsi.media_tracker.dao;
 
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.FileProvider;
@@ -24,7 +25,7 @@ import static ua.lsi.media_tracker.enums.MessageCode.*;
  */
 @Component
 public class FileMediaContainer implements MediaContainer {
-
+    private static Logger LOG = Logger.getLogger(FileMediaContainer.class);
     private File file;
     private Map<String, List<Media>> mediaMap;
 

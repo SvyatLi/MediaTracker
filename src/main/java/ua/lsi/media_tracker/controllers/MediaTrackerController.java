@@ -97,25 +97,19 @@ public class MediaTrackerController extends AbstractController {
 
     private void createView(MediaContainer container) {
         Scene scene = stage.getScene();
-        Parent root = scene.getRoot();
+        ScrollPane scrollPane = (ScrollPane) scene.lookup("#scrollPane");
+        VBox box = new VBox();
+        box.setAlignment(Pos.CENTER);
 
-        if (root instanceof Pane) {
-
-            ObservableList<Node> nodes = ((Pane) root).getChildren();
-            ScrollPane scrollPane = (ScrollPane) nodes.filtered(node -> node instanceof ScrollPane).get(0);
-            VBox box = new VBox();
-            box.setAlignment(Pos.CENTER);
-
-            Map<String, List<Media>> mediaMap = container.getSectionToMediaMap();
-            for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
-                Label label = new Label(entry.getKey());
-                label.setFont(Font.font(24));
-                box.getChildren().add(label);
-                TableView<Media> table = createTable(entry.getValue());
-                box.getChildren().add(table);
-            }
-            scrollPane.setContent(box);
+        Map<String, List<Media>> mediaMap = container.getSectionToMediaMap();
+        for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
+            Label label = new Label(entry.getKey());
+            label.setFont(Font.font(24));
+            box.getChildren().add(label);
+            TableView<Media> table = createTable(entry.getValue());
+            box.getChildren().add(table);
         }
+        scrollPane.setContent(box);
     }
 
     private TableView<Media> createTable(List<Media> list) {
