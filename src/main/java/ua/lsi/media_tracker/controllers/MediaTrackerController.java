@@ -97,9 +97,7 @@ public class MediaTrackerController extends AbstractController {
 
     private void createView(MediaContainer container) {
         Scene scene = stage.getScene();
-        ScrollPane scrollPane = (ScrollPane) scene.lookup("#scrollPane");
-        VBox box = new VBox();
-        box.setAlignment(Pos.CENTER);
+        VBox box = (VBox) scene.lookup("#scrollVBox");
 
         Map<String, List<Media>> mediaMap = container.getSectionToMediaMap();
         for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
@@ -109,7 +107,6 @@ public class MediaTrackerController extends AbstractController {
             TableView<Media> table = createTable(entry.getValue());
             box.getChildren().add(table);
         }
-        scrollPane.setContent(box);
     }
 
     private TableView<Media> createTable(List<Media> list) {

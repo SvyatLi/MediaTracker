@@ -6,8 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<GridPane prefHeight="411.0" prefWidth="554.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.lsi.media_tracker.controllers.MediaTrackerController">
+<GridPane prefHeight="537.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.lsi.media_tracker.controllers.MediaTrackerController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
    </columnConstraints>
@@ -45,7 +44,10 @@
           </Menu>
         </menus>
       </MenuBar>
-		<ScrollPane prefHeight="365.0" prefWidth="532.0" GridPane.rowIndex="1" id="scrollPane"/>
+		<ScrollPane id="scrollPane" prefHeight="365.0" prefWidth="580.0" GridPane.rowIndex="1">
+         <content>
+            <VBox id="scrollVBox" alignment="CENTER" prefHeight="200.0" prefWidth="580.0" />
+         </content></ScrollPane>
 		<Label fx:id="statusLabel" prefHeight="25.0" prefWidth="458.0" text="" wrapText="true" GridPane.rowIndex="2">
          <font>
             <Font size="16.0" />
