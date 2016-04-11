@@ -22,9 +22,8 @@ public class SpringFXMLLoader {
     private static Logger LOG = Logger.getLogger(SpringFXMLLoader.class);
 
     public static Controller load(String url) {
-        InputStream fxmlStream = null;
-        try {
-            fxmlStream = SpringFXMLLoader.class.getResourceAsStream(url);
+        try (InputStream fxmlStream = SpringFXMLLoader.class.getResourceAsStream(url)) {
+
             FXMLLoader loader = new FXMLLoader();
             loader.setControllerFactory(APPLICATION_CONTEXT::getBean);
 
@@ -36,14 +35,21 @@ public class SpringFXMLLoader {
         } catch (IOException e) {
             LOG.error("Can't load resource", e);
             throw new RuntimeException(e);
-        } finally {
-            if (fxmlStream != null) {
-                try {
-                    fxmlStream.close();
-                } catch (IOException e) {
-                    LOG.error("Can't close stream", e);
-                }
-            }
         }
+    }
+
+    public static Node loadNode(String url) {
+        Node view = null;
+        try (InputStream fxmlStream = SpringFXMLLoader.class.getResourceAsStream(url)) {
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setControllerFactory(APPLICATION_CONTEXT::getBean);
+
+            view = loader.load(fxmlStream);
+        } catch (IOException e) {
+            LOG.error("Can't load node", e);
+            throw new RuntimeException(e);
+        }
+        return view;
     }
 }

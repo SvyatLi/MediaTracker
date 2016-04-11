@@ -115,18 +115,9 @@ public class MediaTrackerController extends AbstractController {
     }
 
     private TableView<Media> createTable(List<Media> list) {
-        TableView<Media> table = new TableView<>();
-        try {
-            java.net.URL url = getClass().getResource("../view/table_template.fxml");
-            table = FXMLLoader.load(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        TableView<Media> table = (TableView<Media>) SpringFXMLLoader.loadNode("view/table_template.fxml");
         table.getItems().setAll(list);
-
         setupHeightAndWidthForTable(table);
-
         return table;
     }
 
