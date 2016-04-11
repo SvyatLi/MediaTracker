@@ -6,8 +6,6 @@ import ua.lsi.media_tracker.dao.FileMediaContainer;
 import ua.lsi.media_tracker.dao.MediaContainer;
 import ua.lsi.media_tracker.enums.StorageType;
 
-import javax.annotation.PostConstruct;
-
 /**
  * Created by LSI on 26.03.2016.
  *
@@ -15,28 +13,15 @@ import javax.annotation.PostConstruct;
  */
 @Component
 public class ObjectProvider {
-
-    private static ObjectProvider objectProvider;
-    private ObjectProvider objectProviderToSaveInStatic;
-
     private FileMediaContainer fileMediaContainer;
 
-    public ObjectProvider() {
-        objectProviderToSaveInStatic = this;
-    }
-
-    public static MediaContainer getMediaContainer(StorageType type) {
+    public MediaContainer getMediaContainer(StorageType type) {
         switch (type) {
             case FILE:
-                return objectProvider.fileMediaContainer;
+                return fileMediaContainer;
             default:
-                return objectProvider.fileMediaContainer;
+                return fileMediaContainer;
         }
-    }
-
-    @PostConstruct
-    public void saveInstance() {
-        ObjectProvider.objectProvider = objectProviderToSaveInStatic;
     }
 
     @Autowired

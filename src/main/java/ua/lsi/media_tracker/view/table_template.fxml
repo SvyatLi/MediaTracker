@@ -9,9 +9,7 @@
 	<columns>
 		<TableColumn prefWidth="378.0" text="Name" id="nameColumn">
 			<cellValueFactory>
-				<PropertyValueFactory property="name">
-
-				</PropertyValueFactory>
+				<PropertyValueFactory property="name"/>
 			</cellValueFactory>
 		</TableColumn>
 		<TableColumn minWidth="0.0" prefWidth="100.0" text="Season">

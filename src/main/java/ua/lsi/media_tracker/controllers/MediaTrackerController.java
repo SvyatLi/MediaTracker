@@ -54,7 +54,7 @@ public class MediaTrackerController extends AbstractController {
     }
 
     public void autoLoad() {
-        MediaContainer container = ObjectProvider.getMediaContainer(StorageType.FILE);
+        MediaContainer container = objectProvider.getMediaContainer(StorageType.FILE);
         Task<String> task = new Task<String>() {
             @Override
             protected String call() throws Exception {
@@ -72,7 +72,7 @@ public class MediaTrackerController extends AbstractController {
 
     @FXML
     public void loadData() {
-        MediaContainer container = ObjectProvider.getMediaContainer(StorageType.FILE);
+        MediaContainer container = objectProvider.getMediaContainer(StorageType.FILE);
         String statusMessage = container.loadInformation();
         statusLabel.setText(statusMessage);
         statusLabel.setTooltip(new Tooltip(statusMessage));
@@ -81,7 +81,7 @@ public class MediaTrackerController extends AbstractController {
 
     @FXML
     public void saveData() {
-        MediaContainer container = ObjectProvider.getMediaContainer(StorageType.FILE);
+        MediaContainer container = objectProvider.getMediaContainer(StorageType.FILE);
         String statusMessage = container.saveMediaMap();
         statusLabel.setText(statusMessage);
         statusLabel.setTooltip(new Tooltip(statusMessage));
