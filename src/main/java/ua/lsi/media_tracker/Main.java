@@ -21,6 +21,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         MediaTrackerController mediaTrackerController = (MediaTrackerController) SpringFXMLLoader.load("view/media_tracker.fxml");
         Scene scene = new Scene((Parent) mediaTrackerController.getView());
+        scene.getStylesheets().add(getClass().getResource("view/style.css").toExternalForm());
+
         primaryStage.setTitle("Media Tracker");
         primaryStage.setScene(scene);
         primaryStage.show();
