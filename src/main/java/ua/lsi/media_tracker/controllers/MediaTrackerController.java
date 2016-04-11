@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -62,6 +63,7 @@ public class MediaTrackerController extends AbstractController {
         };
         task.setOnSucceeded(event -> {
             statusLabel.setText(task.getValue());
+            statusLabel.setTooltip(new Tooltip(task.getValue()));
             createView(container);
         });
         task.setOnFailed(event -> LOG.error(event.getSource().getException()));
@@ -73,6 +75,7 @@ public class MediaTrackerController extends AbstractController {
         MediaContainer container = ObjectProvider.getMediaContainer(StorageType.FILE);
         String statusMessage = container.loadInformation();
         statusLabel.setText(statusMessage);
+        statusLabel.setTooltip(new Tooltip(statusMessage));
         createView(container);
     }
 
@@ -81,6 +84,7 @@ public class MediaTrackerController extends AbstractController {
         MediaContainer container = ObjectProvider.getMediaContainer(StorageType.FILE);
         String statusMessage = container.saveMediaMap();
         statusLabel.setText(statusMessage);
+        statusLabel.setTooltip(new Tooltip(statusMessage));
     }
 
     @FXML
@@ -99,6 +103,7 @@ public class MediaTrackerController extends AbstractController {
         Scene scene = stage.getScene();
         VBox box = (VBox) scene.lookup("#scrollVBox");
 
+        box.getChildren().clear();
         Map<String, List<Media>> mediaMap = container.getSectionToMediaMap();
         for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
             Label label = new Label(entry.getKey());
@@ -111,10 +116,12 @@ public class MediaTrackerController extends AbstractController {
 
     private TableView<Media> createTable(List<Media> list) {
         TableView<Media> table = new TableView<>();
-
-        createAndAddToTableSimpleColumn(table, "Name");
-        createAndAddToTableColumnWithMinusAndPlus(table, "Season");
-        createAndAddToTableColumnWithMinusAndPlus(table, "Episode");
+        try {
+            java.net.URL url = getClass().getResource("../view/table_template.fxml");
+            table = FXMLLoader.load(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         table.getItems().setAll(list);
 
@@ -123,38 +130,8 @@ public class MediaTrackerController extends AbstractController {
         return table;
     }
 
-    private void createAndAddToTableSimpleColumn(TableView<Media> table, String columnName) {
-        TableColumn<Media, String> name = new TableColumn<>(columnName);
-        name.setMinWidth(250);
-        name.setCellValueFactory(new PropertyValueFactory<>(columnName.toLowerCase()));
-        table.getColumns().add(name);
-    }
-
-    private void createAndAddToTableColumnWithMinusAndPlus(TableView<Media> table, String columnName) {
-        TableColumn<Media, String> wrapper = new TableColumn<>(columnName);
-        wrapper.setMinWidth(100);
-
-        TableColumn<Media, String> minus = new TableColumn<>("-");
-        minus.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
-        minus.setCellFactory(getCallback());
-
-        TableColumn<Media, String> number = new TableColumn<>("#");
-        number.setCellValueFactory(new PropertyValueFactory<>(columnName.toLowerCase()));
-
-        TableColumn<Media, String> plus = new TableColumn<>("+");
-        plus.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
-        plus.setCellFactory(getCallback());
-
-        wrapper.getColumns().add(minus);
-        wrapper.getColumns().add(number);
-        wrapper.getColumns().add(plus);
-        table.getColumns().add(wrapper);
-    }
-
     private void setupHeightAndWidthForTable(TableView<Media> table) {
         table.setEditable(true);
-        Pane pane = (Pane) stage.getScene().getRoot();
-        table.setPrefWidth(pane.getWidth() - 50);
         table.setFixedCellSize(30);
         table.prefHeightProperty().bind(table.fixedCellSizeProperty()
                 .multiply(Bindings.size(table.getItems()).add(2.01)));
@@ -163,37 +140,4 @@ public class MediaTrackerController extends AbstractController {
 
     }
 
-    private Callback<TableColumn<Media, String>, TableCell<Media, String>> getCallback() {
-        return new Callback<TableColumn<Media, String>, TableCell<Media, String>>() {
-            @Override
-            public TableCell<Media, String> call(final TableColumn<Media, String> param) {
-                final TableCell<Media, String> cell = new TableCell<Media, String>() {
-                    final Button btn = new Button("");
-
-                    @Override
-                    public void updateItem(String item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                            setText(null);
-                        } else {
-                            btn.setOnAction((ActionEvent event) ->
-                            {
-                                Media media = getTableView().getItems().get(getIndex());
-                                String columnName = getTableColumn().getParentColumn().getText();
-                                String sign = getTableColumn().getText();
-                                media.change(columnName, sign);
-                                getTableView().getColumns().get(0).setVisible(false);
-                                getTableView().getColumns().get(0).setVisible(true);
-                            });
-                            btn.setText(getTableColumn().getText());
-                            setGraphic(btn);
-                            setText(null);
-                        }
-                    }
-                };
-                return cell;
-            }
-        };
-    }
 }
