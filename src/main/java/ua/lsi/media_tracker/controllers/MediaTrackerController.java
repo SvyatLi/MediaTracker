@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.lsi.media_tracker.SpringFXMLLoader;
 import ua.lsi.media_tracker.creators.ObjectProvider;
+import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.dao.MediaContainer;
 import ua.lsi.media_tracker.enums.StorageType;
 import ua.lsi.media_tracker.model.Media;
@@ -46,10 +47,16 @@ public class MediaTrackerController extends AbstractController {
     Label statusLabel;
     private Stage stage;
     private ObjectProvider objectProvider;
+    private Settings settings;
 
     @Autowired
     public void setObjectProvider(ObjectProvider objectProvider) {
         this.objectProvider = objectProvider;
+    }
+
+    @Autowired
+    public void setSettings(Settings settings) {
+        this.settings = settings;
     }
 
     public void init(Stage stage) {
@@ -57,7 +64,7 @@ public class MediaTrackerController extends AbstractController {
     }
 
     public void autoLoad() {
-        MediaContainer container = objectProvider.getMediaContainer(StorageType.FILE);
+        MediaContainer container = objectProvider.getMediaContainer(settings.getStorageType());
         Task<String> task = new Task<String>() {
             @Override
             protected String call() throws Exception {
@@ -75,7 +82,7 @@ public class MediaTrackerController extends AbstractController {
 
     @FXML
     public void loadData() {
-        MediaContainer container = objectProvider.getMediaContainer(StorageType.FILE);
+        MediaContainer container = objectProvider.getMediaContainer(settings.getStorageType());
         String statusMessage = container.loadInformation();
         statusLabel.setText(statusMessage);
         statusLabel.setTooltip(new Tooltip(statusMessage));
@@ -84,7 +91,7 @@ public class MediaTrackerController extends AbstractController {
 
     @FXML
     public void saveData() {
-        MediaContainer container = objectProvider.getMediaContainer(StorageType.FILE);
+        MediaContainer container = objectProvider.getMediaContainer(settings.getStorageType());
         String statusMessage = container.saveMediaMap();
         statusLabel.setText(statusMessage);
         statusLabel.setTooltip(new Tooltip(statusMessage));
