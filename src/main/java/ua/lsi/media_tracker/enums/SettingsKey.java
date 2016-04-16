@@ -7,5 +7,6 @@ package ua.lsi.media_tracker.enums;
  */
 public enum SettingsKey {
     AUTOMATIC_LOAD_ENABLED,
-    DEFAULT_INFO_FILE
+    DEFAULT_INFO_FILE,
+    STORAGE_TYPE
 }

@@ -46,7 +46,6 @@ public class SettingsDialogController extends AbstractController implements Init
     private Settings settings;
     private Messages messages;
     private File defaultFile;
-    private StorageType storageType;
 
     @Autowired
     public void setSettings(Settings settings) {
@@ -65,15 +64,15 @@ public class SettingsDialogController extends AbstractController implements Init
             defaultFilePath.setText(defaultFile.getAbsolutePath());
         }
         automaticLoadEnabled.setSelected(settings.isAutomaticLoadEnabled());
-        storageType = StorageType.FILE;
         storageTypeComboBox.setItems(FXCollections.observableArrayList(StorageType.values()));
-        storageTypeComboBox.getSelectionModel().select(storageType);
+        storageTypeComboBox.getSelectionModel().select(settings.getStorageType());
     }
 
     @FXML
     public void saveSettings() {
         settings.setAutomaticLoadEnabled(automaticLoadEnabled.isSelected());
         settings.setDefaultInfoFile(defaultFile);
+        settings.setStorageType(storageTypeComboBox.getValue());
         settings.saveSettings();
         if (defaultFile == null || !defaultFile.exists()) {
             automaticLoadEnabled.setSelected(false);

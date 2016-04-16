@@ -3,6 +3,7 @@ package ua.lsi.media_tracker.creators;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ua.lsi.media_tracker.enums.StorageType;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
@@ -12,6 +13,7 @@ import static ua.lsi.media_tracker.enums.MessageCode.SETTINGS_NOT_SAVED;
 import static ua.lsi.media_tracker.enums.MessageCode.SETTINGS_SAVED;
 import static ua.lsi.media_tracker.enums.SettingsKey.AUTOMATIC_LOAD_ENABLED;
 import static ua.lsi.media_tracker.enums.SettingsKey.DEFAULT_INFO_FILE;
+import static ua.lsi.media_tracker.enums.SettingsKey.STORAGE_TYPE;
 
 /**
  * Created by LSI on 29.03.2016.
@@ -26,12 +28,8 @@ public class Settings {
     private Properties properties;
     private File defaultInfoFile;
     private File settingsFile;
-
+    private StorageType storageType;
     private Messages messages;
-
-    private Settings() {
-        properties = new Properties();
-    }
 
     @Autowired
     public void setMessages(Messages messages) {
@@ -46,6 +44,7 @@ public class Settings {
             defaultFileAbsolutePath = defaultInfoFile.getAbsolutePath();
         }
         properties.setProperty(DEFAULT_INFO_FILE.name(), defaultFileAbsolutePath);
+        properties.setProperty(STORAGE_TYPE.name(), storageType.name());
         try {
             boolean fileExists = true;
             if (!settingsFile.exists()) {
@@ -81,9 +80,18 @@ public class Settings {
         this.automaticLoadEnabled = automaticLoadEnabled;
     }
 
+    public StorageType getStorageType() {
+        return storageType;
+    }
+
+    public void setStorageType(StorageType storageType) {
+        this.storageType = storageType;
+    }
+
     @PostConstruct
     public void init() {
         try {
+            properties = new Properties();
             settingsFile = new File(PROPERTIES_FILE_NAME);
             boolean fileExists = true;
             if (!settingsFile.exists()) {
@@ -96,6 +104,12 @@ public class Settings {
                     String defaultInfoFilePath = properties.getProperty(DEFAULT_INFO_FILE.name());
                     if (defaultInfoFilePath != null) {
                         defaultInfoFile = new File(defaultInfoFilePath);
+                    }
+                    String storageTypeInSettings = properties.getProperty(STORAGE_TYPE.name());
+                    if (storageTypeInSettings != null) {
+                        storageType = StorageType.valueOf(storageTypeInSettings);
+                    } else {
+                        storageType = StorageType.FILE;
                     }
                 }
             }
