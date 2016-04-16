@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="250.0" prefWidth="350.0" style="-fx-background-color: gray;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" text="Application for tracking TV show series" textFill="WHITE" />
+      <Label layoutX="12.0" layoutY="41.0" text="Made for practice" textFill="WHITE" />
+      <Label layoutX="281.0" layoutY="210.0" text="2016" textFill="WHITE" />
+      <Label layoutX="12.0" layoutY="210.0" text="Author : Svyat Likhota" textFill="WHITE" />
+      <Label layoutX="12.0" layoutY="67.0" text="In application was used:" textFill="WHITE" />
+      <Label layoutX="12.0" layoutY="101.0" text="JavaFX" textFill="WHITE" />
+      <Label layoutX="12.0" layoutY="84.0" text="Spring" textFill="WHITE" />
+   </children>
+</AnchorPane>

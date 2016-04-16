@@ -1,6 +1,8 @@
 package ua.lsi.media_tracker.controllers;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -17,6 +19,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,4 +134,18 @@ public class MediaTrackerController extends AbstractController {
 
     }
 
+    public void openAbout(ActionEvent actionEvent) {
+        Node node = SpringFXMLLoader.loadNode("view/about.fxml");
+        Scene scene = new Scene((Parent) node);
+        final Stage dialog = new Stage();
+        dialog.initOwner(stage);
+        dialog.setScene(scene);
+        dialog.initStyle(StageStyle.UNDECORATED);
+        dialog.show();
+        dialog.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if(!newValue) {
+                dialog.close();
+            }
+        });
+    }
 }
