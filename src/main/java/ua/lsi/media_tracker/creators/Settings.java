@@ -18,7 +18,7 @@ import static ua.lsi.media_tracker.enums.SettingsKey.DEFAULT_INFO_FILE;
 public class Settings {
     private static Logger LOG = Logger.getLogger(Settings.class);
 
-    private static final String PROPERTIES_FILE_NAME =  "MediaTracker.properties";
+    private static final String PROPERTIES_FILE_NAME =  "./MediaTracker.properties";
     private Boolean automaticLoadEnabled;
     private Properties properties;
     private File defaultInfoFile;
@@ -86,9 +86,8 @@ public class Settings {
         }
 
         public Settings build() {
-            String tempFolderPath = System.getProperty("java.io.tmpdir");
             try {
-                instance.settingsFile = new File(tempFolderPath + PROPERTIES_FILE_NAME);
+                instance.settingsFile = new File(PROPERTIES_FILE_NAME);
                 boolean fileExists = true;
                 if (!instance.settingsFile.exists()) {
                     fileExists = instance.settingsFile.createNewFile();
