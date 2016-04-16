@@ -1,18 +1,9 @@
 Manifest-Version: 1.0
 JavaFX-Version: 8.0
-Class-Path: MediaTrackerLibs/aopalliance-1.0.jar MediaTrackerLibs/comm
- ons-logging-1.1.3.jar MediaTrackerLibs/log4j-1.2.15.jar MediaTrackerL
- ibs/spring-aop-4.2.5.RELEASE.jar MediaTrackerLibs/spring-aspects-4.2.
- 5.RELEASE.jar MediaTrackerLibs/spring-beans-4.2.5.RELEASE.jar MediaTr
- ackerLibs/spring-context-4.2.5.RELEASE.jar MediaTrackerLibs/spring-co
- ntext-support-4.2.5.RELEASE.jar MediaTrackerLibs/spring-core-4.2.5.RE
- LEASE.jar MediaTrackerLibs/spring-expression-4.2.5.RELEASE.jar MediaT
- rackerLibs/spring-instrument-4.2.5.RELEASE.jar MediaTrackerLibs/sprin
- g-instrument-tomcat-4.2.5.RELEASE.jar MediaTrackerLibs/spring-jdbc-4.
- 2.5.RELEASE.jar MediaTrackerLibs/spring-jms-4.2.5.RELEASE.jar MediaTr
- ackerLibs/spring-messaging-4.2.5.RELEASE.jar MediaTrackerLibs/spring-
- orm-4.2.5.RELEASE.jar MediaTrackerLibs/spring-oxm-4.2.5.RELEASE.jar M
- ediaTrackerLibs/spring-test-4.2.5.RELEASE.jar MediaTrackerLibs/spring
- -tx-4.2.5.RELEASE.jar
+Class-Path: lib/commons-logging-1.1.3.jar lib/log4j-1.2.15.jar lib/spr
+ ing-aop-4.2.5.RELEASE.jar lib/spring-beans-4.2.5.RELEASE.jar lib/spri
+ ng-context-4.2.5.RELEASE.jar lib/spring-context-support-4.2.5.RELEASE
+ .jar lib/spring-core-4.2.5.RELEASE.jar lib/spring-expression-4.2.5.RE
+ LEASE.jar
 Main-Class: ua.lsi.media_tracker.Main
 
