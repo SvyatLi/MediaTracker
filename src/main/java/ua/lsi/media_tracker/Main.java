@@ -3,6 +3,7 @@ package ua.lsi.media_tracker;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 
@@ -25,6 +26,8 @@ public class Main extends Application {
 
         primaryStage.setTitle("Media Tracker");
         primaryStage.setScene(scene);
+        Image icon = new Image(getClass().getResourceAsStream("view/icon.png"));
+        primaryStage.getIcons().add(icon);
         primaryStage.show();
 
         mediaTrackerController.init(primaryStage);
