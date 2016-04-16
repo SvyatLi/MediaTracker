@@ -90,18 +90,6 @@ public class MediaTrackerController extends AbstractController {
         statusLabel.setTooltip(new Tooltip(statusMessage));
     }
 
-    @FXML
-    public void openSettings() throws IOException {
-        SettingsDialogController settingsDialogController = (SettingsDialogController) SpringFXMLLoader.load("view/settings_dialog.fxml");
-        Scene scene = new Scene((Parent) settingsDialogController.getView());
-        final Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.setTitle("Settings");
-        dialog.initOwner(stage);
-        dialog.setScene(scene);
-        dialog.show();
-    }
-
     private void createView(MediaContainer container) {
         Scene scene = stage.getScene();
         VBox box = (VBox) scene.lookup("#scrollVBox");
@@ -134,7 +122,20 @@ public class MediaTrackerController extends AbstractController {
 
     }
 
-    public void openAbout(ActionEvent actionEvent) {
+    @FXML
+    public void openSettings() throws IOException {
+        SettingsDialogController settingsDialogController = (SettingsDialogController) SpringFXMLLoader.load("view/settings_dialog.fxml");
+        Scene scene = new Scene((Parent) settingsDialogController.getView());
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.setTitle("Settings");
+        dialog.initOwner(stage);
+        dialog.setScene(scene);
+        dialog.show();
+    }
+
+    @FXML
+    public void openAbout() {
         Node node = SpringFXMLLoader.loadNode("view/about.fxml");
         Scene scene = new Scene((Parent) node);
         final Stage dialog = new Stage();
@@ -143,7 +144,7 @@ public class MediaTrackerController extends AbstractController {
         dialog.initStyle(StageStyle.UNDECORATED);
         dialog.show();
         dialog.focusedProperty().addListener((observable, oldValue, newValue) -> {
-            if(!newValue) {
+            if (!newValue) {
                 dialog.close();
             }
         });

@@ -18,11 +18,11 @@
 	<children>
 		<MenuBar prefHeight="25.0" prefWidth="551.0">
 			<menus>
-				<Menu mnemonicParsing="false" text="File">
+				<Menu mnemonicParsing="false" text="Data">
 					<items>
-						<MenuItem mnemonicParsing="false" onAction="#loadData" text="Open">
+						<MenuItem mnemonicParsing="false" onAction="#loadData" text="Load">
 							<accelerator>
-								<KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+								<KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 							</accelerator>
 						</MenuItem>
 						<MenuItem mnemonicParsing="false" onAction="#saveData" text="Save">
@@ -49,7 +49,7 @@
 				<VBox id="scrollVBox" alignment="CENTER" prefHeight="200.0" prefWidth="580.0" />
 			</content>
 		</ScrollPane>
-		<Label fx:id="statusLabel" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="458.0" text="" textOverrun="CENTER_ELLIPSIS" wrapText="true" GridPane.rowIndex="2">
+		<Label fx:id="statusLabel" maxWidth="2000.0" prefHeight="25.0" prefWidth="458.0" text="" textOverrun="CENTER_ELLIPSIS" wrapText="true" GridPane.rowIndex="2">
 			<font>
 				<Font size="16.0" />
 			</font>
