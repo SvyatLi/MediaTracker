@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0"
+            prefWidth="390.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ua.lsi.media_tracker.controllers.AddItemController">
+	<children>
+		<Label layoutX="25.0" layoutY="25.0" text="Section (status)"/>
+		<ComboBox layoutX="25.0" layoutY="49.0" prefWidth="150.0"/>
+		<Label layoutX="25.0" layoutY="93.0" text="Name"/>
+		<Label layoutX="25.0" layoutY="140.0" text="Season"/>
+		<Label layoutX="175.0" layoutY="140.0" text="Episode"/>
+		<TextField layoutX="25.0" layoutY="110.0" prefHeight="25.0" prefWidth="300.0"/>
+		<TextField layoutX="25.0" layoutY="157.0" prefHeight="25.0" prefWidth="149.0"/>
+		<TextField layoutX="175.0" layoutY="157.0"/>
+		<Button layoutX="270.0" layoutY="290.0" mnemonicParsing="false" text="Add"/>
+		<Button layoutX="320.0" layoutY="290.0" mnemonicParsing="false" text="Close"/>
+	</children>
+</AnchorPane>

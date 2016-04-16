@@ -156,4 +156,9 @@ public class MediaTrackerController extends AbstractController {
             }
         });
     }
+
+    @FXML
+    public void addItem() {
+
+    }
 }
