@@ -1,10 +1,12 @@
 package ua.lsi.media_tracker.controllers;
 
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.enums.MessageCode;
+import ua.lsi.media_tracker.enums.StorageType;
 
 import java.io.File;
 import java.net.URL;
@@ -30,17 +33,20 @@ public class SettingsDialogController extends AbstractController implements Init
     private static Logger LOG = Logger.getLogger(SettingsDialogController.class);
 
     @FXML
-    CheckBox automaticLoadEnabled;
+    public CheckBox automaticLoadEnabled;
     @FXML
-    Button closeButton;
+    public Button closeButton;
     @FXML
-    Label defaultFilePath;
+    public Label defaultFilePath;
     @FXML
-    Label settingsSavedLabel;
+    public Label settingsSavedLabel;
+    @FXML
+    public ComboBox<StorageType> storageTypeComboBox;
 
     private Settings settings;
     private Messages messages;
     private File defaultFile;
+    private StorageType storageType;
 
     @Autowired
     public void setSettings(Settings settings) {
@@ -59,6 +65,9 @@ public class SettingsDialogController extends AbstractController implements Init
             defaultFilePath.setText(defaultFile.getAbsolutePath());
         }
         automaticLoadEnabled.setSelected(settings.isAutomaticLoadEnabled());
+        storageType = StorageType.FILE;
+        storageTypeComboBox.setItems(FXCollections.observableArrayList(StorageType.values()));
+        storageTypeComboBox.getSelectionModel().select(storageType);
     }
 
     @FXML
