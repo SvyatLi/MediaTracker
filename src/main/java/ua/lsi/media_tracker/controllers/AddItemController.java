@@ -13,16 +13,15 @@ import javafx.stage.Stage;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.creators.ObjectProvider;
 import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.dao.MediaContainer;
+import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Created by LSI on 17.04.2016.
@@ -45,10 +44,13 @@ public class AddItemController extends AbstractController implements Initializab
     public TextField episodeTextField;
     @FXML
     public Label addingStatusLabel;
+    @FXML
+    public TextField sectionTextField;
 
     private Map<String, List<Media>> mediaMap;
     private ObjectProvider objectProvider;
     private Settings settings;
+    private Messages messages;
 
     @Autowired
     public void setObjectProvider(ObjectProvider objectProvider) {
@@ -60,32 +62,41 @@ public class AddItemController extends AbstractController implements Initializab
         this.settings = settings;
     }
 
+    @Autowired
+    public void setMessages(Messages messages) {
+        this.messages = messages;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         MediaContainer container = objectProvider.getMediaContainer(settings.getStorageType());
         mediaMap = container.getSectionToMediaMap();
-        sectionComboBox.setItems(FXCollections.observableArrayList(mediaMap.keySet()));
+        Collection<String> sections = mediaMap.keySet();
+        if (sections.isEmpty()){
+            sections = Collections.singletonList(messages.getMessage(MessageCode.DEFAULT_SECTION));
+        }
+        sectionComboBox.setItems(FXCollections.observableArrayList(sections));
         sectionComboBox.getSelectionModel().selectFirst();
     }
 
     @FXML
-    public void close(ActionEvent event) {
+    public void close() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
 
     @FXML
-    public void addItem(ActionEvent actionEvent) {
+    public void addItem() {
         String section = sectionComboBox.getValue();
-        Media media = createMediaFromTextInputs();
+        Media media = createMediaFromTextFields();
         //TODO: find a way to add new table
-        List<Media> mediaList = mediaMap.getOrDefault(section, new ArrayList<>());
+        List<Media> mediaList = mediaMap.getOrDefault(section, FXCollections.observableArrayList());
         mediaList.add(media);
         addingStatusLabel.setText("Item Added");
         clearLabelAfterDelay(2000);
     }
 
-    private Media createMediaFromTextInputs(){
+    private Media createMediaFromTextFields() {
         String name = nameTextField.getText();
         Integer season = getIntValueOrZeroFromTextInput(seasonTextField);
         seasonTextField.setText(season.toString());
@@ -108,7 +119,7 @@ public class AddItemController extends AbstractController implements Initializab
         return 0;
     }
 
-    private void clearLabelAfterDelay(final int millis){
+    private void clearLabelAfterDelay(final int millis) {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -119,5 +130,18 @@ public class AddItemController extends AbstractController implements Initializab
         task.setOnSucceeded(event -> addingStatusLabel.setText(""));
         task.setOnFailed(event -> LOG.error(event.getSource().getException()));
         new Thread(task).start();
+    }
+
+    @FXML
+    public void addSection() {
+        String newSection = sectionTextField.getText();
+        if (newSection!=null && !newSection.isEmpty()) {
+            sectionComboBox.getItems().add(newSection);
+            sectionTextField.clear();
+            addingStatusLabel.setText("Section Added");
+        }else{
+            addingStatusLabel.setText("Wrong section name");
+        }
+        clearLabelAfterDelay(2000);
     }
 }

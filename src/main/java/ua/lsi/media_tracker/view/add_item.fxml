@@ -7,13 +7,14 @@
             prefWidth="390.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="ua.lsi.media_tracker.controllers.AddItemController">
 	<children>
-		<Label fx:id="addingStatusLabel" alignment="CENTER" layoutX="25.0" layoutY="20.0" prefHeight="20.0" prefWidth="358.0" >
+		<Label fx:id="addingStatusLabel" alignment="CENTER" layoutX="25.0" layoutY="20.0" prefHeight="20.0"
+		       prefWidth="358.0">
 			<font>
 				<Font size="14.0"/>
 			</font>
 		</Label>
 		<Label layoutX="25.0" layoutY="51.0" text="Section (status)"/>
-		<ComboBox fx:id="sectionComboBox" layoutX="25.0" layoutY="68.0" prefWidth="150.0"/>
+		<ComboBox fx:id="sectionComboBox" layoutX="25.0" layoutY="68.0" prefHeight="25.0" prefWidth="114.0"/>
 		<Label layoutX="25.0" layoutY="93.0" text="Name"/>
 		<Label layoutX="25.0" layoutY="140.0" text="Season"/>
 		<Label layoutX="175.0" layoutY="140.0" text="Episode"/>
@@ -23,5 +24,8 @@
 		<Button layoutX="270.0" layoutY="290.0" mnemonicParsing="false" onAction="#addItem" text="Add"/>
 		<Button fx:id="closeButton" cancelButton="true" layoutX="320.0" layoutY="290.0" mnemonicParsing="false"
 		        onAction="#close" text="Close"/>
+		<TextField fx:id="sectionTextField" layoutX="147.0" layoutY="68.0" prefHeight="25.0" prefWidth="130.0"/>
+		<Button layoutX="284.0" layoutY="68.0" mnemonicParsing="false" onAction="#addSection" prefHeight="25.0"
+		        prefWidth="81.0" text="Add section"/>
 	</children>
 </AnchorPane>
