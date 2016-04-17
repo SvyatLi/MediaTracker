@@ -49,9 +49,11 @@ public class FileParserAndSaverTest {
         }
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testGetMapOfMediaFromFile_nullFile() throws Exception {
-        fileParserAndSaver.getMapOfMediaFromFile(null);
+        Map<String, List<Media>> result = fileParserAndSaver.getMapOfMediaFromFile(null);
+        assertNotNull(result);
+        assertEquals(0, result.size());
     }
 
     @Test

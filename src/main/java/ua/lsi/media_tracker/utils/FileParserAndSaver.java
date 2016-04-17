@@ -32,24 +32,26 @@ public class FileParserAndSaver {
     public Map<String, List<Media>> getMapOfMediaFromFile(File file) {
         Map<String, List<Media>> mediaMap = new LinkedHashMap<>();
         String currentSection = messages.getMessage(MessageCode.DEFAULT_SECTION);
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"))) {
-            String line = br.readLine();
-            while (line != null) {
-                if (line.contains(sectionStarter)) {
-                    currentSection = line.substring(line.indexOf(sectionStarter) + sectionStarter.length());
+        if (file!=null) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"))) {
+                String line = br.readLine();
+                while (line != null) {
+                    if (line.contains(sectionStarter)) {
+                        currentSection = line.substring(line.indexOf(sectionStarter) + sectionStarter.length());
+                        line = br.readLine();
+                        continue;
+                    }
+                    Media media = parseMediaFromString(line);
+                    if (media != null) {
+                        List<Media> mediaList = mediaMap.getOrDefault(currentSection, FXCollections.observableArrayList());
+                        mediaList.add(media);
+                        mediaMap.put(currentSection, mediaList);
+                    }
                     line = br.readLine();
-                    continue;
                 }
-                Media media = parseMediaFromString(line);
-                if (media != null) {
-                    List<Media> mediaList = mediaMap.getOrDefault(currentSection, FXCollections.observableArrayList());
-                    mediaList.add(media);
-                    mediaMap.put(currentSection, mediaList);
-                }
-                line = br.readLine();
+            } catch (IOException e) {
+                LOG.error(e);
             }
-        } catch (IOException e) {
-            LOG.error(e);
         }
         return mediaMap;
     }
