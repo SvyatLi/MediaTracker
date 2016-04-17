@@ -1,26 +1,20 @@
 package ua.lsi.media_tracker.controllers;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Pane;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Callback;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +22,6 @@ import ua.lsi.media_tracker.SpringFXMLLoader;
 import ua.lsi.media_tracker.creators.ObjectProvider;
 import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.dao.MediaContainer;
-import ua.lsi.media_tracker.enums.StorageType;
 import ua.lsi.media_tracker.model.Media;
 
 import java.io.IOException;
@@ -72,8 +65,7 @@ public class MediaTrackerController extends AbstractController {
             }
         };
         task.setOnSucceeded(event -> {
-            statusLabel.setText(task.getValue());
-            statusLabel.setTooltip(new Tooltip(task.getValue()));
+            setupStatusLabelWithText(task.getValue());
             createView(container);
         });
         task.setOnFailed(event -> LOG.error(event.getSource().getException()));
@@ -84,8 +76,7 @@ public class MediaTrackerController extends AbstractController {
     public void loadData() {
         MediaContainer container = objectProvider.getMediaContainer(settings.getStorageType());
         String statusMessage = container.loadInformation();
-        statusLabel.setText(statusMessage);
-        statusLabel.setTooltip(new Tooltip(statusMessage));
+        setupStatusLabelWithText(statusMessage);
         createView(container);
     }
 
@@ -93,8 +84,7 @@ public class MediaTrackerController extends AbstractController {
     public void saveData() {
         MediaContainer container = objectProvider.getMediaContainer(settings.getStorageType());
         String statusMessage = container.saveMediaMap();
-        statusLabel.setText(statusMessage);
-        statusLabel.setTooltip(new Tooltip(statusMessage));
+        setupStatusLabelWithText(statusMessage);
     }
 
     private void createView(MediaContainer container) {
@@ -167,5 +157,10 @@ public class MediaTrackerController extends AbstractController {
         dialog.initOwner(stage);
         dialog.setScene(scene);
         dialog.show();
+    }
+
+    private void setupStatusLabelWithText(String text) {
+        statusLabel.setText(text);
+        statusLabel.setTooltip(new Tooltip(text));
     }
 }
