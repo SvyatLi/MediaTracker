@@ -13,7 +13,7 @@ import ua.lsi.media_tracker.utils.FileParserAndSaver;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,15 +40,14 @@ public class FileMediaContainer implements MediaContainer {
         String returnedMessage;
         file = settings.getDefaultInfoFile();
         if (settings.isAutomaticLoadEnabled()) {
+            parseFileToMap(file);
             if (file != null && file.exists()) {
-                parseFileToMap(file);
                 returnedMessage = createMessage(AUTO_LOAD_SUCCESSFUL, file);
             } else {
-                mediaMap = Collections.EMPTY_MAP;
                 returnedMessage = createMessage(AUTO_LOAD_UNSUCCESSFUL);
             }
         } else {
-            mediaMap = Collections.EMPTY_MAP;
+            mediaMap = new LinkedHashMap<>();
             returnedMessage = createMessage(AUTO_LOAD_DISABLED);
         }
         return returnedMessage;
@@ -66,13 +65,7 @@ public class FileMediaContainer implements MediaContainer {
         }
         this.file = file;
 
-        parseFileToMap(file);
-        String returnedMessage;
-        if (file != null && file.exists()) {
-            returnedMessage = createMessage(LOAD_SUCCESSFUL, file);
-        } else {
-            returnedMessage = createMessage(LOAD_UNSUCCESSFUL);
-        }
+        String returnedMessage = parseFileToMap(file);
         return returnedMessage;
     }
 
@@ -94,11 +87,13 @@ public class FileMediaContainer implements MediaContainer {
         return returnedMessage;
     }
 
-    private void parseFileToMap(File file) {
+    private String parseFileToMap(File file) {
+        mediaMap = fileParserAndSaver.getMapOfMediaFromFile(file);
+
         if (file != null && file.exists()) {
-            mediaMap = fileParserAndSaver.getMapOfMediaFromFile(file);
+            return createMessage(LOAD_SUCCESSFUL, file);
         } else {
-            mediaMap = Collections.EMPTY_MAP;
+            return createMessage(LOAD_UNSUCCESSFUL);
         }
     }
 
