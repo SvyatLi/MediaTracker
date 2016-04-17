@@ -32,7 +32,7 @@ public class Main extends Application {
 
         scene.setOnDragOver(event -> {
             Dragboard db = event.getDragboard();
-            if (db.hasFiles()) {
+            if (db.hasFiles() && (db.getFiles().size() == 1)) {
                 event.acceptTransferModes(TransferMode.ANY);
             } else {
                 event.consume();
@@ -45,10 +45,9 @@ public class Main extends Application {
             boolean success = false;
             if (db.hasFiles()) {
                 success = true;
-                for (File file : db.getFiles()) {
-                    mediaTrackerController.loadDataFromDraggedFile(file);
-                    LOG.info("Data loaded from file : " + file.getAbsolutePath());
-                }
+                File file = db.getFiles().get(0);
+                mediaTrackerController.loadDataFromDraggedFile(file);
+                LOG.info("Data loaded from file : " + file.getAbsolutePath());
             }
             event.setDropCompleted(success);
             event.consume();
