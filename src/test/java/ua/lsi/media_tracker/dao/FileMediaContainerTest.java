@@ -43,7 +43,7 @@ public class FileMediaContainerTest {
         container.setFileParserAndSaver(fileParserAndSaverMock);
         String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(resourceFolderPath + "notExist.txt");
-        if (file.exists()){
+        if (file.exists()) {
             file.delete();
         }
     }
@@ -139,12 +139,12 @@ public class FileMediaContainerTest {
     }
 
     @Test
-    public void testSaveMediaMap_fileToSaveNotExist() throws Exception {
+    public void testSaveMediaMap_fileToSaveNotExist_canBeCreated() throws Exception {
         String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(resourceFolderPath + "notExist.txt");
         when(fileProviderMock.getFileForSave(any())).thenReturn(file);
         String returnedMessage = container.saveMediaMap();
-        Assert.assertEquals(messages.getMessage(SAVE_UNSUCCESSFUL), returnedMessage);
+        Assert.assertEquals(messages.getMessageRelatedToFile(SAVE_SUCCESSFUL, file), returnedMessage);
     }
 
     @Test

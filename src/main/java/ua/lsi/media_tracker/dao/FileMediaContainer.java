@@ -12,6 +12,7 @@ import ua.lsi.media_tracker.model.Media;
 import ua.lsi.media_tracker.utils.FileParserAndSaver;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +76,7 @@ public class FileMediaContainer implements MediaContainer {
     public String saveMediaMap() {
         File fileToSaveTo = fileProvider.getFileForSave(file);
         String returnedMessage;
-        if (fileToSaveTo != null && fileToSaveTo.exists()) {
+        if (checkFileExistsAndCreateIfNot(fileToSaveTo)) {
             fileParserAndSaver.saveMapToFile(mediaMap, fileToSaveTo);
             returnedMessage = createMessage(MessageCode.SAVE_SUCCESSFUL, fileToSaveTo);
         } else {
@@ -98,6 +99,22 @@ public class FileMediaContainer implements MediaContainer {
 
     private String createMessage(MessageCode code) {
         return messages.getMessage(code);
+    }
+
+    private boolean checkFileExistsAndCreateIfNot(File file) {
+        if (file != null) {
+            boolean fileExist = true;
+            if (!file.exists()) {
+                fileExist = false;
+                try {
+                    fileExist = file.createNewFile();
+                } catch (IOException e) {
+                    LOG.error(e);
+                }
+            }
+            return fileExist;
+        }
+        return false;
     }
 
     @Autowired
