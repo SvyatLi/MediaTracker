@@ -22,8 +22,10 @@ import ua.lsi.media_tracker.SpringFXMLLoader;
 import ua.lsi.media_tracker.creators.ObjectProvider;
 import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.dao.MediaContainer;
+import ua.lsi.media_tracker.enums.StorageType;
 import ua.lsi.media_tracker.model.Media;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -76,6 +78,13 @@ public class MediaTrackerController extends AbstractController {
     public void loadData() {
         MediaContainer container = objectProvider.getMediaContainer(settings.getStorageType());
         String statusMessage = container.loadInformation();
+        setupStatusLabelWithText(statusMessage);
+        createView(container);
+    }
+
+    public void loadDataFromDraggedFile(File file) {
+        MediaContainer container = objectProvider.getMediaContainer(StorageType.FILE);
+        String statusMessage = container.loadInformationFromFile(file);
         setupStatusLabelWithText(statusMessage);
         createView(container);
     }

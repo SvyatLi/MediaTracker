@@ -56,7 +56,16 @@ public class FileMediaContainer implements MediaContainer {
 
     @Override
     public String loadInformation() {
-        file = fileProvider.getFileForLoad();
+        return loadInformationFromFile(null);
+    }
+
+    @Override
+    public String loadInformationFromFile(File file) {
+        if (file == null) {
+            file = fileProvider.getFileForLoad();
+        }
+        this.file = file;
+
         parseFileToMap(file);
         String returnedMessage;
         if (file != null && file.exists()) {

@@ -17,6 +17,8 @@ public interface MediaContainer {
 
     String loadInformation();
 
+    String loadInformationFromFile(File file);
+
     Map<String, List<Media>> getSectionToMediaMap();
 
     String saveMediaMap();
