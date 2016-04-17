@@ -1,5 +1,7 @@
 package ua.lsi.media_tracker.utils;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -40,7 +42,7 @@ public class FileParserAndSaver {
                 }
                 Media media = parseMediaFromString(line);
                 if (media != null) {
-                    List<Media> mediaList = mediaMap.getOrDefault(currentSection, new ArrayList<>());
+                    List<Media> mediaList = mediaMap.getOrDefault(currentSection, FXCollections.observableArrayList());
                     mediaList.add(media);
                     mediaMap.put(currentSection, mediaList);
                 }
