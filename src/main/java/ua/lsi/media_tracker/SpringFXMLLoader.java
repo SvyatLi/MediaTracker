@@ -38,8 +38,8 @@ public class SpringFXMLLoader {
         }
     }
 
-    public static Node loadNode(String url) {
-        Node view = null;
+    public static <T> T loadNode(String url) {
+        T view = null;
         try (InputStream fxmlStream = SpringFXMLLoader.class.getResourceAsStream(url)) {
 
             FXMLLoader loader = new FXMLLoader();

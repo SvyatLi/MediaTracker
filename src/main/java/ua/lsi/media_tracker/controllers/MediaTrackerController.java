@@ -68,7 +68,7 @@ public class MediaTrackerController extends AbstractController {
         };
         task.setOnSucceeded(event -> {
             setupStatusLabelWithText(task.getValue());
-            createView(container);
+            createAndShowTableViews(container.getSectionToMediaMap());
         });
         task.setOnFailed(event -> LOG.error(event.getSource().getException()));
         new Thread(task).start();
@@ -79,14 +79,15 @@ public class MediaTrackerController extends AbstractController {
         MediaContainer container = objectProvider.getMediaContainer(settings.getStorageType());
         String statusMessage = container.loadInformation();
         setupStatusLabelWithText(statusMessage);
-        createView(container);
+        createAndShowTableViews(container.getSectionToMediaMap());
     }
 
     public void loadDataFromDraggedFile(File file) {
         MediaContainer container = objectProvider.getMediaContainer(StorageType.FILE);
+        settings.setStorageType(StorageType.FILE);
         String statusMessage = container.loadInformationFromFile(file);
         setupStatusLabelWithText(statusMessage);
-        createView(container);
+        createAndShowTableViews(container.getSectionToMediaMap());
     }
 
     @FXML
@@ -96,12 +97,10 @@ public class MediaTrackerController extends AbstractController {
         setupStatusLabelWithText(statusMessage);
     }
 
-    private void createView(MediaContainer container) {
-        Scene scene = stage.getScene();
-        VBox box = (VBox) scene.lookup("#scrollVBox");
+    private void createAndShowTableViews(Map<String, List<Media>> mediaMap) {
+        VBox box = getVBoxFromStage(stage);
 
         box.getChildren().clear();
-        Map<String, List<Media>> mediaMap = container.getSectionToMediaMap();
         for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
             Label label = new Label(entry.getKey());
             label.setFont(Font.font(24));
@@ -112,7 +111,7 @@ public class MediaTrackerController extends AbstractController {
     }
 
     private TableView<Media> createTable(List<Media> list) {
-        TableView<Media> table = (TableView<Media>) SpringFXMLLoader.loadNode("view/table_template.fxml");
+        TableView<Media> table = SpringFXMLLoader.loadNode("view/table_template.fxml");
         table.setItems((ObservableList<Media>) list);
         setupHeightAndWidthForTable(table);
         return table;
@@ -126,6 +125,10 @@ public class MediaTrackerController extends AbstractController {
         table.minHeightProperty().bind(table.prefHeightProperty());
         table.maxHeightProperty().bind(table.prefHeightProperty());
 
+    }
+
+    private VBox getVBoxFromStage(Stage stage){
+        return (VBox) stage.getScene().lookup("#scrollVBox");
     }
 
     @FXML
