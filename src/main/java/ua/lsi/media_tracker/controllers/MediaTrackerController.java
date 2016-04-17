@@ -1,6 +1,7 @@
 package ua.lsi.media_tracker.controllers;
 
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -59,7 +60,7 @@ public class MediaTrackerController extends AbstractController {
     }
 
     public void autoLoad() {
-        MediaContainer container = objectProvider.getMediaContainer(settings.getStorageType());
+        MediaContainer container = getMediaContainer();
         Task<String> task = new Task<String>() {
             @Override
             protected String call() throws Exception {
@@ -76,7 +77,7 @@ public class MediaTrackerController extends AbstractController {
 
     @FXML
     public void loadData() {
-        MediaContainer container = objectProvider.getMediaContainer(settings.getStorageType());
+        MediaContainer container = getMediaContainer();
         String statusMessage = container.loadInformation();
         setupStatusLabelWithText(statusMessage);
         createAndShowTableViews(container.getSectionToMediaMap());
@@ -92,9 +93,24 @@ public class MediaTrackerController extends AbstractController {
 
     @FXML
     public void saveData() {
-        MediaContainer container = objectProvider.getMediaContainer(settings.getStorageType());
+        MediaContainer container = getMediaContainer();
         String statusMessage = container.saveMediaMap();
         setupStatusLabelWithText(statusMessage);
+    }
+
+    public void addNewItem(String section, Media media) {
+        MediaContainer container = getMediaContainer();
+
+        Map<String, List<Media>> mediaMap = container.getSectionToMediaMap();
+        List<Media> mediaList = null;
+        if (mediaMap.containsKey(section)) {
+            mediaList = mediaMap.get(section);
+            mediaList.add(media);
+        } else {
+            mediaList = FXCollections.observableArrayList(media);
+            mediaMap.put(section, mediaList);
+            addLabelAndTableViewToVBox(section, mediaList);
+        }
     }
 
     private void createAndShowTableViews(Map<String, List<Media>> mediaMap) {
@@ -102,12 +118,18 @@ public class MediaTrackerController extends AbstractController {
 
         box.getChildren().clear();
         for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
-            Label label = new Label(entry.getKey());
-            label.setFont(Font.font(24));
-            box.getChildren().add(label);
-            TableView<Media> table = createTable(entry.getValue());
-            box.getChildren().add(table);
+            addLabelAndTableViewToVBox(entry.getKey(), entry.getValue());
         }
+    }
+
+    private void addLabelAndTableViewToVBox(String section, List<Media> mediaList) {
+        VBox box = getVBoxFromStage(stage);
+
+        Label label = new Label(section);
+        label.setFont(Font.font(24));
+        box.getChildren().add(label);
+        TableView<Media> table = createTable(mediaList);
+        box.getChildren().add(table);
     }
 
     private TableView<Media> createTable(List<Media> list) {
@@ -127,7 +149,7 @@ public class MediaTrackerController extends AbstractController {
 
     }
 
-    private VBox getVBoxFromStage(Stage stage){
+    private VBox getVBoxFromStage(Stage stage) {
         return (VBox) stage.getScene().lookup("#scrollVBox");
     }
 
@@ -174,5 +196,9 @@ public class MediaTrackerController extends AbstractController {
     private void setupStatusLabelWithText(String text) {
         statusLabel.setText(text);
         statusLabel.setTooltip(new Tooltip(text));
+    }
+
+    private MediaContainer getMediaContainer() {
+        return objectProvider.getMediaContainer(settings.getStorageType());
     }
 }

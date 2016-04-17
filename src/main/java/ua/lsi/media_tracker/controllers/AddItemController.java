@@ -47,10 +47,10 @@ public class AddItemController extends AbstractController implements Initializab
     @FXML
     public TextField sectionTextField;
 
-    private Map<String, List<Media>> mediaMap;
     private ObjectProvider objectProvider;
     private Settings settings;
     private Messages messages;
+    private MediaTrackerController mediaTrackerController;
 
     @Autowired
     public void setObjectProvider(ObjectProvider objectProvider) {
@@ -67,12 +67,17 @@ public class AddItemController extends AbstractController implements Initializab
         this.messages = messages;
     }
 
+    @Autowired
+    public void setMediaTrackerController(MediaTrackerController mediaTrackerController) {
+        this.mediaTrackerController = mediaTrackerController;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         MediaContainer container = objectProvider.getMediaContainer(settings.getStorageType());
-        mediaMap = container.getSectionToMediaMap();
+        Map<String, List<Media>> mediaMap = container.getSectionToMediaMap();
         Collection<String> sections = mediaMap.keySet();
-        if (sections.isEmpty()){
+        if (sections.isEmpty()) {
             sections = Collections.singletonList(messages.getMessage(MessageCode.DEFAULT_SECTION));
         }
         sectionComboBox.setItems(FXCollections.observableArrayList(sections));
@@ -89,9 +94,7 @@ public class AddItemController extends AbstractController implements Initializab
     public void addItem() {
         String section = sectionComboBox.getValue();
         Media media = createMediaFromTextFields();
-        //TODO: find a way to add new table
-        List<Media> mediaList = mediaMap.getOrDefault(section, FXCollections.observableArrayList());
-        mediaList.add(media);
+        mediaTrackerController.addNewItem(section, media);
         addingStatusLabel.setText("Item Added");
         clearLabelAfterDelay(2000);
     }
@@ -135,11 +138,11 @@ public class AddItemController extends AbstractController implements Initializab
     @FXML
     public void addSection() {
         String newSection = sectionTextField.getText();
-        if (newSection!=null && !newSection.isEmpty()) {
+        if (newSection != null && !newSection.isEmpty()) {
             sectionComboBox.getItems().add(newSection);
             sectionTextField.clear();
             addingStatusLabel.setText("Section Added");
-        }else{
+        } else {
             addingStatusLabel.setText("Wrong section name");
         }
         clearLabelAfterDelay(2000);
