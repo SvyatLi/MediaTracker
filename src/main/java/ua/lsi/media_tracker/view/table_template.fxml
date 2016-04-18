@@ -6,43 +6,43 @@
 <TableView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
            prefWidth="580.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" editable="false">
 	<columns>
-		<TableColumn prefWidth="378.0" text="Name" id="nameColumn">
+		<TableColumn minWidth="100.0" prefWidth="378.0" text="Name" id="nameColumn">
 			<cellValueFactory>
 				<PropertyValueFactory property="name"/>
 			</cellValueFactory>
 		</TableColumn>
-		<TableColumn minWidth="0.0" prefWidth="100.0" text="Season">
+		<TableColumn prefWidth="100.0" text="Season" resizable="false">
 			<columns>
-				<TableColumn prefWidth="30.0" text="-">
+				<TableColumn prefWidth="30.0" text="-" resizable="false">
 					<cellFactory>
 						<TableCellFactory/>
 					</cellFactory>
 				</TableColumn>
-				<TableColumn prefWidth="40.0" text="#">
+				<TableColumn prefWidth="40.0" text="#" resizable="false">
 					<cellValueFactory>
 						<PropertyValueFactory property="season"/>
 					</cellValueFactory>
 				</TableColumn>
-				<TableColumn prefWidth="30.0" text="+">
+				<TableColumn prefWidth="30.0" text="+" resizable="false">
 					<cellFactory>
 						<TableCellFactory/>
 					</cellFactory>
 				</TableColumn>
 			</columns>
 		</TableColumn>
-		<TableColumn minWidth="0.0" prefWidth="100.0" text="Episode">
+		<TableColumn prefWidth="100.0" text="Episode" resizable="false">
 			<columns>
-				<TableColumn prefWidth="30.0" text="-">
+				<TableColumn prefWidth="30.0" text="-" resizable="false">
 					<cellFactory>
 						<TableCellFactory/>
 					</cellFactory>
 				</TableColumn>
-				<TableColumn prefWidth="40.0" text="#">
+				<TableColumn prefWidth="40.0" text="#" resizable="false">
 					<cellValueFactory>
 						<PropertyValueFactory property="episode"/>
 					</cellValueFactory>
 				</TableColumn>
-				<TableColumn prefWidth="30.0" text="+">
+				<TableColumn prefWidth="30.0" text="+" resizable="false">
 					<cellFactory>
 						<TableCellFactory/>
 					</cellFactory>

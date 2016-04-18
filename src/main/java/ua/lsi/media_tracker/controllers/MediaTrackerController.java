@@ -140,13 +140,11 @@ public class MediaTrackerController extends AbstractController {
     }
 
     private void setupHeightAndWidthForTable(TableView<Media> table) {
-        table.setEditable(true);
         table.setFixedCellSize(30);
         table.prefHeightProperty().bind(table.fixedCellSizeProperty()
-                .multiply(Bindings.size(table.getItems()).add(2.01)));
+                .multiply(Bindings.size(table.getItems()).add(2.0)));
         table.minHeightProperty().bind(table.prefHeightProperty());
         table.maxHeightProperty().bind(table.prefHeightProperty());
-
     }
 
     private VBox getVBoxFromStage(Stage stage) {
