@@ -184,7 +184,7 @@ public class MediaTrackerController extends AbstractController {
         AddItemController addItemController = (AddItemController) SpringFXMLLoader.load("view/add_item.fxml");
         Scene scene = new Scene((Parent) addItemController.getView());
         final Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initModality(Modality.NONE);
         dialog.setTitle("Add Item");
         dialog.initOwner(stage);
         dialog.setScene(scene);
