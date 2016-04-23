@@ -6,3 +6,11 @@
 #nameColumn {
     -fx-alignment: center-left;
 }
+
+#removeButton {
+    -fx-graphic: url('delete.png');
+}
+
+#removeButton:selected {
+    -fx-graphic: url('delete.png');
+}

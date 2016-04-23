@@ -41,7 +41,7 @@ public class TableCellButtonRemoveFactory<S extends Media, T> implements Callbac
                         getTableView().getColumns().get(0).setVisible(false);
                         getTableView().getColumns().get(0).setVisible(true);
                     });
-                    btn.setText(getTableColumn().getText());
+                    btn.setId("removeButton");
                     btn.setPadding(Insets.EMPTY);
                     btn.setMinSize(30, 30);
                     btn.setFont(Font.font(20));
