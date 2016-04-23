@@ -125,6 +125,7 @@ public class MediaTrackerController extends AbstractController {
         Map<String, List<Media>> mediaMap = getMediaContainer().getSectionToMediaMap();
         List<Media> mediaList = mediaMap.get(section);
         mediaList.remove(media);
+        setupStatusLabelWithText("Item \"" + media.getName() + "\" removed. You need to save changes");
     }
 
     private void createAndShowTableViews(Map<String, List<Media>> mediaMap) {
