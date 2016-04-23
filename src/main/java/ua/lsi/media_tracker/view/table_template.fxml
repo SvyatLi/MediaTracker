@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.control.*?>
-<?import ua.lsi.media_tracker.view.TableCellFactory?>
+<?import ua.lsi.media_tracker.view.TableCellButtonFactory?>
 <TableView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
            prefWidth="580.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" editable="false">
 	<columns>
@@ -15,7 +15,7 @@
 			<columns>
 				<TableColumn prefWidth="30.0" text="-" resizable="false">
 					<cellFactory>
-						<TableCellFactory/>
+						<TableCellButtonFactory/>
 					</cellFactory>
 				</TableColumn>
 				<TableColumn prefWidth="40.0" text="#" resizable="false">
@@ -25,7 +25,7 @@
 				</TableColumn>
 				<TableColumn prefWidth="30.0" text="+" resizable="false">
 					<cellFactory>
-						<TableCellFactory/>
+						<TableCellButtonFactory/>
 					</cellFactory>
 				</TableColumn>
 			</columns>
@@ -34,7 +34,7 @@
 			<columns>
 				<TableColumn prefWidth="30.0" text="-" resizable="false">
 					<cellFactory>
-						<TableCellFactory/>
+						<TableCellButtonFactory/>
 					</cellFactory>
 				</TableColumn>
 				<TableColumn prefWidth="40.0" text="#" resizable="false">
@@ -44,7 +44,7 @@
 				</TableColumn>
 				<TableColumn prefWidth="30.0" text="+" resizable="false">
 					<cellFactory>
-						<TableCellFactory/>
+						<TableCellButtonFactory/>
 					</cellFactory>
 				</TableColumn>
 			</columns>

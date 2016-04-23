@@ -18,7 +18,7 @@ import ua.lsi.media_tracker.model.Media;
  *
  * @author LSI
  */
-public class TableCellFactory<S extends Media, T> implements Callback<TableColumn<S, T>, TableCell<S, T>> {
+public class TableCellButtonFactory<S extends Media, T> implements Callback<TableColumn<S, T>, TableCell<S, T>> {
 
     @Override
     public TableCell<S, T> call(TableColumn<S, T> param) {
