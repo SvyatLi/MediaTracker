@@ -202,6 +202,20 @@ public class MediaTrackerController extends AbstractController {
     private void setupStatusLabelWithText(String text) {
         statusLabel.setText(text);
         statusLabel.setTooltip(new Tooltip(text));
+        clearLabelAfterDelay(5000);
+    }
+
+    private void clearLabelAfterDelay(final int millis) {
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                Thread.sleep(millis);
+                return null;
+            }
+        };
+        task.setOnSucceeded(event -> statusLabel.setText(""));
+        task.setOnFailed(event -> LOG.error(event.getSource().getException()));
+        new Thread(task).start();
     }
 
     private MediaContainer getMediaContainer() {
