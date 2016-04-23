@@ -78,6 +78,7 @@ public class SettingsDialogController extends AbstractController implements Init
             automaticLoadEnabled.setSelected(false);
         }
         settingsSavedLabel.setText(messages.getMessage(MessageCode.SETTINGS_SAVED));
+        clearLabelAfterDelay(settingsSavedLabel, 3000);
     }
 
     @FXML
