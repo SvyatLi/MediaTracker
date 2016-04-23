@@ -121,6 +121,12 @@ public class MediaTrackerController extends AbstractController {
         }
     }
 
+    public void removeItem(String section, Media media) {
+        Map<String, List<Media>> mediaMap = getMediaContainer().getSectionToMediaMap();
+        List<Media> mediaList = mediaMap.get(section);
+        mediaList.remove(media);
+    }
+
     private void createAndShowTableViews(Map<String, List<Media>> mediaMap) {
         VBox box = getVBoxFromStage(stage);
 
@@ -206,7 +212,7 @@ public class MediaTrackerController extends AbstractController {
         clearLabelAfterDelay(statusLabel, 5000);
     }
 
-    public MediaContainer getMediaContainer() {
+    private MediaContainer getMediaContainer() {
         return objectProvider.getMediaContainer(settings.getStorageType());
     }
 }

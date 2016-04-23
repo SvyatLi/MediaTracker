@@ -13,9 +13,6 @@ import ua.lsi.media_tracker.SpringFXMLLoader;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 import ua.lsi.media_tracker.model.Media;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * Created by LSI on 11.04.2016.
  *
@@ -37,11 +34,10 @@ public class TableCellButtonRemoveFactory<S extends Media, T> implements Callbac
                 } else {
                     btn.setOnAction((ActionEvent event) ->
                     {
+                        String section = getTableView().getId();
                         Media media = getTableView().getItems().get(getIndex());
                         MediaTrackerController controller = SpringFXMLLoader.getBeanFromContext(MediaTrackerController.class);
-                        Map<String, List<Media>> mediaMap = controller.getMediaContainer().getSectionToMediaMap();
-                        List<Media> mediaList = mediaMap.get(getTableView().getId());
-                        mediaList.remove(media);
+                        controller.removeItem(section, media);
                         getTableView().getColumns().get(0).setVisible(false);
                         getTableView().getColumns().get(0).setVisible(true);
                     });
