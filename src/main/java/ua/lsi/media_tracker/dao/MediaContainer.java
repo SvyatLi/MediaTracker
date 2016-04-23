@@ -1,5 +1,6 @@
 package ua.lsi.media_tracker.dao;
 
+import ua.lsi.media_tracker.enums.SaveType;
 import ua.lsi.media_tracker.model.Media;
 
 import java.io.File;
@@ -21,5 +22,5 @@ public interface MediaContainer {
 
     Map<String, List<Media>> getSectionToMediaMap();
 
-    String saveMediaMap();
+    String saveMediaMap(SaveType saveType);
 }

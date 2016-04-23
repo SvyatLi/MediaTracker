@@ -6,6 +6,7 @@ import org.junit.Test;
 import ua.lsi.media_tracker.creators.FileProvider;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.creators.Settings;
+import ua.lsi.media_tracker.enums.SaveType;
 import ua.lsi.media_tracker.model.Media;
 import ua.lsi.media_tracker.utils.FileParserAndSaver;
 
@@ -134,7 +135,7 @@ public class FileMediaContainerTest {
     @Test
     public void testSaveMediaMap_fileToSaveNull() throws Exception {
         when(fileProviderMock.getFileForSave(any())).thenReturn(null);
-        String returnedMessage = container.saveMediaMap();
+        String returnedMessage = container.saveMediaMap(SaveType.MANUAL);
         Assert.assertEquals(messages.getMessage(SAVE_UNSUCCESSFUL), returnedMessage);
     }
 
@@ -143,7 +144,7 @@ public class FileMediaContainerTest {
         String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(resourceFolderPath + "notExist.txt");
         when(fileProviderMock.getFileForSave(any())).thenReturn(file);
-        String returnedMessage = container.saveMediaMap();
+        String returnedMessage = container.saveMediaMap(SaveType.MANUAL);
         Assert.assertEquals(messages.getMessageRelatedToFile(SAVE_SUCCESSFUL, file), returnedMessage);
     }
 
@@ -152,7 +153,7 @@ public class FileMediaContainerTest {
         URL url = this.getClass().getResource("/z_Serials.txt");
         File file = new File(url.getFile());
         when(fileProviderMock.getFileForSave(any())).thenReturn(file);
-        String returnedMessage = container.saveMediaMap();
+        String returnedMessage = container.saveMediaMap(SaveType.MANUAL);
         Assert.assertEquals(messages.getMessageRelatedToFile(SAVE_SUCCESSFUL, file), returnedMessage);
     }
 }

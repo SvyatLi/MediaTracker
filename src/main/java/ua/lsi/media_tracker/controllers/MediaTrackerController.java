@@ -23,6 +23,7 @@ import ua.lsi.media_tracker.SpringFXMLLoader;
 import ua.lsi.media_tracker.creators.ObjectProvider;
 import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.dao.MediaContainer;
+import ua.lsi.media_tracker.enums.SaveType;
 import ua.lsi.media_tracker.enums.StorageType;
 import ua.lsi.media_tracker.model.Media;
 
@@ -94,7 +95,14 @@ public class MediaTrackerController extends AbstractController {
     @FXML
     public void saveData() {
         MediaContainer container = getMediaContainer();
-        String statusMessage = container.saveMediaMap();
+        String statusMessage = container.saveMediaMap(SaveType.AUTOMATIC);
+        setupStatusLabelWithText(statusMessage);
+    }
+
+    @FXML
+    public void saveDataWithDialog() {
+        MediaContainer container = getMediaContainer();
+        String statusMessage = container.saveMediaMap(SaveType.MANUAL);
         setupStatusLabelWithText(statusMessage);
     }
 

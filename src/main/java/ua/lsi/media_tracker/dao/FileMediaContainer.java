@@ -8,6 +8,7 @@ import ua.lsi.media_tracker.creators.FileProvider;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.enums.MessageCode;
+import ua.lsi.media_tracker.enums.SaveType;
 import ua.lsi.media_tracker.model.Media;
 import ua.lsi.media_tracker.utils.FileParserAndSaver;
 
@@ -75,8 +76,16 @@ public class FileMediaContainer implements MediaContainer {
     }
 
     @Override
-    public String saveMediaMap() {
-        File fileToSaveTo = fileProvider.getFileForSave(file);
+    public String saveMediaMap(SaveType saveType) {
+        File fileToSaveTo = null;
+        switch (saveType) {
+            case AUTOMATIC:
+                fileToSaveTo = file;
+                break;
+            case MANUAL:
+            default:
+                fileToSaveTo = fileProvider.getFileForSave(file);
+        }
         String returnedMessage;
         if (checkFileExistsAndCreateIfNot(fileToSaveTo)) {
             fileParserAndSaver.saveMapToFile(mediaMap, fileToSaveTo);
