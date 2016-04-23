@@ -3,9 +3,7 @@ package ua.lsi.media_tracker.view;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
+import javafx.scene.control.*;
 import javafx.scene.layout.Border;
 import javafx.scene.text.Font;
 import javafx.util.Callback;
@@ -37,7 +35,13 @@ public class TableCellButtonRemoveFactory<S extends Media, T> implements Callbac
                         String section = getTableView().getId();
                         Media media = getTableView().getItems().get(getIndex());
                         MediaTrackerController controller = SpringFXMLLoader.getBeanFromContext(MediaTrackerController.class);
-                        controller.removeItem(section, media);
+                        ButtonType removeButtonType = new ButtonType("Remove", ButtonBar.ButtonData.OK_DONE);
+                        ButtonType cancelButtonType = new ButtonType("Don't remove", ButtonBar.ButtonData.CANCEL_CLOSE);
+                        Dialog<ButtonType> dialog = new Dialog<>();
+                        dialog.getDialogPane().setContentText("Remove item ?");
+                        dialog.getDialogPane().getButtonTypes().addAll(removeButtonType, cancelButtonType);
+                        dialog.showAndWait().filter(response -> response.getButtonData() == ButtonBar.ButtonData.OK_DONE)
+                                .ifPresent(response -> controller.removeItem(section, media));
                         getTableView().getColumns().get(0).setVisible(false);
                         getTableView().getColumns().get(0).setVisible(true);
                     });
