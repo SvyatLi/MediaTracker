@@ -52,4 +52,8 @@ public class SpringFXMLLoader {
         }
         return view;
     }
+
+    public static <T> T getBeanFromContext(Class<T> clazz) {
+        return APPLICATION_CONTEXT.getBean(clazz);
+    }
 }

@@ -137,6 +137,7 @@ public class MediaTrackerController extends AbstractController {
         label.setFont(Font.font(24));
         box.getChildren().add(label);
         TableView<Media> table = createTable(mediaList);
+        table.setId(section);
         box.getChildren().add(table);
     }
 
@@ -205,7 +206,7 @@ public class MediaTrackerController extends AbstractController {
         clearLabelAfterDelay(statusLabel, 5000);
     }
 
-    private MediaContainer getMediaContainer() {
+    public MediaContainer getMediaContainer() {
         return objectProvider.getMediaContainer(settings.getStorageType());
     }
 }

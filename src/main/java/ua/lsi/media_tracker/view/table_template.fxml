@@ -3,10 +3,11 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.control.*?>
 <?import ua.lsi.media_tracker.view.TableCellButtonFactory?>
+<?import ua.lsi.media_tracker.view.TableCellButtonRemoveFactory?>
 <TableView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
            prefWidth="580.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" editable="false">
 	<columns>
-		<TableColumn minWidth="100.0" prefWidth="378.0" text="Name" id="nameColumn">
+		<TableColumn minWidth="100.0" prefWidth="348.0" text="Name" id="nameColumn">
 			<cellValueFactory>
 				<PropertyValueFactory property="name"/>
 			</cellValueFactory>
@@ -48,6 +49,11 @@
 					</cellFactory>
 				</TableColumn>
 			</columns>
+		</TableColumn>
+		<TableColumn prefWidth="30.0" text="X" resizable="false" sortable="false">
+			<cellFactory>
+				<TableCellButtonRemoveFactory/>
+			</cellFactory>
 		</TableColumn>
 	</columns>
 </TableView>
