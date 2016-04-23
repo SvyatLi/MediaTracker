@@ -1,8 +1,6 @@
 package ua.lsi.media_tracker.controllers;
 
 import javafx.collections.FXCollections;
-import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -96,7 +94,7 @@ public class AddItemController extends AbstractController implements Initializab
         Media media = createMediaFromTextFields();
         mediaTrackerController.addNewItem(section, media);
         addingStatusLabel.setText("Item Added");
-        clearLabelAfterDelay(2000);
+        clearLabelAfterDelay(addingStatusLabel, 2000);
     }
 
     private Media createMediaFromTextFields() {
@@ -122,19 +120,6 @@ public class AddItemController extends AbstractController implements Initializab
         return 0;
     }
 
-    private void clearLabelAfterDelay(final int millis) {
-        Task<Void> task = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                Thread.sleep(millis);
-                return null;
-            }
-        };
-        task.setOnSucceeded(event -> addingStatusLabel.setText(""));
-        task.setOnFailed(event -> LOG.error(event.getSource().getException()));
-        new Thread(task).start();
-    }
-
     @FXML
     public void addSection() {
         String newSection = sectionTextField.getText();
@@ -145,6 +130,6 @@ public class AddItemController extends AbstractController implements Initializab
         } else {
             addingStatusLabel.setText("Wrong section name");
         }
-        clearLabelAfterDelay(2000);
+        clearLabelAfterDelay(addingStatusLabel, 2000);
     }
 }
