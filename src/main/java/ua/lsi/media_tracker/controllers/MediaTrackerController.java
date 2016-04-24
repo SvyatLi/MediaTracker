@@ -9,8 +9,13 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
@@ -39,6 +44,7 @@ import java.util.Map;
  */
 @Service
 public class MediaTrackerController extends AbstractController {
+    private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
     private static Logger LOG = Logger.getLogger(MediaTrackerController.class);
     @FXML
     Label statusLabel;
@@ -110,7 +116,7 @@ public class MediaTrackerController extends AbstractController {
         MediaContainer container = getMediaContainer();
 
         Map<String, List<Media>> mediaMap = container.getSectionToMediaMap();
-        List<Media> mediaList = null;
+        List<Media> mediaList;
         if (mediaMap.containsKey(section)) {
             mediaList = mediaMap.get(section);
             mediaList.add(media);
@@ -151,6 +157,55 @@ public class MediaTrackerController extends AbstractController {
     private TableView<Media> createTable(List<Media> list) {
         TableView<Media> table = SpringFXMLLoader.loadNode("view/table_template.fxml");
         table.setItems((ObservableList<Media>) list);
+        table.setRowFactory(tv -> {
+            TableRow<Media> row = new TableRow<>();
+
+            row.setOnDragDetected(event -> {
+                if (!row.isEmpty()) {
+                    Integer index = row.getIndex();
+                    Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
+                    db.setDragView(row.snapshot(null, null));
+                    ClipboardContent cc = new ClipboardContent();
+                    cc.put(SERIALIZED_MIME_TYPE, index);
+                    db.setContent(cc);
+                    event.consume();
+                }
+            });
+
+            row.setOnDragOver(event -> {
+                Dragboard db = event.getDragboard();
+                if (db.hasContent(SERIALIZED_MIME_TYPE)) {
+                    if (row.getIndex() != (Integer) db.getContent(SERIALIZED_MIME_TYPE)) {
+                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                        event.consume();
+                    }
+                }
+            });
+
+            row.setOnDragDropped(event -> {
+                Dragboard db = event.getDragboard();
+                if (db.hasContent(SERIALIZED_MIME_TYPE)) {
+                    int draggedIndex = (Integer) db.getContent(SERIALIZED_MIME_TYPE);
+                    Media draggedPerson = table.getItems().remove(draggedIndex);
+
+                    int dropIndex;
+
+                    if (row.isEmpty()) {
+                        dropIndex = table.getItems().size();
+                    } else {
+                        dropIndex = row.getIndex();
+                    }
+
+                    table.getItems().add(dropIndex, draggedPerson);
+
+                    event.setDropCompleted(true);
+                    table.getSelectionModel().select(dropIndex);
+                    event.consume();
+                }
+            });
+
+            return row;
+        });
         setupHeightAndWidthForTable(table);
         return table;
     }
