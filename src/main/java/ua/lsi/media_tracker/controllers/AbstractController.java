@@ -14,6 +14,7 @@ public abstract class AbstractController implements Controller {
     private static Logger LOG = Logger.getLogger(AbstractController.class);
 
     private Node view;
+    private Thread thread;
 
     public Node getView() {
         return view;
@@ -24,6 +25,9 @@ public abstract class AbstractController implements Controller {
     }
 
     protected void clearLabelAfterDelay(Label label, final int millis) {
+        if (thread != null) {
+            thread.interrupt();
+        }
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -31,8 +35,12 @@ public abstract class AbstractController implements Controller {
                 return null;
             }
         };
-        task.setOnSucceeded(event -> label.setText(""));
+        task.setOnSucceeded(event -> {
+            label.setText("");
+            thread = null;
+        });
         task.setOnFailed(event -> LOG.error(event.getSource().getException()));
-        new Thread(task).start();
+        thread = new Thread(task);
+        thread.start();
     }
 }
