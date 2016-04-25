@@ -14,3 +14,11 @@
 #removeButton:selected {
     -fx-graphic: url('delete.png');
 }
+
+#editButton {
+    -fx-graphic: url('edit.png');
+}
+
+#editButton:selected {
+    -fx-graphic: url('edit.png');
+}
