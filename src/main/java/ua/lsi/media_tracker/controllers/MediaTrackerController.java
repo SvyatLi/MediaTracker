@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by LSI on 26.03.2016.
@@ -270,5 +271,9 @@ public class MediaTrackerController extends AbstractController {
 
     private MediaContainer getMediaContainer() {
         return objectProvider.getMediaContainer(settings.getStorageType());
+    }
+
+    public Set<String> getSections() {
+        return getMediaContainer().getSectionToMediaMap().keySet();
     }
 }

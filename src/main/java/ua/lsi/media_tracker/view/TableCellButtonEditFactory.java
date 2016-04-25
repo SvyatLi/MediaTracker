@@ -3,13 +3,18 @@ package ua.lsi.media_tracker.view;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.scene.layout.Border;
 import javafx.scene.text.Font;
 import javafx.util.Callback;
 import ua.lsi.media_tracker.SpringFXMLLoader;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 import ua.lsi.media_tracker.model.Media;
+
+import java.util.Optional;
 
 /**
  * Created by LSI on 25.04.2016.
@@ -35,6 +40,19 @@ public class TableCellButtonEditFactory<S extends Media, T> implements Callback<
                         String currentSection = getTableView().getId();
                         Media media = getTableView().getItems().get(getIndex());
                         MediaTrackerController controller = SpringFXMLLoader.getBeanFromContext(MediaTrackerController.class);
+
+                        ChoiceDialog<String> dialog = new ChoiceDialog<>(currentSection, controller.getSections());
+                        dialog.setTitle("Choose section");
+                        dialog.setHeaderText("Select section to move media to:");
+
+                        Optional<String> result = dialog.showAndWait();
+
+                        result.ifPresent(newSection -> {
+                            if (!currentSection.equals(newSection)) {
+                                controller.removeItem(currentSection, media);
+                                controller.addNewItem(newSection, media);
+                            }
+                        });
 
                         getTableView().getColumns().get(0).setVisible(false);
                         getTableView().getColumns().get(0).setVisible(true);
