@@ -5,7 +5,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -237,8 +236,8 @@ public class MediaTrackerController extends AbstractController {
 
     @FXML
     public void openAbout() {
-        Node node = SpringFXMLLoader.loadNode("view/about.fxml");
-        Scene scene = new Scene((Parent) node);
+        AboutController aboutController = (AboutController) SpringFXMLLoader.load("view/about.fxml");
+        Scene scene = new Scene((Parent) aboutController.getView());
         final Stage dialog = new Stage();
         dialog.initOwner(stage);
         dialog.setScene(scene);
