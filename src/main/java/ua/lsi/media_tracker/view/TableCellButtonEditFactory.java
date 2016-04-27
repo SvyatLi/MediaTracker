@@ -2,14 +2,11 @@ package ua.lsi.media_tracker.view;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.layout.Border;
-import javafx.scene.text.Font;
-import javafx.util.Callback;
 import ua.lsi.media_tracker.SpringFXMLLoader;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 import ua.lsi.media_tracker.model.Media;
@@ -21,7 +18,7 @@ import java.util.Optional;
  *
  * @author LSI
  */
-public class TableCellButtonEditFactory<S extends Media, T> implements Callback<TableColumn<S, T>, TableCell<S, T>> {
+public class TableCellButtonEditFactory<S extends Media, T> extends AbstractTableCellButtonFactory<S, T> {
 
     @Override
     public TableCell<S, T> call(TableColumn<S, T> param) {
@@ -57,11 +54,7 @@ public class TableCellButtonEditFactory<S extends Media, T> implements Callback<
                         getTableView().getColumns().get(0).setVisible(false);
                         getTableView().getColumns().get(0).setVisible(true);
                     });
-                    btn.setId("editButton");
-                    btn.setPadding(Insets.EMPTY);
-                    btn.setMinSize(30, 30);
-                    btn.setFont(Font.font(20));
-                    btn.setAlignment(Pos.CENTER);
+                    setDefaultButtonParameters(btn, "editButton");
                     setPadding(Insets.EMPTY);
                     setBorder(Border.EMPTY);
                     setGraphic(btn);

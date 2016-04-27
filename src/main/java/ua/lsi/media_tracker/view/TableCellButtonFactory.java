@@ -2,15 +2,10 @@ package ua.lsi.media_tracker.view;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Border;
-import javafx.scene.text.Font;
-import javafx.util.Callback;
 import ua.lsi.media_tracker.model.Media;
 
 /**
@@ -18,7 +13,7 @@ import ua.lsi.media_tracker.model.Media;
  *
  * @author LSI
  */
-public class TableCellButtonFactory<S extends Media, T> implements Callback<TableColumn<S, T>, TableCell<S, T>> {
+public class TableCellButtonFactory<S extends Media, T> extends AbstractTableCellButtonFactory<S, T> {
 
     @Override
     public TableCell<S, T> call(TableColumn<S, T> param) {
@@ -42,10 +37,7 @@ public class TableCellButtonFactory<S extends Media, T> implements Callback<Tabl
                         getTableView().getColumns().get(0).setVisible(true);
                     });
                     btn.setText(getTableColumn().getText());
-                    btn.setPadding(Insets.EMPTY);
-                    btn.setMinSize(30, 30);
-                    btn.setFont(Font.font(20));
-                    btn.setAlignment(Pos.CENTER);
+                    setDefaultButtonParameters(btn, null);
                     setPadding(Insets.EMPTY);
                     setBorder(Border.EMPTY);
                     setGraphic(btn);
