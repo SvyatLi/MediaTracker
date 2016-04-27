@@ -1,4 +1,4 @@
-package ua.lsi.media_tracker.view;
+package ua.lsi.media_tracker.view.table_cell;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;

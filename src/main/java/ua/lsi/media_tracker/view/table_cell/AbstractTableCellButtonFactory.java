@@ -1,4 +1,4 @@
-package ua.lsi.media_tracker.view;
+package ua.lsi.media_tracker.view.table_cell;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
