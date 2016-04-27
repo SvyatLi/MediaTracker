@@ -1,9 +1,7 @@
 package ua.lsi.media_tracker.view;
 
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.Border;
 import ua.lsi.media_tracker.SpringFXMLLoader;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 import ua.lsi.media_tracker.model.Media;
@@ -43,10 +41,7 @@ public class TableCellButtonRemoveFactory<S extends Media, T> extends AbstractTa
                         getTableView().getColumns().get(0).setVisible(true);
                     });
                     setDefaultButtonParameters(btn, "removeButton");
-                    setPadding(Insets.EMPTY);
-                    setBorder(Border.EMPTY);
-                    setGraphic(btn);
-                    setText(null);
+                    setDefaultCellParameters(this, btn);
                 }
             }
         };

@@ -1,11 +1,9 @@
 package ua.lsi.media_tracker.view;
 
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.layout.Border;
 import ua.lsi.media_tracker.model.Media;
 
 /**
@@ -38,10 +36,7 @@ public class TableCellButtonFactory<S extends Media, T> extends AbstractTableCel
                     });
                     btn.setText(getTableColumn().getText());
                     setDefaultButtonParameters(btn, null);
-                    setPadding(Insets.EMPTY);
-                    setBorder(Border.EMPTY);
-                    setGraphic(btn);
-                    setText(null);
+                    setDefaultCellParameters(this, btn);
                 }
             }
         };

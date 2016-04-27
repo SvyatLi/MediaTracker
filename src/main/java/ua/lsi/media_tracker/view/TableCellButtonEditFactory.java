@@ -1,12 +1,10 @@
 package ua.lsi.media_tracker.view;
 
 import javafx.event.ActionEvent;
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.layout.Border;
 import ua.lsi.media_tracker.SpringFXMLLoader;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 import ua.lsi.media_tracker.model.Media;
@@ -55,10 +53,7 @@ public class TableCellButtonEditFactory<S extends Media, T> extends AbstractTabl
                         getTableView().getColumns().get(0).setVisible(true);
                     });
                     setDefaultButtonParameters(btn, "editButton");
-                    setPadding(Insets.EMPTY);
-                    setBorder(Border.EMPTY);
-                    setGraphic(btn);
-                    setText(null);
+                    setDefaultCellParameters(this, btn);
                 }
             }
         };
