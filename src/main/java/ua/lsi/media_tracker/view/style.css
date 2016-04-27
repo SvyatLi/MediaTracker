@@ -8,17 +8,17 @@
 }
 
 #removeButton {
-    -fx-graphic: url('delete.png');
+    -fx-graphic: url('images/delete.png');
 }
 
 #removeButton:selected {
-    -fx-graphic: url('delete.png');
+    -fx-graphic: url('images/delete.png');
 }
 
 #editButton {
-    -fx-graphic: url('edit.png');
+    -fx-graphic: url('images/edit.png');
 }
 
 #editButton:selected {
-    -fx-graphic: url('edit.png');
+    -fx-graphic: url('images/edit.png');
 }

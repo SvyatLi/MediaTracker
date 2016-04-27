@@ -55,7 +55,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Media Tracker");
         primaryStage.setScene(scene);
-        Image icon = new Image(getClass().getResourceAsStream("view/icon.png"));
+        Image icon = new Image(getClass().getResourceAsStream("view/images/icon.png"));
         primaryStage.getIcons().add(icon);
         primaryStage.show();
 
