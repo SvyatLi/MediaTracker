@@ -7,10 +7,7 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
@@ -49,18 +46,12 @@ public class MediaTrackerController extends AbstractController {
     @FXML
     Label statusLabel;
     private Stage stage;
+    @Autowired
     private ObjectProvider objectProvider;
+    @Autowired
     private Settings settings;
 
-    @Autowired
-    public void setObjectProvider(ObjectProvider objectProvider) {
-        this.objectProvider = objectProvider;
-    }
-
-    @Autowired
-    public void setSettings(Settings settings) {
-        this.settings = settings;
-    }
+    private Boolean modified = false;
 
     public void init(Stage stage) {
         this.stage = stage;
@@ -274,5 +265,21 @@ public class MediaTrackerController extends AbstractController {
 
     public Set<String> getSections() {
         return getMediaContainer().getSectionToMediaMap().keySet();
+    }
+
+    public void setModified(Boolean modified) {
+        this.modified = modified;
+    }
+
+    public void promptSaveOnClose(){
+        if (modified){
+            ButtonType removeButtonType = new ButtonType("Save and exit", ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancelButtonType = new ButtonType("Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.getDialogPane().setContentText("Save changes ?");
+            dialog.getDialogPane().getButtonTypes().addAll(removeButtonType, cancelButtonType);
+            dialog.showAndWait().filter(response -> response.getButtonData() == ButtonBar.ButtonData.OK_DONE)
+                    .ifPresent(response -> saveData());
+        }
     }
 }

@@ -19,6 +19,7 @@ import java.io.File;
  */
 public class Main extends Application {
     private static Logger LOG = Logger.getLogger(Main.class);
+    public static MediaTrackerController mediaTrackerController;
 
     public static void main(String[] args) {
         launch(args);
@@ -26,7 +27,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        MediaTrackerController mediaTrackerController = (MediaTrackerController) SpringFXMLLoader.load("view/media_tracker.fxml");
+        mediaTrackerController = (MediaTrackerController) SpringFXMLLoader.load("view/media_tracker.fxml");
         Scene scene = new Scene((Parent) mediaTrackerController.getView());
         scene.getStylesheets().add(getClass().getResource("view/style.css").toExternalForm());
 
@@ -61,5 +62,10 @@ public class Main extends Application {
 
         mediaTrackerController.init(primaryStage);
         mediaTrackerController.autoLoad();
+    }
+
+    @Override
+    public void stop(){
+        mediaTrackerController.promptSaveOnClose();
     }
 }

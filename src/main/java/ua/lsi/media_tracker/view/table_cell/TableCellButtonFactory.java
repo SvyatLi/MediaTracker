@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import ua.lsi.media_tracker.Main;
 import ua.lsi.media_tracker.model.Media;
 
 /**
@@ -33,6 +34,7 @@ public class TableCellButtonFactory<S extends Media, T> extends AbstractTableCel
                         media.change(columnName, sign);
                         getTableView().getColumns().get(0).setVisible(false);
                         getTableView().getColumns().get(0).setVisible(true);
+                        Main.mediaTrackerController.setModified(true);
                     });
                     btn.setText(getTableColumn().getText());
                     setDefaultButtonParameters(btn, null);
