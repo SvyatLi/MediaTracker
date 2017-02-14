@@ -4,6 +4,7 @@ package ua.lsi.media_tracker.dao;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ua.lsi.media_tracker.Main;
 import ua.lsi.media_tracker.creators.FileProvider;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.creators.Settings;
@@ -90,6 +91,7 @@ public class FileMediaContainer implements MediaContainer {
         if (checkFileExistsAndCreateIfNot(fileToSaveTo)) {
             fileParserAndSaver.saveMapToFile(mediaMap, fileToSaveTo);
             returnedMessage = createMessage(MessageCode.SAVE_SUCCESSFUL, fileToSaveTo);
+            Main.mediaTrackerController.setModified(false);
         } else {
             returnedMessage = createMessage(MessageCode.SAVE_UNSUCCESSFUL);
         }

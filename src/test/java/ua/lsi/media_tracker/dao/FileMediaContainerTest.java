@@ -3,6 +3,8 @@ package ua.lsi.media_tracker.dao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import ua.lsi.media_tracker.Main;
+import ua.lsi.media_tracker.controllers.MediaTrackerController;
 import ua.lsi.media_tracker.creators.FileProvider;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.creators.Settings;
@@ -47,6 +49,7 @@ public class FileMediaContainerTest {
         if (file.exists()) {
             file.delete();
         }
+        Main.mediaTrackerController = mock(MediaTrackerController.class);
     }
 
     @Test
