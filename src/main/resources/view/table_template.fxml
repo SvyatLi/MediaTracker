@@ -49,15 +49,29 @@
 				</TableColumn>
 			</columns>
 		</TableColumn>
-		<TableColumn prefWidth="30.0" text="E" resizable="false" sortable="false">
+		<TableColumn prefWidth="30.0" resizable="false" sortable="false">
 			<cellFactory>
 				<TableCellButtonEditFactory/>
 			</cellFactory>
+			<graphic>
+				<Label text="E">
+					<tooltip>
+						<Tooltip text="Edit" />
+					</tooltip>
+				</Label>
+			</graphic>
 		</TableColumn>
-		<TableColumn prefWidth="30.0" text="X" resizable="false" sortable="false">
+		<TableColumn prefWidth="30.0" resizable="false" sortable="false">
 			<cellFactory>
 				<TableCellButtonRemoveFactory/>
 			</cellFactory>
+			<graphic>
+				<Label text="X">
+					<tooltip>
+						<Tooltip text="Remove" />
+					</tooltip>
+				</Label>
+			</graphic>
 		</TableColumn>
 	</columns>
 </TableView>
