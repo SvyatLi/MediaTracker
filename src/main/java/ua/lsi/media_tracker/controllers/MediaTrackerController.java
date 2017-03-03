@@ -146,7 +146,7 @@ public class MediaTrackerController extends AbstractController {
     }
 
     private TableView<Media> createTable(List<Media> list) {
-        TableView<Media> table = SpringFXMLLoader.loadNode("view/table_template.fxml");
+        TableView<Media> table = SpringFXMLLoader.loadNode("/view/table_template.fxml");
         table.setItems((ObservableList<Media>) list);
         table.setRowFactory(tv -> {
             TableRow<Media> row = new TableRow<>();
@@ -215,7 +215,7 @@ public class MediaTrackerController extends AbstractController {
 
     @FXML
     public void openSettings() throws IOException {
-        SettingsDialogController settingsDialogController = (SettingsDialogController) SpringFXMLLoader.load("view/settings_dialog.fxml");
+        SettingsDialogController settingsDialogController = (SettingsDialogController) SpringFXMLLoader.load("/view/settings_dialog.fxml");
         Scene scene = new Scene((Parent) settingsDialogController.getView());
         final Stage dialog = new Stage();
         dialog.initModality(Modality.APPLICATION_MODAL);
@@ -227,7 +227,7 @@ public class MediaTrackerController extends AbstractController {
 
     @FXML
     public void openAbout() {
-        AboutController aboutController = (AboutController) SpringFXMLLoader.load("view/about.fxml");
+        AboutController aboutController = (AboutController) SpringFXMLLoader.load("/view/about.fxml");
         Scene scene = new Scene((Parent) aboutController.getView());
         final Stage dialog = new Stage();
         dialog.initOwner(stage);
@@ -243,7 +243,7 @@ public class MediaTrackerController extends AbstractController {
 
     @FXML
     public void openAddItemDialog() {
-        AddItemController addItemController = (AddItemController) SpringFXMLLoader.load("view/add_item.fxml");
+        AddItemController addItemController = (AddItemController) SpringFXMLLoader.load("/view/add_item.fxml");
         Scene scene = new Scene((Parent) addItemController.getView());
         final Stage dialog = new Stage();
         dialog.initModality(Modality.NONE);
