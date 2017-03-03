@@ -41,7 +41,7 @@ public class FileMediaContainer implements MediaContainer {
     public String tryLoadFromSavedResource() {
         String returnedMessage;
         file = settings.getDefaultInfoFile();
-        if (settings.isAutomaticLoadEnabled()) {
+        if (settings.getAutomaticLoadEnabled()) {
             parseFileToMap(file);
             if (file != null && file.exists()) {
                 returnedMessage = createMessage(AUTO_LOAD_SUCCESSFUL, file);

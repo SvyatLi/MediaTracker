@@ -63,7 +63,7 @@ public class SettingsDialogController extends AbstractController implements Init
         if (defaultFile != null && defaultFile.exists()) {
             defaultFilePath.setText(defaultFile.getAbsolutePath());
         }
-        automaticLoadEnabled.setSelected(settings.isAutomaticLoadEnabled());
+        automaticLoadEnabled.setSelected(settings.getAutomaticLoadEnabled());
         storageTypeComboBox.setItems(FXCollections.observableArrayList(StorageType.values()));
         storageTypeComboBox.getSelectionModel().select(settings.getStorageType());
     }

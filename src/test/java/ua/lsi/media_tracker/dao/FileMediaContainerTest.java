@@ -54,14 +54,14 @@ public class FileMediaContainerTest {
 
     @Test
     public void testTryLoadFromSavedResource_loadDisabled() throws Exception {
-        when(settingsMock.isAutomaticLoadEnabled()).thenReturn(false);
+        when(settingsMock.getAutomaticLoadEnabled()).thenReturn(false);
         String returnedMessage = container.tryLoadFromSavedResource();
         Assert.assertEquals(messages.getMessage(AUTO_LOAD_DISABLED), returnedMessage);
     }
 
     @Test
     public void testTryLoadFromSavedResource_fileNotSet() throws Exception {
-        when(settingsMock.isAutomaticLoadEnabled()).thenReturn(true);
+        when(settingsMock.getAutomaticLoadEnabled()).thenReturn(true);
         String returnedMessage = container.tryLoadFromSavedResource();
         Assert.assertEquals(messages.getMessage(AUTO_LOAD_UNSUCCESSFUL), returnedMessage);
     }
@@ -70,7 +70,7 @@ public class FileMediaContainerTest {
     public void testTryLoadFromSavedResource_correctFileSet() throws Exception {
         URL url = this.getClass().getResource("/z_Serials.txt");
         File file = new File(url.getFile());
-        when(settingsMock.isAutomaticLoadEnabled()).thenReturn(true);
+        when(settingsMock.getAutomaticLoadEnabled()).thenReturn(true);
         when(settingsMock.getDefaultInfoFile()).thenReturn(file);
         String returnedMessage = container.tryLoadFromSavedResource();
         Assert.assertEquals(messages.getMessageRelatedToFile(AUTO_LOAD_SUCCESSFUL, file), returnedMessage);
