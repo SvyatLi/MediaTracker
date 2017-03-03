@@ -1,17 +1,22 @@
-package ua.lsi.media_tracker.view.table_cell;
+package ua.lsi.media_tracker.table.cell;
 
 import javafx.event.ActionEvent;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import ua.lsi.media_tracker.SpringFXMLLoader;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 import ua.lsi.media_tracker.model.Media;
 
+import java.util.Optional;
+
 /**
- * Created by LSI on 11.04.2016.
+ * Created by LSI on 25.04.2016.
  *
  * @author LSI
  */
-public class TableCellButtonRemoveFactory<S extends Media, T> extends AbstractTableCellButtonFactory<S, T> {
+public class TableCellButtonEditFactory<S extends Media, T> extends AbstractTableCellButtonFactory<S, T> {
 
     @Override
     public TableCell<S, T> call(TableColumn<S, T> param) {
@@ -27,20 +32,27 @@ public class TableCellButtonRemoveFactory<S extends Media, T> extends AbstractTa
                 } else {
                     btn.setOnAction((ActionEvent event) ->
                     {
-                        String section = getTableView().getId();
+                        String currentSection = getTableView().getId();
                         Media media = getTableView().getItems().get(getIndex());
                         MediaTrackerController controller = SpringFXMLLoader.getBeanFromContext(MediaTrackerController.class);
-                        ButtonType removeButtonType = new ButtonType("Remove", ButtonBar.ButtonData.OK_DONE);
-                        ButtonType cancelButtonType = new ButtonType("Don't remove", ButtonBar.ButtonData.CANCEL_CLOSE);
-                        Dialog<ButtonType> dialog = new Dialog<>();
-                        dialog.getDialogPane().setContentText("Remove item ?");
-                        dialog.getDialogPane().getButtonTypes().addAll(removeButtonType, cancelButtonType);
-                        dialog.showAndWait().filter(response -> response.getButtonData() == ButtonBar.ButtonData.OK_DONE)
-                                .ifPresent(response -> controller.removeItem(section, media));
+
+                        ChoiceDialog<String> dialog = new ChoiceDialog<>(currentSection, controller.getSections());
+                        dialog.setTitle("Choose section");
+                        dialog.setHeaderText("Select section to move media to:");
+
+                        Optional<String> result = dialog.showAndWait();
+
+                        result.ifPresent(newSection -> {
+                            if (!currentSection.equals(newSection)) {
+                                controller.removeItem(currentSection, media);
+                                controller.addNewItem(newSection, media);
+                            }
+                        });
+
                         getTableView().getColumns().get(0).setVisible(false);
                         getTableView().getColumns().get(0).setVisible(true);
                     });
-                    setDefaultButtonParameters(btn, "removeButton");
+                    setDefaultButtonParameters(btn, "editButton");
                     setDefaultCellParameters(this, btn);
                 }
             }
