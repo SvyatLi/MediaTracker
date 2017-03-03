@@ -27,9 +27,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        mediaTrackerController = (MediaTrackerController) SpringFXMLLoader.load("view/media_tracker.fxml");
+        mediaTrackerController = (MediaTrackerController) SpringFXMLLoader.load("/view/media_tracker.fxml");
         Scene scene = new Scene((Parent) mediaTrackerController.getView());
-        scene.getStylesheets().add(getClass().getResource("view/style.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/view/style.css").toExternalForm());
 
         scene.setOnDragOver(event -> {
             Dragboard db = event.getDragboard();
@@ -56,7 +56,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Media Tracker");
         primaryStage.setScene(scene);
-        Image icon = new Image(getClass().getResourceAsStream("view/images/icon.png"));
+        Image icon = new Image(getClass().getResourceAsStream("/view/images/icon.png"));
         primaryStage.getIcons().add(icon);
         primaryStage.show();
 
