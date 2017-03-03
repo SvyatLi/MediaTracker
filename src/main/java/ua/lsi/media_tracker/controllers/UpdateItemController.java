@@ -39,8 +39,6 @@ public class UpdateItemController extends AbstractController implements Initiali
     public TextField seasonTextField;
     @FXML
     public TextField episodeTextField;
-    @FXML
-    public Label addingStatusLabel;
 
     private Media media;
     private String oldSection;
@@ -96,10 +94,8 @@ public class UpdateItemController extends AbstractController implements Initiali
             mediaTrackerController.removeItem(oldSection, media);
             mediaTrackerController.addNewItem(section, media);
         }
-        addingStatusLabel.setText("Item Updated");
         mediaTrackerController.setModified(true);
 
-        clearLabelAfterDelay(addingStatusLabel, 2000);
         close();
     }
 

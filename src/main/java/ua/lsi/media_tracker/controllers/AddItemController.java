@@ -69,9 +69,7 @@ public class AddItemController extends AbstractController implements Initializab
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        MediaContainer container = objectProvider.getMediaContainer(settings.getStorageType());
-        Map<String, List<Media>> mediaMap = container.getSectionToMediaMap();
-        Collection<String> sections = mediaMap.keySet();
+        Collection<String> sections = mediaTrackerController.getSections();
         if (sections.isEmpty()) {
             sections = Collections.singletonList(messages.getMessage(MessageCode.DEFAULT_SECTION));
         }
