@@ -1,6 +1,6 @@
 package ua.lsi.media_tracker.controllers;
 
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
@@ -14,14 +14,14 @@ import java.net.URISyntaxException;
  * @author LSI
  */
 @Component
+@Log4j
 public class AboutController extends AbstractController {
-    private static Logger LOG = Logger.getLogger(AddItemController.class);
 
     public void openGithubInBrowser() {
         try {
             Desktop.getDesktop().browse(new URI("https://github.com/SvyatLi/MediaTracker"));
         } catch (IOException | URISyntaxException e) {
-            LOG.error(e);
+            log.error(e);
         }
     }
 }

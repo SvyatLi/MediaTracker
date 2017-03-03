@@ -2,7 +2,7 @@ package ua.lsi.media_tracker;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ua.lsi.media_tracker.configs.SpringAppConfig;
@@ -16,10 +16,10 @@ import java.io.InputStream;
  *
  * @author LSI
  */
+@Log4j
 public class SpringFXMLLoader {
 
     private static final ApplicationContext APPLICATION_CONTEXT = new AnnotationConfigApplicationContext(SpringAppConfig.class);
-    private static Logger LOG = Logger.getLogger(SpringFXMLLoader.class);
 
     public static Controller load(String url) {
         try (InputStream fxmlStream = SpringFXMLLoader.class.getResourceAsStream(url)) {
@@ -33,7 +33,7 @@ public class SpringFXMLLoader {
 
             return controller;
         } catch (IOException e) {
-            LOG.error("Can't load resource", e);
+            log.error("Can't load resource", e);
             throw new RuntimeException(e);
         }
     }
@@ -47,7 +47,7 @@ public class SpringFXMLLoader {
 
             view = loader.load(fxmlStream);
         } catch (IOException e) {
-            LOG.error("Can't load node", e);
+            log.error("Can't load node", e);
             throw new RuntimeException(e);
         }
         return view;

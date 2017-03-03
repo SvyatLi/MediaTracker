@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.Properties;
+
 /**
  * @author Sviatoslav Likhota
  *         on 3/3/17.

@@ -1,17 +1,14 @@
 package ua.lsi.media_tracker.utils;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,17 +19,17 @@ import java.util.Map;
  * @author LSI
  */
 @Component
+@Log4j
 public class FileParserAndSaver {
     private final static String sectionStarter = "//";
     private final static String matcher = ".*\\s\\-\\ss\\d*e\\d*";
     private final static String matcherSeparator = "\\s\\-\\s";
-    private static Logger LOG = Logger.getLogger(FileParserAndSaver.class);
     private Messages messages;
 
     public Map<String, List<Media>> getMapOfMediaFromFile(File file) {
         Map<String, List<Media>> mediaMap = new LinkedHashMap<>();
         String currentSection = messages.getMessage(MessageCode.DEFAULT_SECTION);
-        if (file!=null) {
+        if (file != null) {
             try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"))) {
                 String line = br.readLine();
                 while (line != null) {
@@ -50,7 +47,7 @@ public class FileParserAndSaver {
                     line = br.readLine();
                 }
             } catch (IOException e) {
-                LOG.error(e);
+                log.error(e);
             }
         }
         return mediaMap;
@@ -70,11 +67,11 @@ public class FileParserAndSaver {
                     somethingSaved = true;
                 }
             }
-            if(somethingSaved) {
+            if (somethingSaved) {
                 statusMessage = messages.getMessageRelatedToFile(MessageCode.SAVE_SUCCESSFUL, file);
             }
         } catch (IOException e) {
-            LOG.error(e);
+            log.error(e);
             statusMessage = messages.getMessage(MessageCode.SAVE_ERROR);
         }
         return statusMessage;

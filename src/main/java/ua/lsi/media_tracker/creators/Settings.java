@@ -1,7 +1,7 @@
 package ua.lsi.media_tracker.creators;
 
 import lombok.Data;
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.enums.StorageType;
@@ -22,8 +22,8 @@ import static ua.lsi.media_tracker.enums.SettingsKey.*;
  */
 @Component
 @Data
+@Log4j
 public class Settings {
-    private static Logger LOG = Logger.getLogger(Settings.class);
     private Boolean automaticLoadEnabled;
     private File defaultInfoFile;
     private StorageType storageType;
@@ -47,7 +47,7 @@ public class Settings {
                     .addProperty(STORAGE_TYPE.name(), storageType.name())
                     .save();
         } catch (IOException e) {
-            LOG.error(e);
+            log.error(e);
             resultMessage = messages.getMessage(SETTINGS_NOT_SAVED);
         }
 
@@ -69,6 +69,7 @@ public class Settings {
                 storageType = StorageType.FILE;
             }
         } else {
+            log.info("Setting default values");
             storageType = StorageType.FILE;
             automaticLoadEnabled = false;
         }

@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.stage.Stage;
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 
 import java.io.File;
@@ -17,8 +17,8 @@ import java.io.File;
  *
  * @author LSI
  */
+@Log4j
 public class Main extends Application {
-    private static Logger LOG = Logger.getLogger(Main.class);
     public static MediaTrackerController mediaTrackerController;
 
     public static void main(String[] args) {
@@ -48,7 +48,7 @@ public class Main extends Application {
                 success = true;
                 File file = db.getFiles().get(0);
                 mediaTrackerController.loadDataFromDraggedFile(file);
-                LOG.info("Data loaded from file : " + file.getAbsolutePath());
+                log.info("Data loaded from file : " + file.getAbsolutePath());
             }
             event.setDropCompleted(success);
             event.consume();
@@ -65,7 +65,7 @@ public class Main extends Application {
     }
 
     @Override
-    public void stop(){
+    public void stop() {
         mediaTrackerController.promptSaveOnClose();
     }
 }

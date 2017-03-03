@@ -3,7 +3,6 @@ package ua.lsi.media_tracker.creators;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.enums.MessageCode;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;

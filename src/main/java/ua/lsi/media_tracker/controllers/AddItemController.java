@@ -8,7 +8,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.Messages;
@@ -28,8 +27,6 @@ import java.util.*;
  */
 @Component
 public class AddItemController extends AbstractController implements Initializable {
-    private static Logger LOG = Logger.getLogger(AddItemController.class);
-
     @FXML
     public Button closeButton;
     @FXML

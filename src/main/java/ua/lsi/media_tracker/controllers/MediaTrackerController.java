@@ -17,7 +17,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.lsi.media_tracker.SpringFXMLLoader;
@@ -40,9 +40,9 @@ import java.util.Set;
  * @author LSI
  */
 @Service
+@Log4j
 public class MediaTrackerController extends AbstractController {
     private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
-    private static Logger LOG = Logger.getLogger(MediaTrackerController.class);
     @FXML
     Label statusLabel;
     private Stage stage;
@@ -69,7 +69,7 @@ public class MediaTrackerController extends AbstractController {
             setupStatusLabelWithText(task.getValue());
             createAndShowTableViews(container.getSectionToMediaMap());
         });
-        task.setOnFailed(event -> LOG.error(event.getSource().getException()));
+        task.setOnFailed(event -> log.error(event.getSource().getException()));
         new Thread(task).start();
     }
 
@@ -271,8 +271,8 @@ public class MediaTrackerController extends AbstractController {
         this.modified = modified;
     }
 
-    public void promptSaveOnClose(){
-        if (modified){
+    public void promptSaveOnClose() {
+        if (modified) {
             ButtonType removeButtonType = new ButtonType("Save and exit", ButtonBar.ButtonData.OK_DONE);
             ButtonType cancelButtonType = new ButtonType("Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
             Dialog<ButtonType> dialog = new Dialog<>();

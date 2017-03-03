@@ -10,7 +10,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.Messages;
@@ -29,9 +28,6 @@ import java.util.ResourceBundle;
  */
 @Component
 public class SettingsDialogController extends AbstractController implements Initializable {
-
-    private static Logger LOG = Logger.getLogger(SettingsDialogController.class);
-
     @FXML
     public CheckBox automaticLoadEnabled;
     @FXML
