@@ -1,9 +1,4 @@
 Manifest-Version: 1.0
 JavaFX-Version: 8.0
-Class-Path: lib/commons-logging-1.1.3.jar lib/log4j-1.2.17.jar lib/spr
- ing-aop-4.2.5.RELEASE.jar lib/spring-beans-4.2.5.RELEASE.jar lib/spri
- ng-context-4.2.5.RELEASE.jar lib/spring-context-support-4.2.5.RELEASE
- .jar lib/spring-core-4.2.5.RELEASE.jar lib/spring-expression-4.2.5.RE
- LEASE.jar
 Main-Class: ua.lsi.media_tracker.Main
 
