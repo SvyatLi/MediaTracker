@@ -4,16 +4,15 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.enums.StorageType;
+import ua.lsi.media_tracker.utils.SettingsProvider;
 
 import javax.annotation.PostConstruct;
-import java.io.*;
-import java.util.Properties;
+import java.io.File;
+import java.io.IOException;
 
 import static ua.lsi.media_tracker.enums.MessageCode.SETTINGS_NOT_SAVED;
 import static ua.lsi.media_tracker.enums.MessageCode.SETTINGS_SAVED;
-import static ua.lsi.media_tracker.enums.SettingsKey.AUTOMATIC_LOAD_ENABLED;
-import static ua.lsi.media_tracker.enums.SettingsKey.DEFAULT_INFO_FILE;
-import static ua.lsi.media_tracker.enums.SettingsKey.STORAGE_TYPE;
+import static ua.lsi.media_tracker.enums.SettingsKey.*;
 
 /**
  * Created by LSI on 29.03.2016.
@@ -22,14 +21,14 @@ import static ua.lsi.media_tracker.enums.SettingsKey.STORAGE_TYPE;
  */
 @Component
 public class Settings {
-    private static final String PROPERTIES_FILE_NAME = "./MediaTracker.properties";
     private static Logger LOG = Logger.getLogger(Settings.class);
     private Boolean automaticLoadEnabled;
-    private Properties properties;
     private File defaultInfoFile;
-    private File settingsFile;
     private StorageType storageType;
     private Messages messages;
+
+    @Autowired
+    private SettingsProvider sp;
 
     @Autowired
     public void setMessages(Messages messages) {
@@ -38,27 +37,20 @@ public class Settings {
 
     public String saveSettings() {
         String resultMessage = messages.getMessage(SETTINGS_SAVED);
-        properties.setProperty(AUTOMATIC_LOAD_ENABLED.name(), automaticLoadEnabled.toString());
+
         String defaultFileAbsolutePath = "";
         if (defaultInfoFile != null && defaultInfoFile.exists()) {
             defaultFileAbsolutePath = defaultInfoFile.getAbsolutePath();
         }
-        properties.setProperty(DEFAULT_INFO_FILE.name(), defaultFileAbsolutePath);
-        properties.setProperty(STORAGE_TYPE.name(), storageType.name());
+
         try {
-            boolean fileExists = true;
-            if (!settingsFile.exists()) {
-                fileExists = settingsFile.createNewFile();
-            }
-            if (fileExists) {
-                try (OutputStream outputStream = new FileOutputStream(settingsFile)) {
-                    properties.store(outputStream, null);
-                }
-            } else {
-                resultMessage = messages.getMessage(SETTINGS_NOT_SAVED);
-            }
+            sp.addProperty(AUTOMATIC_LOAD_ENABLED.name(), automaticLoadEnabled.toString())
+                    .addProperty(DEFAULT_INFO_FILE.name(), defaultFileAbsolutePath)
+                    .addProperty(STORAGE_TYPE.name(), storageType.name())
+                    .save();
         } catch (IOException e) {
             LOG.error(e);
+            resultMessage = messages.getMessage(SETTINGS_NOT_SAVED);
         }
 
         return resultMessage;
@@ -90,32 +82,21 @@ public class Settings {
 
     @PostConstruct
     public void init() {
-        try {
-            properties = new Properties();
-            settingsFile = new File(PROPERTIES_FILE_NAME);
-            boolean fileExists = true;
-            if (!settingsFile.exists()) {
-                fileExists = settingsFile.createNewFile();
+        if (sp.propertiesExist()) {
+            automaticLoadEnabled = Boolean.parseBoolean(sp.getProperty(AUTOMATIC_LOAD_ENABLED.name(), "False"));
+            String defaultInfoFilePath = sp.getProperty(DEFAULT_INFO_FILE.name(), null);
+            if (defaultInfoFilePath != null) {
+                defaultInfoFile = new File(defaultInfoFilePath);
             }
-            if (fileExists) {
-                try (InputStream inputStream = new FileInputStream(settingsFile)) {
-                    properties.load(inputStream);
-                    automaticLoadEnabled = Boolean.parseBoolean(properties.getProperty(AUTOMATIC_LOAD_ENABLED.name()));
-                    String defaultInfoFilePath = properties.getProperty(DEFAULT_INFO_FILE.name());
-                    if (defaultInfoFilePath != null) {
-                        defaultInfoFile = new File(defaultInfoFilePath);
-                    }
-                    String storageTypeInSettings = properties.getProperty(STORAGE_TYPE.name());
-                    if (storageTypeInSettings != null) {
-                        storageType = StorageType.valueOf(storageTypeInSettings);
-                    } else {
-                        storageType = StorageType.FILE;
-                    }
-                }
+            String storageTypeInSettings = sp.getProperty(STORAGE_TYPE.name(), null);
+            if (storageTypeInSettings != null) {
+                storageType = StorageType.valueOf(storageTypeInSettings);
+            } else {
+                storageType = StorageType.FILE;
             }
-        } catch (IOException e) {
-            LOG.error(e);
-            throw new IllegalStateException("Error initializing settings" + e.getMessage());
+        } else {
+            storageType = StorageType.FILE;
+            automaticLoadEnabled = false;
         }
     }
 }
