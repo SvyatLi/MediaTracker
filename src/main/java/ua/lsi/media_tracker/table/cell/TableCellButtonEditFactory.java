@@ -1,15 +1,17 @@
 package ua.lsi.media_tracker.table.cell;
 
 import javafx.event.ActionEvent;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import ua.lsi.media_tracker.SpringFXMLLoader;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
+import ua.lsi.media_tracker.controllers.UpdateItemController;
 import ua.lsi.media_tracker.model.Media;
-
-import java.util.Optional;
 
 /**
  * Created by LSI on 25.04.2016.
@@ -36,18 +38,16 @@ public class TableCellButtonEditFactory<S extends Media, T> extends AbstractTabl
                         Media media = getTableView().getItems().get(getIndex());
                         MediaTrackerController controller = SpringFXMLLoader.getBeanFromContext(MediaTrackerController.class);
 
-                        ChoiceDialog<String> dialog = new ChoiceDialog<>(currentSection, controller.getSections());
-                        dialog.setTitle("Choose section");
-                        dialog.setHeaderText("Select section to move media to:");
+                        UpdateItemController updateItemController = (UpdateItemController) SpringFXMLLoader.load("/view/update_item.fxml");
+                        Scene scene = new Scene((Parent) updateItemController.getView());
+                        final Stage dialog = new Stage();
+                        dialog.initModality(Modality.WINDOW_MODAL);
+                        dialog.setTitle("Change Item");
+                        dialog.initOwner(controller.getStage());
+                        dialog.setScene(scene);
+                        dialog.show();
 
-                        Optional<String> result = dialog.showAndWait();
-
-                        result.ifPresent(newSection -> {
-                            if (!currentSection.equals(newSection)) {
-                                controller.removeItem(currentSection, media);
-                                controller.addNewItem(newSection, media);
-                            }
-                        });
+                        updateItemController.setValuesFromMedia(currentSection, media);
 
                         getTableView().getColumns().get(0).setVisible(false);
                         getTableView().getColumns().get(0).setVisible(true);

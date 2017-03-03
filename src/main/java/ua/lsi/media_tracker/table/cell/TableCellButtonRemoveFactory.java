@@ -37,6 +37,7 @@ public class TableCellButtonRemoveFactory<S extends Media, T> extends AbstractTa
                         dialog.getDialogPane().getButtonTypes().addAll(removeButtonType, cancelButtonType);
                         dialog.showAndWait().filter(response -> response.getButtonData() == ButtonBar.ButtonData.OK_DONE)
                                 .ifPresent(response -> controller.removeItem(section, media));
+                        controller.setModified(true);
                         getTableView().getColumns().get(0).setVisible(false);
                         getTableView().getColumns().get(0).setVisible(true);
                     });
