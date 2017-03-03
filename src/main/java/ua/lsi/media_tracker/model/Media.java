@@ -1,5 +1,7 @@
 package ua.lsi.media_tracker.model;
 
+import lombok.Data;
+
 import java.text.NumberFormat;
 
 /**
@@ -7,6 +9,7 @@ import java.text.NumberFormat;
  *
  * @author LSI
  */
+@Data
 public class Media {
 
     private final static NumberFormat NUMBER_FORMAT = NumberFormat.getInstance();
@@ -16,30 +19,6 @@ public class Media {
     private int season;
 
     private int episode;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getSeason() {
-        return season;
-    }
-
-    public void setSeason(int season) {
-        this.season = season;
-    }
-
-    public int getEpisode() {
-        return episode;
-    }
-
-    public void setEpisode(int episode) {
-        this.episode = episode;
-    }
 
     public void change(String property, String sign) {
         int change = 1;
