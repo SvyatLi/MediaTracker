@@ -8,6 +8,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.stage.Stage;
 import lombok.extern.log4j.Log4j;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 
 import java.io.File;
@@ -18,6 +19,7 @@ import java.io.File;
  * @author LSI
  */
 @Log4j
+@SpringBootApplication
 public class Main extends Application {
     public static MediaTrackerController mediaTrackerController;
 

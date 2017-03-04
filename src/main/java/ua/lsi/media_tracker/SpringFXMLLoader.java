@@ -4,12 +4,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import lombok.extern.log4j.Log4j;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ua.lsi.media_tracker.configs.SpringAppConfig;
 import ua.lsi.media_tracker.controllers.Controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import org.springframework.boot.SpringApplication;
 
 /**
  * Created by LSI on 09.04.2016.
@@ -19,7 +19,7 @@ import java.io.InputStream;
 @Log4j
 public class SpringFXMLLoader {
 
-    private static final ApplicationContext APPLICATION_CONTEXT = new AnnotationConfigApplicationContext(SpringAppConfig.class);
+    private static final ApplicationContext APPLICATION_CONTEXT = SpringApplication.run(SpringAppConfig.class);
 
     public static Controller load(String url) {
         try (InputStream fxmlStream = SpringFXMLLoader.class.getResourceAsStream(url)) {
