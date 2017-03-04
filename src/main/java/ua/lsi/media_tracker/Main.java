@@ -19,7 +19,6 @@ import java.io.File;
  * @author LSI
  */
 @Log4j
-@SpringBootApplication
 public class Main extends Application {
     public static MediaTrackerController mediaTrackerController;
 

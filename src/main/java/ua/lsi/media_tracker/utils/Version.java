@@ -21,7 +21,7 @@ public class Version {
 
     private static String loadVersion() {
         Properties properties = new Properties();
-        try (InputStream inputStream = Version.class.getClassLoader().getResourceAsStream("version.properties")) {
+        try (InputStream inputStream = Version.class.getClassLoader().getResourceAsStream("application.properties")) {
             properties.load(inputStream);
         } catch (IOException e) {
             e.printStackTrace();
