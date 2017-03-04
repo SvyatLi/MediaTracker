@@ -1,7 +1,14 @@
 package ua.lsi.media_tracker.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.text.NumberFormat;
 
 /**
@@ -10,7 +17,15 @@ import java.text.NumberFormat;
  * @author LSI
  */
 @Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Media {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     private final static NumberFormat NUMBER_FORMAT = NumberFormat.getInstance();
 
