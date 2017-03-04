@@ -6,5 +6,6 @@ package ua.lsi.media_tracker.enums;
  * @author ID69
  */
 public enum StorageType {
-    FILE
+    FILE,
+    SQLITE
 }

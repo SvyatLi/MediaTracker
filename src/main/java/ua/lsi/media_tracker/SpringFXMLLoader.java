@@ -19,7 +19,7 @@ import org.springframework.boot.SpringApplication;
 @Log4j
 public class SpringFXMLLoader {
 
-    private static final ApplicationContext APPLICATION_CONTEXT = SpringApplication.run(SpringAppConfig.class);
+    private static final ApplicationContext APPLICATION_CONTEXT = SpringApplication.run(Main.class);
 
     public static Controller load(String url) {
         try (InputStream fxmlStream = SpringFXMLLoader.class.getResourceAsStream(url)) {

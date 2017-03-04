@@ -1,10 +1,9 @@
 package ua.lsi.media_tracker.configs;
 
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
@@ -16,8 +15,7 @@ import javax.sql.DataSource;
  * @author LSI
  */
 @Configuration
-@SpringBootApplication
-@ComponentScan(basePackages = {"ua.lsi.media_tracker.*"})
+@Log4j
 public class SpringAppConfig {
 
     private Environment environment;
