@@ -82,7 +82,8 @@ public class MediaAccessProvider {
     }
 
     public String saveMediaMap(SaveType saveType) {
-        return null;
+
+        return getMediaContainer().saveMediaMap(saveType, mediaMap);
     }
 
     private MediaContainer getMediaContainer() {

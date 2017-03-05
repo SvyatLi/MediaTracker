@@ -19,9 +19,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ua.lsi.media_tracker.enums.MessageCode.AUTO_LOAD_SUCCESSFUL;
-import static ua.lsi.media_tracker.enums.MessageCode.AUTO_LOAD_UNSUCCESSFUL;
-
 /**
  * Created by LSI on 26.03.2016.
  *
@@ -31,7 +28,6 @@ import static ua.lsi.media_tracker.enums.MessageCode.AUTO_LOAD_UNSUCCESSFUL;
 @Log4j
 public class FileMediaContainer implements MediaContainer {
     private File file;
-    private Map<String, List<Media>> mediaMap;
 
     @Autowired
     private FileProvider fileProvider;
@@ -46,6 +42,7 @@ public class FileMediaContainer implements MediaContainer {
 
     @Override
     public Map<String, List<Media>> tryLoadFromSavedResource() {
+        Map<String, List<Media>> mediaMap;
         file = settings.getDefaultInfoFile();
         if (settings.getAutomaticLoadEnabled()) {
             mediaMap = parseFileToMap(file);

@@ -14,7 +14,6 @@ import ua.lsi.media_tracker.repository.MediaRepository;
 import ua.lsi.media_tracker.repository.SectionRepository;
 import ua.lsi.media_tracker.utils.FileParserAndSaver;
 
-import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -28,8 +27,6 @@ import java.util.Map;
 @Component
 @Log4j
 public class SqliteMediaContainer implements MediaContainer {
-
-    private Map<String, List<Media>> mediaMap;
 
     @Autowired
     private MediaRepository mediaRepository;
@@ -51,7 +48,7 @@ public class SqliteMediaContainer implements MediaContainer {
 
     @Override
     public Map<String, List<Media>> loadInformation() {
-        mediaMap = new LinkedHashMap<>();
+        Map<String, List<Media>> mediaMap = new LinkedHashMap<>();
         Iterable<Media> medias = mediaRepository.findAll();
         for (Media media : medias) {
             List<Media> mediaList = mediaMap.getOrDefault(media.getSection().getName(), FXCollections.observableArrayList());
@@ -63,22 +60,17 @@ public class SqliteMediaContainer implements MediaContainer {
     }
 
     @Override
-    public Map<String, List<Media>> loadInformationFromFile(File file) {
-        return parseFileToMap(file);
-    }
-
-    @Override
     public String saveMediaMap(SaveType saveType, Map<String, List<Media>> mediaMap) {
         String message = null;
         if (saveType == SaveType.AUTOMATIC) {
-            message = saveMediaToDB();
+            message = saveMediaToDB(mediaMap);
         } else if (saveType == SaveType.MANUAL) {
             message = "Import to file not implemented yet";
         }
         return message;
     }
 
-    private String saveMediaToDB() {
+    private String saveMediaToDB(Map<String, List<Media>> mediaMap) {
         String message;
         try {
             for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
@@ -103,11 +95,4 @@ public class SqliteMediaContainer implements MediaContainer {
         }
         return message;
     }
-
-    private  Map<String, List<Media>> parseFileToMap(File file) {
-        mediaMap = fileParserAndSaver.getMapOfMediaFromFile(file);
-        return mediaMap;
-    }
-
-
 }

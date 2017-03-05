@@ -20,7 +20,7 @@ public class Messages {
         messagesMap = new HashMap<>();
         messagesMap.put(MessageCode.AUTO_LOAD_DISABLED, "Automatic load disabled");
         messagesMap.put(MessageCode.AUTO_LOAD_UNSUCCESSFUL, "Automatic load not successful");
-        messagesMap.put(MessageCode.AUTO_LOAD_SUCCESSFUL, "Automatic load successful, file : ");
+        messagesMap.put(MessageCode.AUTO_LOAD_SUCCESSFUL, "Automatic load successful");
         messagesMap.put(MessageCode.LOAD_SUCCESSFUL, "File : ");
         messagesMap.put(MessageCode.LOAD_UNSUCCESSFUL, "File not selected");
         messagesMap.put(MessageCode.SAVE_SUCCESSFUL, "Data saved to file : ");
@@ -30,8 +30,6 @@ public class Messages {
         messagesMap.put(MessageCode.SETTINGS_SAVED, "Settings saved");
         messagesMap.put(MessageCode.SETTINGS_NOT_SAVED, "Settings not saved");
         messagesMap.put(MessageCode.DEFAULT_SECTION, "Default");
-        messagesMap.put(MessageCode.LOAD_SQLITE_SUCCESSFUL, "Load from SQLite successful");
-        messagesMap.put(MessageCode.LOAD_SQLITE_UNSUCCESSFUL, "Can't load from SQLite");
         messagesMap.put(MessageCode.SAVE_SQLITE_SUCCESSFUL, "Save to SQLite successful");
         messagesMap.put(MessageCode.SAVE_SQLITE_UNSUCCESSFUL, "Error while saving to SQLite");
     }
