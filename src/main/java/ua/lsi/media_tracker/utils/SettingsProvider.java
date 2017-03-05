@@ -14,7 +14,7 @@ public class SettingsProvider {
 
     private static final String FILE_NAME = "settings.properties";
 
-    private static String getUserDataDirectory() {
+    public static String getUserDataDirectory() {
         return System.getProperty("user.home") + File.separator + ".mediatracker" + File.separator;
     }
 

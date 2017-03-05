@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import ua.lsi.media_tracker.utils.SettingsProvider;
 
 import javax.sql.DataSource;
 
@@ -29,7 +30,7 @@ public class SpringAppConfig {
     public DataSource dataSource() {
         DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.driverClassName("org.sqlite.JDBC");
-        dataSourceBuilder.url("jdbc:sqlite:media_tracker.db");
+        dataSourceBuilder.url("jdbc:sqlite:" + SettingsProvider.getUserDataDirectory() + "media_tracker.db");
         return dataSourceBuilder.build();
     }
 }
