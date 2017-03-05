@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 
+import javax.swing.*;
 import java.io.File;
 
 /**
@@ -22,8 +23,18 @@ import java.io.File;
 @SpringBootApplication
 public class Main extends Application {
     public static MediaTrackerController mediaTrackerController;
+    private static JDialog dialog;
 
     public static void main(String[] args) {
+        new Thread(() -> {
+            JOptionPane optionPane = new JOptionPane(
+                    "Application is loading (maybe using Spring Data was a little overkill)"
+                    , JOptionPane.PLAIN_MESSAGE);
+            dialog = optionPane.createDialog("Don't worry");
+            dialog.setAlwaysOnTop(true);
+            dialog.setVisible(true);
+        }).start();
+
         launch(args);
     }
 
@@ -64,6 +75,7 @@ public class Main extends Application {
 
         mediaTrackerController.init(primaryStage);
         mediaTrackerController.autoLoad();
+        dialog.dispose();
     }
 
     @Override
