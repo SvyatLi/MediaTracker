@@ -12,7 +12,6 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.Messages;
-import ua.lsi.media_tracker.creators.ObjectProvider;
 import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
@@ -42,10 +41,6 @@ public class UpdateItemController extends AbstractController implements Initiali
 
     private Media media;
     private String oldSection;
-
-    @Autowired
-    @Setter
-    private ObjectProvider objectProvider;
 
     @Autowired
     @Setter

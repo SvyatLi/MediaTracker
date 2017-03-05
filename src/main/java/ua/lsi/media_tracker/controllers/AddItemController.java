@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.Messages;
-import ua.lsi.media_tracker.creators.ObjectProvider;
 import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.dao.MediaContainer;
 import ua.lsi.media_tracker.enums.MessageCode;
@@ -42,15 +41,9 @@ public class AddItemController extends AbstractController implements Initializab
     @FXML
     public TextField sectionTextField;
 
-    private ObjectProvider objectProvider;
     private Settings settings;
     private Messages messages;
     private MediaTrackerController mediaTrackerController;
-
-    @Autowired
-    public void setObjectProvider(ObjectProvider objectProvider) {
-        this.objectProvider = objectProvider;
-    }
 
     @Autowired
     public void setSettings(Settings settings) {

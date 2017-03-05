@@ -22,11 +22,9 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.lsi.media_tracker.SpringFXMLLoader;
-import ua.lsi.media_tracker.creators.ObjectProvider;
 import ua.lsi.media_tracker.creators.Settings;
-import ua.lsi.media_tracker.dao.MediaContainer;
+import ua.lsi.media_tracker.dao.MediaAccessProvider;
 import ua.lsi.media_tracker.enums.SaveType;
-import ua.lsi.media_tracker.enums.StorageType;
 import ua.lsi.media_tracker.model.Media;
 
 import java.io.File;
@@ -48,10 +46,12 @@ public class MediaTrackerController extends AbstractController {
     Label statusLabel;
     @Getter
     private Stage stage;
-    @Autowired
-    private ObjectProvider objectProvider;
+
     @Autowired
     private Settings settings;
+
+    @Autowired
+    private MediaAccessProvider mediaAccessProvider;
 
     private Boolean modified = false;
 
@@ -60,16 +60,15 @@ public class MediaTrackerController extends AbstractController {
     }
 
     public void autoLoad() {
-        MediaContainer container = getMediaContainer();
         Task<String> task = new Task<String>() {
             @Override
             protected String call() throws Exception {
-                return container.tryLoadFromSavedResource();
+                return mediaAccessProvider.tryLoadFromSavedResource();
             }
         };
         task.setOnSucceeded(event -> {
             setupStatusLabelWithText(task.getValue());
-            createAndShowTableViews(container.getSectionToMediaMap());
+            createAndShowTableViews(mediaAccessProvider.getSectionToMediaMap());
         });
         task.setOnFailed(event -> log.error(event.getSource().getException()));
         new Thread(task).start();
@@ -77,37 +76,32 @@ public class MediaTrackerController extends AbstractController {
 
     @FXML
     public void loadData() {
-        MediaContainer container = getMediaContainer();
-        String statusMessage = container.loadInformation();
+        String statusMessage = mediaAccessProvider.loadInformation();
         setupStatusLabelWithText(statusMessage);
-        createAndShowTableViews(container.getSectionToMediaMap());
+        createAndShowTableViews(mediaAccessProvider.getSectionToMediaMap());
     }
 
     public void loadDataFromDraggedFile(File file) {
-        MediaContainer container = getMediaContainer();
-        String statusMessage = container.loadInformationFromFile(file);
+        String statusMessage = mediaAccessProvider.loadInformationFromFile(file);
         setupStatusLabelWithText(statusMessage);
-        createAndShowTableViews(container.getSectionToMediaMap());
+        createAndShowTableViews(mediaAccessProvider.getSectionToMediaMap());
     }
 
     @FXML
     public void saveData() {
-        MediaContainer container = getMediaContainer();
-        String statusMessage = container.saveMediaMap(SaveType.AUTOMATIC);
+        String statusMessage = mediaAccessProvider.saveMediaMap(SaveType.AUTOMATIC);
         setupStatusLabelWithText(statusMessage);
     }
 
     @FXML
     public void saveDataWithDialog() {
-        MediaContainer container = getMediaContainer();
-        String statusMessage = container.saveMediaMap(SaveType.MANUAL);
+        String statusMessage = mediaAccessProvider.saveMediaMap(SaveType.MANUAL);
         setupStatusLabelWithText(statusMessage);
     }
 
     public void addNewItem(String section, Media media) {
-        MediaContainer container = getMediaContainer();
 
-        Map<String, List<Media>> mediaMap = container.getSectionToMediaMap();
+        Map<String, List<Media>> mediaMap = mediaAccessProvider.getSectionToMediaMap();
         List<Media> mediaList;
         if (mediaMap.containsKey(section)) {
             mediaList = mediaMap.get(section);
@@ -120,7 +114,7 @@ public class MediaTrackerController extends AbstractController {
     }
 
     public void removeItem(String section, Media media) {
-        Map<String, List<Media>> mediaMap = getMediaContainer().getSectionToMediaMap();
+        Map<String, List<Media>> mediaMap = mediaAccessProvider.getSectionToMediaMap();
         List<Media> mediaList = mediaMap.get(section);
         mediaList.remove(media);
         setupStatusLabelWithText("Item \"" + media.getName() + "\" removed. You need to save changes");
@@ -260,12 +254,12 @@ public class MediaTrackerController extends AbstractController {
         clearLabelAfterDelay(statusLabel, 5000);
     }
 
-    private MediaContainer getMediaContainer() {
-        return objectProvider.getMediaContainer(settings.getStorageType());
-    }
+//    private MediaContainer getMediaContainer() {
+//        return objectProvider.getMediaContainer(settings.getStorageType());
+//    }
 
     public Set<String> getSections() {
-        return getMediaContainer().getSectionToMediaMap().keySet();
+        return mediaAccessProvider.getSectionToMediaMap().keySet();
     }
 
     public void setModified(Boolean modified) {

@@ -45,12 +45,12 @@ public class SqliteMediaContainer implements MediaContainer {
 
 
     @Override
-    public String tryLoadFromSavedResource() {
+    public Map<String, List<Media>> tryLoadFromSavedResource() {
         return loadInformation();
     }
 
     @Override
-    public String loadInformation() {
+    public Map<String, List<Media>> loadInformation() {
         mediaMap = new LinkedHashMap<>();
         Iterable<Media> medias = mediaRepository.findAll();
         for (Media media : medias) {
@@ -58,24 +58,17 @@ public class SqliteMediaContainer implements MediaContainer {
             mediaList.add(media);
             mediaMap.put(media.getSection().getName(), mediaList);
         }
-        if (!mediaMap.isEmpty()) {
-            return messages.getMessage(MessageCode.LOAD_SQLITE_SUCCESSFUL);
-        }
-        return messages.getMessage(MessageCode.LOAD_SQLITE_UNSUCCESSFUL);
-    }
 
-    @Override
-    public String loadInformationFromFile(File file) {
-        return parseFileToMap(file);
-    }
-
-    @Override
-    public Map<String, List<Media>> getSectionToMediaMap() {
         return mediaMap;
     }
 
     @Override
-    public String saveMediaMap(SaveType saveType) {
+    public Map<String, List<Media>> loadInformationFromFile(File file) {
+        return parseFileToMap(file);
+    }
+
+    @Override
+    public String saveMediaMap(SaveType saveType, Map<String, List<Media>> mediaMap) {
         String message = null;
         if (saveType == SaveType.AUTOMATIC) {
             message = saveMediaToDB();
@@ -111,13 +104,9 @@ public class SqliteMediaContainer implements MediaContainer {
         return message;
     }
 
-    private String parseFileToMap(File file) {
+    private  Map<String, List<Media>> parseFileToMap(File file) {
         mediaMap = fileParserAndSaver.getMapOfMediaFromFile(file);
-        if (file != null && file.exists()) {
-            return messages.getMessageRelatedToFile(MessageCode.LOAD_SUCCESSFUL, file);
-        } else {
-            return messages.getMessage(MessageCode.LOAD_UNSUCCESSFUL);
-        }
+        return mediaMap;
     }
 
 

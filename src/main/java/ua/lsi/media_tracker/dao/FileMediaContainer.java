@@ -19,7 +19,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ua.lsi.media_tracker.enums.MessageCode.*;
+import static ua.lsi.media_tracker.enums.MessageCode.AUTO_LOAD_SUCCESSFUL;
+import static ua.lsi.media_tracker.enums.MessageCode.AUTO_LOAD_UNSUCCESSFUL;
 
 /**
  * Created by LSI on 26.03.2016.
@@ -38,46 +39,32 @@ public class FileMediaContainer implements MediaContainer {
     private FileParserAndSaver fileParserAndSaver;
 
     @Override
-    public String tryLoadFromSavedResource() {
-        String returnedMessage;
+    public Map<String, List<Media>> tryLoadFromSavedResource() {
         file = settings.getDefaultInfoFile();
         if (settings.getAutomaticLoadEnabled()) {
-            parseFileToMap(file);
-            if (file != null && file.exists()) {
-                returnedMessage = createMessage(AUTO_LOAD_SUCCESSFUL, file);
-            } else {
-                returnedMessage = createMessage(AUTO_LOAD_UNSUCCESSFUL);
-            }
+            mediaMap = parseFileToMap(file);
         } else {
             mediaMap = new LinkedHashMap<>();
-            returnedMessage = createMessage(AUTO_LOAD_DISABLED);
         }
-        return returnedMessage;
+        return mediaMap;
     }
 
     @Override
-    public String loadInformation() {
+    public Map<String, List<Media>> loadInformation() {
         return loadInformationFromFile(null);
     }
 
-    @Override
-    public String loadInformationFromFile(File file) {
+    public Map<String, List<Media>> loadInformationFromFile(File file) {
         if (file == null) {
             file = fileProvider.getFileForLoad();
         }
         this.file = file;
 
-        String returnedMessage = parseFileToMap(file);
-        return returnedMessage;
+        return parseFileToMap(file);
     }
 
     @Override
-    public Map<String, List<Media>> getSectionToMediaMap() {
-        return mediaMap;
-    }
-
-    @Override
-    public String saveMediaMap(SaveType saveType) {
+    public String saveMediaMap(SaveType saveType, Map<String, List<Media>> mediaMap) {
         File fileToSaveTo = null;
         switch (saveType) {
             case AUTOMATIC:
@@ -98,14 +85,8 @@ public class FileMediaContainer implements MediaContainer {
         return returnedMessage;
     }
 
-    private String parseFileToMap(File file) {
-        mediaMap = fileParserAndSaver.getMapOfMediaFromFile(file);
-
-        if (file != null && file.exists()) {
-            return createMessage(LOAD_SUCCESSFUL, file);
-        } else {
-            return createMessage(LOAD_UNSUCCESSFUL);
-        }
+    private Map<String, List<Media>> parseFileToMap(File file) {
+        return fileParserAndSaver.getMapOfMediaFromFile(file);
     }
 
     private String createMessage(MessageCode code, File file) {

@@ -14,13 +14,11 @@ import java.util.Map;
  */
 public interface MediaContainer {
 
-    String tryLoadFromSavedResource();
+    Map<String, List<Media>> tryLoadFromSavedResource();
 
-    String loadInformation();
+    Map<String, List<Media>> loadInformation();
 
-    String loadInformationFromFile(File file);
+    Map<String, List<Media>> loadInformationFromFile(File file);
 
-    Map<String, List<Media>> getSectionToMediaMap();
-
-    String saveMediaMap(SaveType saveType);
+    String saveMediaMap(SaveType saveType, Map<String, List<Media>> mediaMap);
 }

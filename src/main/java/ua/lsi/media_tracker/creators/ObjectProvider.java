@@ -15,22 +15,22 @@ import ua.lsi.media_tracker.enums.StorageType;
  */
 @Component
 public class ObjectProvider {
-    @Autowired
-    @Setter
-    private FileMediaContainer fileMediaContainer;
-
-    @Autowired
-    @Setter
-    private SqliteMediaContainer sqliteMediaContainer;
-
-    public MediaContainer getMediaContainer(StorageType type) {
-        switch (type) {
-            case FILE:
-                return fileMediaContainer;
-            case SQLITE:
-                return sqliteMediaContainer;
-            default:
-                return fileMediaContainer;
-        }
-    }
+//    @Autowired
+//    @Setter
+//    private FileMediaContainer fileMediaContainer;
+//
+//    @Autowired
+//    @Setter
+//    private SqliteMediaContainer sqliteMediaContainer;
+//
+//    public MediaContainer getMediaContainer(StorageType type) {
+//        switch (type) {
+//            case FILE:
+//                return fileMediaContainer;
+//            case SQLITE:
+//                return sqliteMediaContainer;
+//            default:
+//                return fileMediaContainer;
+//        }
+//    }
 }

@@ -55,15 +55,16 @@ public class FileMediaContainerTest {
     @Test
     public void testTryLoadFromSavedResource_loadDisabled() throws Exception {
         when(settingsMock.getAutomaticLoadEnabled()).thenReturn(false);
-        String returnedMessage = container.tryLoadFromSavedResource();
-        Assert.assertEquals(messages.getMessage(AUTO_LOAD_DISABLED), returnedMessage);
+        Map<String, List<Media>> result = container.tryLoadFromSavedResource();
+        Assert.assertTrue(result.isEmpty());
+
     }
 
     @Test
     public void testTryLoadFromSavedResource_fileNotSet() throws Exception {
         when(settingsMock.getAutomaticLoadEnabled()).thenReturn(true);
-        String returnedMessage = container.tryLoadFromSavedResource();
-        Assert.assertEquals(messages.getMessage(AUTO_LOAD_UNSUCCESSFUL), returnedMessage);
+        Map<String, List<Media>> result = container.tryLoadFromSavedResource();
+        Assert.assertTrue(result.isEmpty());
     }
 
     @Test
@@ -72,15 +73,15 @@ public class FileMediaContainerTest {
         File file = new File(url.getFile());
         when(settingsMock.getAutomaticLoadEnabled()).thenReturn(true);
         when(settingsMock.getDefaultInfoFile()).thenReturn(file);
-        String returnedMessage = container.tryLoadFromSavedResource();
-        Assert.assertEquals(messages.getMessageRelatedToFile(AUTO_LOAD_SUCCESSFUL, file), returnedMessage);
+        Map<String, List<Media>> result = container.tryLoadFromSavedResource();
+        Assert.assertTrue(result.isEmpty());
     }
 
     @Test
     public void testLoadInformation_nullFile() throws Exception {
         when(fileProviderMock.getFileForLoad()).thenReturn(null);
-        String returnedMessage = container.loadInformation();
-        Assert.assertEquals(messages.getMessage(LOAD_UNSUCCESSFUL), returnedMessage);
+        Map<String, List<Media>> result = container.loadInformation();
+        Assert.assertTrue(result.isEmpty());
     }
 
     @Test
@@ -88,8 +89,8 @@ public class FileMediaContainerTest {
         String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(resourceFolderPath + "notExist.txt");
         when(fileProviderMock.getFileForLoad()).thenReturn(file);
-        String returnedMessage = container.loadInformation();
-        Assert.assertEquals(messages.getMessage(LOAD_UNSUCCESSFUL), returnedMessage);
+        Map<String, List<Media>> result = container.loadInformation();
+        Assert.assertTrue(result.isEmpty());
     }
 
     @Test
@@ -97,14 +98,8 @@ public class FileMediaContainerTest {
         URL url = this.getClass().getResource("/z_Serials.txt");
         File file = new File(url.getFile());
         when(fileProviderMock.getFileForLoad()).thenReturn(file);
-        String returnedMessage = container.loadInformation();
-        Assert.assertEquals(messages.getMessageRelatedToFile(LOAD_SUCCESSFUL, file), returnedMessage);
-    }
-
-    @Test
-    public void testGetSectionToMediaMap_containerIsNotSetUp() throws Exception {
-        Map<String, List<Media>> resultMap = container.getSectionToMediaMap();
-        Assert.assertNull(resultMap);
+        Map<String, List<Media>> returnedMessage = container.loadInformation();
+        Assert.assertEquals(2, returnedMessage.size());
     }
 
     @Test
@@ -117,8 +112,8 @@ public class FileMediaContainerTest {
             add(new Media());
         }});
         when(fileParserAndSaverMock.getMapOfMediaFromFile(file)).thenReturn(mediaMap);
-        container.loadInformation();
-        Map<String, List<Media>> resultMap = container.getSectionToMediaMap();
+
+        Map<String, List<Media>> resultMap = container.loadInformation();
         Assert.assertNotNull(resultMap);
         Assert.assertNotEquals(0, resultMap.size());
     }
@@ -128,8 +123,7 @@ public class FileMediaContainerTest {
         String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(resourceFolderPath + "notExist.txt");
         when(fileProviderMock.getFileForLoad()).thenReturn(file);
-        container.loadInformation();
-        Map<String, List<Media>> resultMap = container.getSectionToMediaMap();
+        Map<String, List<Media>> resultMap = container.loadInformation();
         Assert.assertNotNull(resultMap);
         Assert.assertEquals(0, resultMap.size());
         Assert.assertEquals(Collections.EMPTY_MAP, resultMap);
@@ -138,7 +132,7 @@ public class FileMediaContainerTest {
     @Test
     public void testSaveMediaMap_fileToSaveNull() throws Exception {
         when(fileProviderMock.getFileForSave(any())).thenReturn(null);
-        String returnedMessage = container.saveMediaMap(SaveType.MANUAL);
+        String returnedMessage = container.saveMediaMap(SaveType.MANUAL, null);
         Assert.assertEquals(messages.getMessage(SAVE_UNSUCCESSFUL), returnedMessage);
     }
 
@@ -147,7 +141,7 @@ public class FileMediaContainerTest {
         String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(resourceFolderPath + "notExist.txt");
         when(fileProviderMock.getFileForSave(any())).thenReturn(file);
-        String returnedMessage = container.saveMediaMap(SaveType.MANUAL);
+        String returnedMessage = container.saveMediaMap(SaveType.MANUAL, null);
         Assert.assertEquals(messages.getMessageRelatedToFile(SAVE_SUCCESSFUL, file), returnedMessage);
     }
 
@@ -156,7 +150,7 @@ public class FileMediaContainerTest {
         URL url = this.getClass().getResource("/z_Serials.txt");
         File file = new File(url.getFile());
         when(fileProviderMock.getFileForSave(any())).thenReturn(file);
-        String returnedMessage = container.saveMediaMap(SaveType.MANUAL);
+        String returnedMessage = container.saveMediaMap(SaveType.MANUAL, null);
         Assert.assertEquals(messages.getMessageRelatedToFile(SAVE_SUCCESSFUL, file), returnedMessage);
     }
 }
