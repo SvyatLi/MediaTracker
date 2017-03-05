@@ -3,6 +3,10 @@ package ua.lsi.media_tracker.utils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
@@ -21,9 +25,13 @@ import static org.junit.Assert.*;
  *
  * @author LSI
  */
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class FileParserAndSaverTest {
 
+    @Autowired
     FileParserAndSaver fileParserAndSaver;
+    @Autowired
     Messages messages;
 
     @BeforeClass
@@ -39,9 +47,6 @@ public class FileParserAndSaverTest {
 
     @Before
     public void setUp() throws Exception {
-        fileParserAndSaver = new FileParserAndSaver();
-        messages = new Messages();
-        fileParserAndSaver.setMessages(messages);
         String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(resourceFolderPath + "canBeCreated.txt");
         if (file.exists()) {

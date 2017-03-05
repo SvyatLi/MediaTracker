@@ -33,9 +33,15 @@ public class FileMediaContainer implements MediaContainer {
     private File file;
     private Map<String, List<Media>> mediaMap;
 
+    @Autowired
     private FileProvider fileProvider;
+
     private Messages messages;
+
+    @Autowired
     private Settings settings;
+
+    @Autowired
     private FileParserAndSaver fileParserAndSaver;
 
     @Override
@@ -116,20 +122,5 @@ public class FileMediaContainer implements MediaContainer {
     @Autowired
     public void setMessages(Messages messages) {
         this.messages = messages;
-    }
-
-    @Autowired
-    public void setFileProvider(FileProvider fileProvider) {
-        this.fileProvider = fileProvider;
-    }
-
-    @Autowired
-    public void setSettings(Settings settings) {
-        this.settings = settings;
-    }
-
-    @Autowired
-    public void setFileParserAndSaver(FileParserAndSaver fileParserAndSaver) {
-        this.fileParserAndSaver = fileParserAndSaver;
     }
 }

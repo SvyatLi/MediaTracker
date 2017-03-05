@@ -3,6 +3,11 @@ package ua.lsi.media_tracker.dao;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 import ua.lsi.media_tracker.Main;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 import ua.lsi.media_tracker.creators.FileProvider;
@@ -19,31 +24,35 @@ import java.util.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static ua.lsi.media_tracker.enums.MessageCode.*;
+import static ua.lsi.media_tracker.enums.MessageCode.SAVE_SUCCESSFUL;
+import static ua.lsi.media_tracker.enums.MessageCode.SAVE_UNSUCCESSFUL;
 
 /**
  * Created by LSI on 30.03.2016.
  *
  * @author LSI
  */
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class FileMediaContainerTest {
 
-    FileMediaContainer container = new FileMediaContainer();
+    @Autowired
+    FileMediaContainer container;
+
+    @Autowired
     Messages messages;
+
+    @MockBean
     FileProvider fileProviderMock;
+
+    @MockBean
     Settings settingsMock;
+
+    @Autowired
     FileParserAndSaver fileParserAndSaverMock;
 
     @Before
     public void setUp() {
-        messages = new Messages();
-        container.setMessages(messages);
-        fileProviderMock = mock(FileProvider.class);
-        container.setFileProvider(fileProviderMock);
-        settingsMock = mock(Settings.class);
-        container.setSettings(settingsMock);
-        fileParserAndSaverMock = mock(FileParserAndSaver.class);
-        container.setFileParserAndSaver(fileParserAndSaverMock);
         String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(resourceFolderPath + "notExist.txt");
         if (file.exists()) {
@@ -57,7 +66,6 @@ public class FileMediaContainerTest {
         when(settingsMock.getAutomaticLoadEnabled()).thenReturn(false);
         Map<String, List<Media>> result = container.tryLoadFromSavedResource();
         Assert.assertTrue(result.isEmpty());
-
     }
 
     @Test
@@ -74,7 +82,7 @@ public class FileMediaContainerTest {
         when(settingsMock.getAutomaticLoadEnabled()).thenReturn(true);
         when(settingsMock.getDefaultInfoFile()).thenReturn(file);
         Map<String, List<Media>> result = container.tryLoadFromSavedResource();
-        Assert.assertTrue(result.isEmpty());
+        Assert.assertEquals(5, result.size());
     }
 
     @Test
@@ -99,7 +107,7 @@ public class FileMediaContainerTest {
         File file = new File(url.getFile());
         when(fileProviderMock.getFileForLoad()).thenReturn(file);
         Map<String, List<Media>> returnedMessage = container.loadInformation();
-        Assert.assertEquals(2, returnedMessage.size());
+        Assert.assertEquals(5, returnedMessage.size());
     }
 
     @Test
@@ -107,15 +115,10 @@ public class FileMediaContainerTest {
         URL url = this.getClass().getResource("/z_Serials.txt");
         File file = new File(url.getFile());
         when(fileProviderMock.getFileForLoad()).thenReturn(file);
-        Map<String, List<Media>> mediaMap = new HashMap<>();
-        mediaMap.put("default", new ArrayList<Media>() {{
-            add(new Media());
-        }});
-        when(fileParserAndSaverMock.getMapOfMediaFromFile(file)).thenReturn(mediaMap);
 
         Map<String, List<Media>> resultMap = container.loadInformation();
         Assert.assertNotNull(resultMap);
-        Assert.assertNotEquals(0, resultMap.size());
+        Assert.assertEquals(5, resultMap.size());
     }
 
     @Test
@@ -141,7 +144,7 @@ public class FileMediaContainerTest {
         String resourceFolderPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         File file = new File(resourceFolderPath + "notExist.txt");
         when(fileProviderMock.getFileForSave(any())).thenReturn(file);
-        String returnedMessage = container.saveMediaMap(SaveType.MANUAL, null);
+        String returnedMessage = container.saveMediaMap(SaveType.MANUAL, new LinkedHashMap<>());
         Assert.assertEquals(messages.getMessageRelatedToFile(SAVE_SUCCESSFUL, file), returnedMessage);
     }
 
@@ -150,7 +153,7 @@ public class FileMediaContainerTest {
         URL url = this.getClass().getResource("/z_Serials.txt");
         File file = new File(url.getFile());
         when(fileProviderMock.getFileForSave(any())).thenReturn(file);
-        String returnedMessage = container.saveMediaMap(SaveType.MANUAL, null);
+        String returnedMessage = container.saveMediaMap(SaveType.MANUAL, new LinkedHashMap<>());
         Assert.assertEquals(messages.getMessageRelatedToFile(SAVE_SUCCESSFUL, file), returnedMessage);
     }
 }

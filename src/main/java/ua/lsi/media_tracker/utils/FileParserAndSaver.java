@@ -24,6 +24,8 @@ public class FileParserAndSaver {
     private final static String sectionStarter = "//";
     private final static String matcher = ".*\\s\\-\\ss\\d*e\\d*";
     private final static String matcherSeparator = "\\s\\-\\s";
+
+    @Autowired
     private Messages messages;
 
     public Map<String, List<Media>> getMapOfMediaFromFile(File file) {
@@ -95,10 +97,5 @@ public class FileParserAndSaver {
             media.setName(line);
         }
         return media;
-    }
-
-    @Autowired
-    public void setMessages(Messages messages) {
-        this.messages = messages;
     }
 }
