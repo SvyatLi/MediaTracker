@@ -150,7 +150,7 @@ public class FileMediaContainerTest {
 
     @Test
     public void testSaveMediaMap_fileToSaveExist() throws Exception {
-        URL url = this.getClass().getResource("/z_Serials.txt");
+        URL url = this.getClass().getResource("/EmptyFile.txt");
         File file = new File(url.getFile());
         when(fileProviderMock.getFileForSave(any())).thenReturn(file);
         String returnedMessage = container.saveMediaMap(SaveType.MANUAL, new LinkedHashMap<>());
