@@ -76,6 +76,16 @@ public class SqliteMediaContainer implements MediaContainer {
 
     @Override
     public String saveMediaMap(SaveType saveType) {
+        String message = null;
+        if (saveType == SaveType.AUTOMATIC) {
+            message = saveMediaToDB();
+        } else if (saveType == SaveType.MANUAL) {
+            message = "Import to file not implemented yet";
+        }
+        return message;
+    }
+
+    private String saveMediaToDB() {
         String message;
         try {
             for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
