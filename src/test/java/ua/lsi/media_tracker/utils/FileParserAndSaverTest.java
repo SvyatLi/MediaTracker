@@ -72,7 +72,7 @@ public class FileParserAndSaverTest {
 
     @Test
     public void testGetMapOfMediaFromFile_correctFile() throws Exception {
-        URL url = this.getClass().getResource("/z_Serials.txt");
+        URL url = this.getClass().getResource("/z_Serials_parser.txt");
         File file = new File(url.getFile());
         Map<String, List<Media>> result = fileParserAndSaver.getMapOfMediaFromFile(file);
         assertNotNull(result);
