@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -28,6 +28,6 @@ public class Section {
 
     private String name;
 
-    @OneToMany(mappedBy = "section", cascade = CascadeType.ALL)
-    private Set<Media> medias;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "section", cascade = CascadeType.ALL)
+    private Set<Media> medias = new LinkedHashSet<>();
 }

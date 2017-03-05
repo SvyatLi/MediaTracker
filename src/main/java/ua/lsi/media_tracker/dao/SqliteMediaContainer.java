@@ -1,8 +1,10 @@
 package ua.lsi.media_tracker.dao;
 
 import javafx.collections.FXCollections;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ua.lsi.media_tracker.Main;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.enums.SaveType;
@@ -14,6 +16,7 @@ import ua.lsi.media_tracker.utils.FileParserAndSaver;
 
 import java.io.File;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +26,7 @@ import java.util.Map;
  * @author LSI
  */
 @Component
+@Log4j
 public class SqliteMediaContainer implements MediaContainer {
 
     private Map<String, List<Media>> mediaMap;
@@ -72,13 +76,29 @@ public class SqliteMediaContainer implements MediaContainer {
 
     @Override
     public String saveMediaMap(SaveType saveType) {
-        for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
-            Section section = Section.builder().name(entry.getKey()).build();
-            sectionRepository.save(section);
-            entry.getValue().forEach(media -> media.setSection(section));
-            mediaRepository.save(entry.getValue());
+        String message;
+        try {
+            for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
+                Section section = sectionRepository.findSectionByName(entry.getKey());
+                if (section == null) {
+                    Section createdSection = Section.builder()
+                            .name(entry.getKey())
+                            .medias(new LinkedHashSet<>(entry.getValue()))
+                            .build();
+                    sectionRepository.save(createdSection);
+                    entry.getValue().forEach(media -> media.setSection(createdSection));
+                } else {
+                    entry.getValue().forEach(media -> media.setSection(section));
+                }
+                mediaRepository.save(entry.getValue());
+            }
+            Main.mediaTrackerController.setModified(false);
+            message = messages.getMessage(MessageCode.SAVE_SQLITE_SUCCESSFUL);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            message = messages.getMessage(MessageCode.SAVE_SQLITE_UNSUCCESSFUL);
         }
-        return messages.getMessage(MessageCode.SAVE_SQLITE_SUCCESSFUL);
+        return message;
     }
 
     private String parseFileToMap(File file) {

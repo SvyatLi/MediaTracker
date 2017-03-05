@@ -1,9 +1,6 @@
 package ua.lsi.media_tracker.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.text.NumberFormat;
@@ -16,6 +13,7 @@ import java.text.NumberFormat;
 @Data
 @Entity
 @Builder
+@EqualsAndHashCode(exclude = "section")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Media {

@@ -12,4 +12,6 @@ import java.util.List;
  * @author LSI
  */
 public interface SectionRepository extends CrudRepository<Section, Long> {
+
+    Section findSectionByName(String name);
 }
