@@ -84,8 +84,7 @@ public class MediaTrackerController extends AbstractController {
     }
 
     public void loadDataFromDraggedFile(File file) {
-        MediaContainer container = objectProvider.getMediaContainer(StorageType.FILE);
-        settings.setStorageType(StorageType.FILE);
+        MediaContainer container = getMediaContainer();
         String statusMessage = container.loadInformationFromFile(file);
         setupStatusLabelWithText(statusMessage);
         createAndShowTableViews(container.getSectionToMediaMap());

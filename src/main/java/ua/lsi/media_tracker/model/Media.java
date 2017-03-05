@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.text.NumberFormat;
 
 /**
@@ -34,6 +31,10 @@ public class Media {
     private int season;
 
     private int episode;
+
+    @ManyToOne
+    @JoinColumn(name = "section_id")
+    private Section section;
 
     public void change(String property, String sign) {
         int change = 1;

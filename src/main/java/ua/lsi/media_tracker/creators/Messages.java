@@ -30,10 +30,13 @@ public class Messages {
         messagesMap.put(MessageCode.SETTINGS_SAVED, "Settings saved");
         messagesMap.put(MessageCode.SETTINGS_NOT_SAVED, "Settings not saved");
         messagesMap.put(MessageCode.DEFAULT_SECTION, "Default");
+        messagesMap.put(MessageCode.LOAD_SQLITE_SUCCESSFUL, "Load from SQLite successful");
+        messagesMap.put(MessageCode.LOAD_SQLITE_UNSUCCESSFUL, "Can't load from SQLite");
+        messagesMap.put(MessageCode.SAVE_SQLITE_SUCCESSFUL, "Save to SQLite successful");
     }
 
     public String getMessage(MessageCode code) {
-        return messagesMap.get(code);
+        return messagesMap.getOrDefault(code, code.name());
     }
 
     public String getMessageRelatedToFile(MessageCode code, File file) {
