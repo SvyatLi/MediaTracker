@@ -82,6 +82,9 @@ public class MediaAccessProvider {
     }
 
     public String saveMediaMap(SaveType saveType) {
+        if (saveType == SaveType.MANUAL) {
+            return fileMediaContainer.saveMediaMap(saveType, mediaMap);
+        }
 
         return getMediaContainer().saveMediaMap(saveType, mediaMap);
     }

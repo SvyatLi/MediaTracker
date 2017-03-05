@@ -24,6 +24,7 @@ public class FileProvider {
             fileChooser.setInitialDirectory(loadedFromFile.getParentFile());
             fileChooser.setInitialFileName(loadedFromFile.getName());
         }
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         return fileChooser.showSaveDialog(null);
     }
 }
