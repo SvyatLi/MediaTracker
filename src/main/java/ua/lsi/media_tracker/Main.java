@@ -1,6 +1,7 @@
 package ua.lsi.media_tracker;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -28,9 +29,10 @@ public class Main extends Application {
     public static void main(String[] args) {
         new Thread(() -> {
             JOptionPane optionPane = new JOptionPane(
-                    "Application is loading (maybe using Spring Data was a little overkill)\nThis window will be closed on app UI load" ,
+                    "Application is loading (maybe using Spring Data was a little overkill)\nThis window will be closed on app UI load",
                     JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
             dialog = optionPane.createDialog("Don't worry");
+            dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             dialog.setAlwaysOnTop(true);
             dialog.setVisible(true);
         }).start();
@@ -75,7 +77,19 @@ public class Main extends Application {
 
         mediaTrackerController.init(primaryStage);
         mediaTrackerController.autoLoad();
-        dialog.dispose();
+        Platform.runLater(
+                () -> new Thread(() -> {
+                    while (dialog == null) {
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    dialog.dispose();
+                    log.info("Dialog disposed");
+                }).start()
+        );
     }
 
     @Override
