@@ -30,6 +30,8 @@ public class Media {
 
     private int episode;
 
+    private int position;
+
     @ManyToOne
     @JoinColumn(name = "section_id")
     private Section section;

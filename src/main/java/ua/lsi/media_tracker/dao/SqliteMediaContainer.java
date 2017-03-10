@@ -14,10 +14,7 @@ import ua.lsi.media_tracker.repository.MediaRepository;
 import ua.lsi.media_tracker.repository.SectionRepository;
 import ua.lsi.media_tracker.utils.FileParserAndSaver;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by LSI on 05.03.2017.
@@ -55,6 +52,7 @@ public class SqliteMediaContainer implements MediaContainer {
             mediaList.add(media);
             mediaMap.put(media.getSection().getName(), mediaList);
         }
+        mediaMap.values().forEach(mediaList -> mediaList.sort(Comparator.comparingInt(Media::getPosition)));
 
         return mediaMap;
     }
@@ -64,7 +62,7 @@ public class SqliteMediaContainer implements MediaContainer {
         String message = null;
         if (saveType == SaveType.AUTOMATIC) {
             message = saveMediaToDB(mediaMap);
-        } 
+        }
         return message;
     }
 
@@ -73,17 +71,24 @@ public class SqliteMediaContainer implements MediaContainer {
         try {
             for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
                 Section section = sectionRepository.findSectionByName(entry.getKey());
+                List<Media> mediaList = entry.getValue();
                 if (section == null) {
                     Section createdSection = Section.builder()
                             .name(entry.getKey())
-                            .medias(new LinkedHashSet<>(entry.getValue()))
+                            .medias(new LinkedHashSet<>(mediaList))
                             .build();
                     sectionRepository.save(createdSection);
-                    entry.getValue().forEach(media -> media.setSection(createdSection));
+                    mediaList.forEach(media -> {
+                        media.setSection(createdSection);
+                        media.setPosition(mediaList.indexOf(media));
+                    });
                 } else {
-                    entry.getValue().forEach(media -> media.setSection(section));
+                    mediaList.forEach(media -> {
+                        media.setSection(section);
+                        media.setPosition(mediaList.indexOf(media));
+                    });
                 }
-                mediaRepository.save(entry.getValue());
+                mediaRepository.save(mediaList);
             }
             Main.mediaTrackerController.setModified(false);
             message = messages.getMessage(MessageCode.SAVE_SQLITE_SUCCESSFUL);
