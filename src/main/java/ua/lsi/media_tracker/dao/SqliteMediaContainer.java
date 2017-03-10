@@ -32,9 +32,6 @@ public class SqliteMediaContainer implements MediaContainer {
     private SectionRepository sectionRepository;
 
     @Autowired
-    private FileParserAndSaver fileParserAndSaver;
-
-    @Autowired
     private Messages messages;
 
 
@@ -80,13 +77,14 @@ public class SqliteMediaContainer implements MediaContainer {
                     sectionRepository.save(createdSection);
                     mediaList.forEach(media -> {
                         media.setSection(createdSection);
-                        media.setPosition(mediaList.indexOf(media));
                     });
                 } else {
                     mediaList.forEach(media -> {
                         media.setSection(section);
-                        media.setPosition(mediaList.indexOf(media));
                     });
+                }
+                for (int i = 0; i < mediaList.size(); i++) {
+                    mediaList.get(i).setPosition(i);
                 }
                 mediaRepository.save(mediaList);
             }
