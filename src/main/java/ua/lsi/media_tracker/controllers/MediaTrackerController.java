@@ -70,7 +70,7 @@ public class MediaTrackerController extends AbstractController {
             setupStatusLabelWithText(task.getValue());
             createAndShowTableViews(mediaAccessProvider.getSectionToMediaMap());
         });
-        task.setOnFailed(event -> log.error(event.getSource().getException()));
+        task.setOnFailed(event -> log.error(event.getSource().getException().getMessage(), event.getSource().getException()));
         new Thread(task).start();
     }
 

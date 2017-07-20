@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+//import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -15,19 +15,19 @@ import java.util.Set;
  * @author LSI
  */
 @Data
-@Entity
+//@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "section")
+//@Table(name = "section")
 public class Section {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "section", cascade = CascadeType.ALL)
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "section", cascade = CascadeType.ALL)
     private Set<Media> medias = new LinkedHashSet<>();
 }
