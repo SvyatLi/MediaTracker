@@ -29,7 +29,7 @@ public class Main extends Application {
     public static void main(String[] args) {
         new Thread(() -> {
             JOptionPane optionPane = new JOptionPane(
-                    "Application is loading (maybe using Spring Data was a little overkill)\nThis window will be closed on app UI load",
+                    "Application is loading \nThis window will be closed on app UI load",
                     JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
             dialog = optionPane.createDialog("Don't worry");
             dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

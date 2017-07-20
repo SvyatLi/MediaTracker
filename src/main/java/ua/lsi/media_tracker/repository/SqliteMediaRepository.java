@@ -19,6 +19,10 @@ import java.util.List;
 @Component
 public class SqliteMediaRepository implements MediaRepository {
 
+    private static final String INSERT_MEDIA = "INSERT INTO 'main'.'media' ('position', 'name', 'season', 'episode', 'section_id') VALUES ( ? , ?, ?, ?, ?);";
+    private static final String UPDATE_MEDIA = "UPDATE main.media SET \"position\"=?, \"name\"=?, \"season\"=?, \"episode\"=?, \"section_id\"=? WHERE (\"id\"=?);";
+    private static final String DELETE_MEDIA = "DELETE FROM main.media WHERE (id=?);";
+
     @Autowired
     ConnectionManager cm;
 
@@ -28,14 +32,13 @@ public class SqliteMediaRepository implements MediaRepository {
     @Override
     public boolean save(Media entity) {
         try {
-            //TODO add update not only insert
-            PreparedStatement ps = cm.getConnection().prepareStatement("INSERT INTO 'main'.'media' ('position','name', 'season', 'episode',  'section_id') VALUES ( ? , ?, ?, ?, ?);");
+            PreparedStatement ps = cm.getConnection().prepareStatement(INSERT_MEDIA);
             ps.setInt(1, entity.getPosition());
             ps.setString(2, entity.getName());
             ps.setInt(3, entity.getSeason());
             ps.setInt(4, entity.getEpisode());
             ps.setLong(5, entity.getSection().getId());
-            ps.executeUpdate();
+            int res = ps.executeUpdate();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,12 +47,35 @@ public class SqliteMediaRepository implements MediaRepository {
     }
 
     @Override
-    public boolean save(Iterable<Media> entities) {
-        boolean aggregatedResult = true;
-        for (Media entity : entities) {
-            aggregatedResult = aggregatedResult && save(entity);
+    public boolean update(Media entity) {
+        try {
+            PreparedStatement ps = cm.getConnection().prepareStatement(UPDATE_MEDIA);
+            ps.setInt(1, entity.getPosition());
+            ps.setString(2, entity.getName());
+            ps.setInt(3, entity.getSeason());
+            ps.setInt(4, entity.getEpisode());
+            ps.setLong(5, entity.getSection().getId());
+            ps.setLong(6, entity.getId());
+            int res = ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return aggregatedResult;
+        return false;
+    }
+
+
+    @Override
+    public boolean save(Iterable<Media> entities) {
+        boolean result = true;
+        for (Media entity : entities) {
+            if (entity.getId() == null) {
+                result = result && save(entity);
+            } else {
+                result = result && update(entity);
+            }
+        }
+        return result;
     }
 
     @Override
@@ -69,9 +95,23 @@ public class SqliteMediaRepository implements MediaRepository {
         return medias;
     }
 
+    @Override
+    public boolean delete(Media entity) {
+        try {
+            PreparedStatement ps = cm.getConnection().prepareStatement(DELETE_MEDIA);
+
+            ps.setInt(1, entity.getId());
+            int res = ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     private Media createMedia(ResultSet rs) throws SQLException {
         return Media.builder()
-                .id(rs.getLong("id"))
+                .id(rs.getInt("id"))
                 .name(rs.getString("name"))
                 .season(rs.getInt("season"))
                 .episode(rs.getInt("episode"))

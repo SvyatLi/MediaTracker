@@ -10,7 +10,11 @@ import ua.lsi.media_tracker.model.Media;
 public interface MediaRepository{
     boolean save(Media entity);
 
+    boolean update(Media entity);
+
     boolean save(Iterable<Media> entities);
 
     Iterable<Media> findAll();
+
+    boolean delete(Media entity);
 }

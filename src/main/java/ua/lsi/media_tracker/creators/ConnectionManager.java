@@ -5,6 +5,7 @@ import ua.lsi.media_tracker.utils.SettingsProvider;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
@@ -19,7 +20,21 @@ public class ConnectionManager {
 
     public ConnectionManager() {
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:" + SettingsProvider.getUserDataDirectory() + "media_tracker_test.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:" + SettingsProvider.getUserDataDirectory() + "media_tracker.db");
+            PreparedStatement mediaCreate = connection.prepareStatement("CREATE TABLE IF NOT EXISTS main.media " +
+                    "( id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    " \"name\" TEXT," +
+                    " \"position\" INTEGER," +
+                    " season INTEGER," +
+                    " episode INTEGER," +
+                    " section_id INTEGER NULLABLE" +
+                    " );");
+            mediaCreate.execute();
+            PreparedStatement mediaSection = connection.prepareStatement("CREATE TABLE IF NOT EXISTS main.section " +
+                    "( id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    " \"name\" TEXT" +
+                    " );");
+            mediaSection.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

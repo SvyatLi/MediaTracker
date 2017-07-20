@@ -12,7 +12,6 @@ import ua.lsi.media_tracker.model.Media;
 import ua.lsi.media_tracker.model.Section;
 import ua.lsi.media_tracker.repository.MediaRepository;
 import ua.lsi.media_tracker.repository.SectionRepository;
-import ua.lsi.media_tracker.utils.FileParserAndSaver;
 
 import java.util.*;
 
@@ -61,6 +60,11 @@ public class SqliteMediaContainer implements MediaContainer {
             message = saveMediaToDB(mediaMap);
         }
         return message;
+    }
+
+    @Override
+    public String removeMedia(Media media) {
+        return mediaRepository.delete(media) ? "Removed" : "Error";
     }
 
     private String saveMediaToDB(Map<String, List<Media>> mediaMap) {

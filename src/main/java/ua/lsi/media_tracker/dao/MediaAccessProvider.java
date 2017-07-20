@@ -89,6 +89,10 @@ public class MediaAccessProvider {
         return getMediaContainer().saveMediaMap(saveType, mediaMap);
     }
 
+    public String removeMedia(Media media) {
+        return getMediaContainer().removeMedia(media);
+    }
+
     private MediaContainer getMediaContainer() {
         return getMediaContainer(settings.getStorageType());
     }

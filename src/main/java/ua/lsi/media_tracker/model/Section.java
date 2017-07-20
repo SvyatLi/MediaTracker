@@ -15,19 +15,14 @@ import java.util.Set;
  * @author LSI
  */
 @Data
-//@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-//@Table(name = "section")
 public class Section {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
 
-//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "section", cascade = CascadeType.ALL)
     private Set<Media> medias = new LinkedHashSet<>();
 }

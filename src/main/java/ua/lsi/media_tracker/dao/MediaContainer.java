@@ -19,4 +19,8 @@ public interface MediaContainer {
     Map<String, List<Media>> loadInformation();
 
     String saveMediaMap(SaveType saveType, Map<String, List<Media>> mediaMap);
+
+    default String removeMedia(Media media){
+        return "";
+    }
 }
