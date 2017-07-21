@@ -1,5 +1,6 @@
 package ua.lsi.media_tracker.repository;
 
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.ConnectionManager;
@@ -16,6 +17,7 @@ import java.util.List;
  *
  * @author LSI
  */
+@Log4j
 @Component
 public class SqliteMediaRepository implements MediaRepository {
 
@@ -41,9 +43,9 @@ public class SqliteMediaRepository implements MediaRepository {
             int res = ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
+            throw new RuntimeException(e.getMessage());
         }
-        return false;
     }
 
     @Override
@@ -59,9 +61,9 @@ public class SqliteMediaRepository implements MediaRepository {
             int res = ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
+            throw new RuntimeException(e.getMessage());
         }
-        return false;
     }
 
 
@@ -90,7 +92,8 @@ public class SqliteMediaRepository implements MediaRepository {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
+            throw new RuntimeException(e.getMessage());
         }
         return medias;
     }
@@ -104,9 +107,9 @@ public class SqliteMediaRepository implements MediaRepository {
             int res = ps.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
+            throw new RuntimeException(e.getMessage());
         }
-        return false;
     }
 
     private Media createMedia(ResultSet rs) throws SQLException {

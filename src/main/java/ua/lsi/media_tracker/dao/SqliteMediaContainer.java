@@ -96,7 +96,7 @@ public class SqliteMediaContainer implements MediaContainer {
             message = messages.getMessage(MessageCode.SAVE_SQLITE_SUCCESSFUL);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            message = messages.getMessage(MessageCode.SAVE_SQLITE_UNSUCCESSFUL);
+            message = messages.getMessage(MessageCode.SAVE_SQLITE_UNSUCCESSFUL) + " " + e.getMessage();
         }
         return message;
     }

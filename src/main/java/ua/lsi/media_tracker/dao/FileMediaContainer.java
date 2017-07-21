@@ -108,7 +108,7 @@ public class FileMediaContainer implements MediaContainer {
                 try {
                     fileExist = file.createNewFile();
                 } catch (IOException e) {
-                    log.error(e);
+                    log.error(e.getMessage(), e);
                 }
             }
             return fileExist;

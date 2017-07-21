@@ -1,5 +1,6 @@
 package ua.lsi.media_tracker.dao;
 
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.Messages;
@@ -21,6 +22,7 @@ import static ua.lsi.media_tracker.enums.MessageCode.*;
  * @author LSI
  */
 @Component
+@Log4j
 public class MediaAccessProvider {
 
     @Autowired
@@ -49,6 +51,7 @@ public class MediaAccessProvider {
                 returnedMessage = createMessage(AUTO_LOAD_SUCCESSFUL);
             } else {
                 returnedMessage = createMessage(AUTO_LOAD_UNSUCCESSFUL);
+                log.error(returnedMessage);
             }
         } else {
             returnedMessage = createMessage(AUTO_LOAD_DISABLED);
@@ -65,6 +68,7 @@ public class MediaAccessProvider {
             returnedMessage = createMessage(LOAD_SUCCESSFUL);
         } else {
             returnedMessage = createMessage(LOAD_UNSUCCESSFUL);
+            log.error(returnedMessage);
         }
 
         return returnedMessage;
@@ -77,16 +81,20 @@ public class MediaAccessProvider {
             message = createMessage(LOAD_SUCCESSFUL, file);
         } else {
             message = createMessage(LOAD_UNSUCCESSFUL);
+            log.error(message);
         }
         return message;
     }
 
     public String saveMediaMap(SaveType saveType) {
+        String message;
         if (saveType == SaveType.MANUAL) {
-            return fileMediaContainer.saveMediaMap(saveType, mediaMap);
+            message = fileMediaContainer.saveMediaMap(saveType, mediaMap);
+        } else {
+            message = getMediaContainer().saveMediaMap(saveType, mediaMap);
         }
 
-        return getMediaContainer().saveMediaMap(saveType, mediaMap);
+        return message;
     }
 
     public String removeMedia(Media media) {
@@ -102,7 +110,9 @@ public class MediaAccessProvider {
     }
 
     private String createMessage(MessageCode code) {
-        return messages.getMessage(code);
+        String message = messages.getMessage(code);
+        log.debug(message);
+        return message;
     }
 
     private MediaContainer getMediaContainer(StorageType storageType) {
