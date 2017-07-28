@@ -44,34 +44,36 @@ public class MediaAccessProvider {
     }
 
     public String tryLoadFromSavedResource() {
-        String returnedMessage;
+        String message;
+        log.info("Loading from saved resource");
         mediaMap = getMediaContainer().tryLoadFromSavedResource();
         if (settings.getAutomaticLoadEnabled()) {
             if (!mediaMap.isEmpty()) {
-                returnedMessage = createMessage(AUTO_LOAD_SUCCESSFUL);
+                message = createMessage(AUTO_LOAD_SUCCESSFUL);
             } else {
-                returnedMessage = createMessage(AUTO_LOAD_UNSUCCESSFUL);
-                log.error(returnedMessage);
+                message = createMessage(AUTO_LOAD_UNSUCCESSFUL);
+                log.error(message);
             }
         } else {
-            returnedMessage = createMessage(AUTO_LOAD_DISABLED);
+            message = createMessage(AUTO_LOAD_DISABLED);
         }
-        return returnedMessage;
+        log.info(message);
+        return message;
     }
 
     public String loadInformation() {
-        String returnedMessage;
+        String message;
 
         mediaMap = getMediaContainer().loadInformation();
 
         if (!mediaMap.isEmpty()) {
-            returnedMessage = createMessage(LOAD_SUCCESSFUL);
+            message = createMessage(LOAD_SUCCESSFUL);
         } else {
-            returnedMessage = createMessage(LOAD_UNSUCCESSFUL);
-            log.error(returnedMessage);
+            message = createMessage(LOAD_UNSUCCESSFUL);
+            log.error(message);
         }
-
-        return returnedMessage;
+        log.info(message);
+        return message;
     }
 
     public String loadInformationFromFile(File file) {
@@ -83,6 +85,7 @@ public class MediaAccessProvider {
             message = createMessage(LOAD_UNSUCCESSFUL);
             log.error(message);
         }
+        log.info(message);
         return message;
     }
 
@@ -93,7 +96,7 @@ public class MediaAccessProvider {
         } else {
             message = getMediaContainer().saveMediaMap(saveType, mediaMap);
         }
-
+        log.info(message);
         return message;
     }
 

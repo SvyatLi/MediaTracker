@@ -59,27 +59,31 @@ public class SqliteSectionRepository implements SectionRepository {
     }
 
     @Override
-    public boolean save(Section entity) {
+    public Section save(Section entity) {
         try {
             PreparedStatement ps = cm.getConnection().prepareStatement("INSERT INTO 'main'.'section' ('name') VALUES ( ?);");
             ps.setString(1, entity.getName());
             ps.executeUpdate();
-            return true;
+            return findSectionByName(entity.getName());
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return false;
+        return null;
     }
 
     @Override
-    public boolean save(Iterable<Section> entities) {
-        boolean aggregatedResult = true;
-
-        for (Section entity : entities) {
-            aggregatedResult = aggregatedResult && save(entity);
+    public Section create(String name) {
+        try {
+            PreparedStatement ps = cm.getConnection().prepareStatement("INSERT INTO 'main'.'section' ('name') VALUES ( ?);");
+            ps.setString(1, name);
+            ps.executeUpdate();
+            return findSectionByName(name);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return aggregatedResult;
+
+        return null;
     }
 
 

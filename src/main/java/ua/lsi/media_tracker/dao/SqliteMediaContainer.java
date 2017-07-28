@@ -59,6 +59,7 @@ public class SqliteMediaContainer implements MediaContainer {
         if (saveType == SaveType.AUTOMATIC) {
             message = saveMediaToDB(mediaMap);
         }
+        log.info(message);
         return message;
     }
 
@@ -74,11 +75,7 @@ public class SqliteMediaContainer implements MediaContainer {
                 Section section = sectionRepository.findSectionByName(entry.getKey());
                 List<Media> mediaList = entry.getValue();
                 if (section == null) {
-                    Section createdSection = Section.builder()
-                            .name(entry.getKey())
-                            .medias(new LinkedHashSet<>(mediaList))
-                            .build();
-                    sectionRepository.save(createdSection);
+                    Section createdSection = sectionRepository.create(entry.getKey());
                     mediaList.forEach(media -> {
                         media.setSection(createdSection);
                     });
@@ -98,6 +95,7 @@ public class SqliteMediaContainer implements MediaContainer {
             log.error(e.getMessage(), e);
             message = messages.getMessage(MessageCode.SAVE_SQLITE_UNSUCCESSFUL) + " " + e.getMessage();
         }
+        log.info(message);
         return message;
     }
 }

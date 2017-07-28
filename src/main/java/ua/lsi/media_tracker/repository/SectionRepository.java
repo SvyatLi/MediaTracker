@@ -2,6 +2,8 @@ package ua.lsi.media_tracker.repository;
 
 import ua.lsi.media_tracker.model.Section;
 
+import java.util.List;
+
 /**
  * Created by LSI on 04.03.2017.
  *
@@ -13,8 +15,7 @@ public interface SectionRepository {
 
     Section findSectionById(Long id);
 
-    boolean save(Section entity);
+    Section save(Section entity);
 
-    boolean save(Iterable<Section> entities);
-
+    Section create(String name);
 }
