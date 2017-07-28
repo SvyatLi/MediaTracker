@@ -24,19 +24,8 @@ import java.io.File;
 @SpringBootApplication
 public class Main extends Application {
     public static MediaTrackerController mediaTrackerController;
-    private static JDialog dialog;
 
     public static void main(String[] args) {
-        new Thread(() -> {
-            JOptionPane optionPane = new JOptionPane(
-                    "Application is loading \nThis window will be closed on app UI load",
-                    JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
-            dialog = optionPane.createDialog("Don't worry");
-            dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            dialog.setAlwaysOnTop(true);
-            dialog.setVisible(true);
-        }).start();
-
         launch(args);
     }
 
@@ -77,19 +66,6 @@ public class Main extends Application {
 
         mediaTrackerController.init(primaryStage);
         mediaTrackerController.autoLoad();
-        Platform.runLater(
-                () -> new Thread(() -> {
-                    while (dialog == null) {
-                        try {
-                            Thread.sleep(200);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    dialog.dispose();
-                    log.info("Dialog disposed");
-                }).start()
-        );
     }
 
     @Override
