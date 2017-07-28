@@ -1,7 +1,6 @@
 package ua.lsi.media_tracker;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -12,7 +11,6 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 
-import javax.swing.*;
 import java.io.File;
 
 /**

@@ -2,8 +2,9 @@ package ua.lsi.media_tracker.model;
 
 import lombok.*;
 
-//import javax.persistence.*;
 import java.text.NumberFormat;
+
+//import javax.persistence.*;
 
 /**
  * Created by LSI on 26.03.2016.
@@ -17,10 +18,8 @@ import java.text.NumberFormat;
 @AllArgsConstructor
 public class Media {
 
-    private Integer id;
-
     private final static NumberFormat NUMBER_FORMAT = NumberFormat.getInstance();
-
+    private Integer id;
     private String name;
 
     private int season;

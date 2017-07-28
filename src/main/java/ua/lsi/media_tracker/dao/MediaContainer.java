@@ -3,7 +3,6 @@ package ua.lsi.media_tracker.dao;
 import ua.lsi.media_tracker.enums.SaveType;
 import ua.lsi.media_tracker.model.Media;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ public interface MediaContainer {
 
     String saveMediaMap(SaveType saveType, Map<String, List<Media>> mediaMap);
 
-    default String removeMedia(Media media){
+    default String removeMedia(Media media) {
         return "";
     }
 }

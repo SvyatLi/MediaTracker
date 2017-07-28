@@ -13,12 +13,11 @@ import java.util.Properties;
 public class SettingsProvider {
 
     private static final String FILE_NAME = "settings.properties";
+    private Properties properties = new Properties();
 
     public static String getUserDataDirectory() {
         return System.getProperty("user.home") + File.separator + ".mediatracker" + File.separator;
     }
-
-    private Properties properties = new Properties();
 
     public SettingsProvider addProperty(String key, String value) {
         properties.setProperty(key, value);

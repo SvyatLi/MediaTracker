@@ -7,7 +7,7 @@ import ua.lsi.media_tracker.model.Media;
  *
  * @author LSI
  */
-public interface MediaRepository{
+public interface MediaRepository {
     boolean save(Media entity);
 
     boolean update(Media entity);
