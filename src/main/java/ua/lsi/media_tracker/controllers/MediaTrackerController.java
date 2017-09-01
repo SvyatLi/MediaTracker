@@ -113,6 +113,15 @@ public class MediaTrackerController extends AbstractController {
         }
     }
 
+    public void moveItem(Media media, String oldSection, String newSection) {
+        Map<String, List<Media>> mediaMap = mediaAccessProvider.getSectionToMediaMap();
+        List<Media> mediaList = mediaMap.get(oldSection);
+        mediaList.remove(media);
+        List<Media> mediaSecondList = mediaMap.get(newSection);
+        mediaSecondList.add(media);
+        setupStatusLabelWithText("Item \"" + media.getName() + "\" moved. You need to save changes");
+    }
+
     public void removeItem(String section, Media media) {
         Map<String, List<Media>> mediaMap = mediaAccessProvider.getSectionToMediaMap();
         MediaTrackerController controller = SpringFXMLLoader.getBeanFromContext(MediaTrackerController.class);

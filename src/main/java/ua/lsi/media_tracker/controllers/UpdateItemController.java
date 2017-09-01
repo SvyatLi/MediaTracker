@@ -85,8 +85,7 @@ public class UpdateItemController extends AbstractController implements Initiali
         String section = sectionComboBox.getValue();
         Media media = updateMediaFromTextFields();
         if (!oldSection.equals(section)) {
-            mediaTrackerController.removeItem(oldSection, media);
-            mediaTrackerController.addNewItem(section, media);
+            mediaTrackerController.moveItem(media, oldSection, section);
         }
         mediaTrackerController.setModified(true);
 
