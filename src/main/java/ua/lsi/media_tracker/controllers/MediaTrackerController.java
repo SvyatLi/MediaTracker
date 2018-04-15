@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -21,6 +22,7 @@ import lombok.Getter;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sun.net.www.content.audio.x_aiff;
 import ua.lsi.media_tracker.SpringFXMLLoader;
 import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.dao.MediaAccessProvider;
@@ -32,6 +34,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by LSI on 26.03.2016.
@@ -41,14 +44,14 @@ import java.util.Set;
 @Service
 @Log4j
 public class MediaTrackerController extends AbstractController {
-    private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
     @FXML
     Label statusLabel;
+
+    @FXML
+    VBox sectionsContainer;
+
     @Getter
     private Stage stage;
-
-    @Autowired
-    private Settings settings;
 
     @Autowired
     private MediaAccessProvider mediaAccessProvider;
@@ -62,7 +65,7 @@ public class MediaTrackerController extends AbstractController {
     public void autoLoad() {
         Task<String> task = new Task<String>() {
             @Override
-            protected String call() throws Exception {
+            protected String call() {
                 return mediaAccessProvider.tryLoadFromSavedResource();
             }
         };
@@ -70,7 +73,7 @@ public class MediaTrackerController extends AbstractController {
             setupStatusLabelWithText(task.getValue());
             createAndShowTableViews(mediaAccessProvider.getSectionToMediaMap());
         });
-        task.setOnFailed(event -> log.error(event.getSource().getException()));
+        task.setOnFailed(event -> log.error(event.getSource().getException().getMessage(), event.getSource().getException()));
         new Thread(task).start();
     }
 
@@ -102,114 +105,77 @@ public class MediaTrackerController extends AbstractController {
     public void addNewItem(String section, Media media) {
 
         Map<String, List<Media>> mediaMap = mediaAccessProvider.getSectionToMediaMap();
+        if (mediaMap.isEmpty()) {
+            sectionsContainer.getChildren().clear();
+        }
         List<Media> mediaList;
         if (mediaMap.containsKey(section)) {
             mediaList = mediaMap.get(section);
             mediaList.add(media);
         } else {
-            mediaList = FXCollections.observableArrayList(media);
+            mediaList = FXCollections.observableArrayList();
+            if (media != null) {
+                mediaList.add(media);
+            }
             mediaMap.put(section, mediaList);
             addLabelAndTableViewToVBox(section, mediaList);
         }
     }
 
+    public void moveItem(Media media, String oldSection, String newSection) {
+        Map<String, List<Media>> mediaMap = mediaAccessProvider.getSectionToMediaMap();
+        List<Media> mediaList = mediaMap.get(oldSection);
+        mediaList.remove(media);
+        List<Media> mediaSecondList = mediaMap.get(newSection);
+        mediaSecondList.add(media);
+        setupStatusLabelWithText("Item \"" + media.getName() + "\" moved. You need to save changes");
+    }
+
     public void removeItem(String section, Media media) {
         Map<String, List<Media>> mediaMap = mediaAccessProvider.getSectionToMediaMap();
+        MediaTrackerController controller = SpringFXMLLoader.getBeanFromContext(MediaTrackerController.class);
         List<Media> mediaList = mediaMap.get(section);
         mediaList.remove(media);
+        mediaAccessProvider.removeMedia(media);
+        controller.setModified(false);
         setupStatusLabelWithText("Item \"" + media.getName() + "\" removed. You need to save changes");
     }
 
-    private void createAndShowTableViews(Map<String, List<Media>> mediaMap) {
-        VBox box = getVBoxFromStage(stage);
+    public void removeSection(String section) {
+        Map<String, List<Media>> mediaMap = mediaAccessProvider.getSectionToMediaMap();
+        MediaTrackerController controller = SpringFXMLLoader.getBeanFromContext(MediaTrackerController.class);
+        mediaMap.remove(section);
+        mediaAccessProvider.removeSection(section);
+        sectionsContainer.getChildren()
+                .removeAll(sectionsContainer.getChildren().stream()
+                        .filter(x -> x.getId().equals(section))
+                        .collect(Collectors.toList()));
 
-        box.getChildren().clear();
+        controller.setModified(false);
+        setupStatusLabelWithText("Section \"" + section + "\" removed. You need to save changes");
+    }
+
+    private void createAndShowTableViews(Map<String, List<Media>> mediaMap) {
+        if (!mediaMap.isEmpty()) {
+            sectionsContainer.getChildren().clear();
+        }
         for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
             addLabelAndTableViewToVBox(entry.getKey(), entry.getValue());
         }
     }
 
     private void addLabelAndTableViewToVBox(String section, List<Media> mediaList) {
-        VBox box = getVBoxFromStage(stage);
-
-        Label label = new Label(section);
-        label.setFont(Font.font(24));
-        box.getChildren().add(label);
-        TableView<Media> table = createTable(mediaList);
-        table.setId(section);
-        box.getChildren().add(table);
+        Node table = createTable(section, mediaList);
+        sectionsContainer.getChildren().add(table);
     }
 
-    private TableView<Media> createTable(List<Media> list) {
-        TableView<Media> table = SpringFXMLLoader.loadNode("/view/table_template.fxml");
-        table.setItems((ObservableList<Media>) list);
-        table.setRowFactory(tv -> {
-            TableRow<Media> row = new TableRow<>();
-
-            row.setOnDragDetected(event -> {
-                if (!row.isEmpty()) {
-                    Integer index = row.getIndex();
-                    Dragboard db = row.startDragAndDrop(TransferMode.MOVE);
-                    db.setDragView(row.snapshot(null, null));
-                    ClipboardContent cc = new ClipboardContent();
-                    cc.put(SERIALIZED_MIME_TYPE, index);
-                    db.setContent(cc);
-                    event.consume();
-                }
-            });
-
-            row.setOnDragOver(event -> {
-                Dragboard db = event.getDragboard();
-                if (db.hasContent(SERIALIZED_MIME_TYPE)) {
-                    if (row.getIndex() != (Integer) db.getContent(SERIALIZED_MIME_TYPE)) {
-                        event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
-                        event.consume();
-                    }
-                }
-            });
-
-            row.setOnDragDropped(event -> {
-                Dragboard db = event.getDragboard();
-                if (db.hasContent(SERIALIZED_MIME_TYPE)) {
-                    int draggedIndex = (Integer) db.getContent(SERIALIZED_MIME_TYPE);
-                    Media draggedPerson = table.getItems().remove(draggedIndex);
-
-                    int dropIndex;
-
-                    if (row.isEmpty()) {
-                        dropIndex = table.getItems().size();
-                    } else {
-                        dropIndex = row.getIndex();
-                    }
-
-                    table.getItems().add(dropIndex, draggedPerson);
-
-                    event.setDropCompleted(true);
-                    table.getSelectionModel().select(dropIndex);
-                    event.consume();
-                }
-            });
-
-            return row;
-        });
-        setupHeightAndWidthForTable(table);
-        return table;
-    }
-
-    private void setupHeightAndWidthForTable(TableView<Media> table) {
-        table.setFixedCellSize(30);
-        table.prefHeightProperty().bind(table.fixedCellSizeProperty()
-                .multiply(Bindings.size(table.getItems()).add(2.0)));
-        table.minHeightProperty().bind(table.prefHeightProperty());
-        table.maxHeightProperty().bind(table.prefHeightProperty());
-    }
-
-    private VBox getVBoxFromStage(Stage stage) {
-        return (VBox) stage.getScene().lookup("#scrollVBox");
+    private Node createTable(String section, List<Media> list) {
+        MediaTableController mediaTableController = (MediaTableController) SpringFXMLLoader.load("/view/table_template.fxml");
+        return mediaTableController.setup(section, list);
     }
 
     @FXML
-    public void openSettings() throws IOException {
+    public void openSettings() {
         SettingsDialogController settingsDialogController = (SettingsDialogController) SpringFXMLLoader.load("/view/settings_dialog.fxml");
         Scene scene = new Scene((Parent) settingsDialogController.getView());
         final Stage dialog = new Stage();
@@ -248,15 +214,23 @@ public class MediaTrackerController extends AbstractController {
         dialog.show();
     }
 
+    @FXML
+    public void openAddSectionDialog() {
+        AddSectionController addItemController = (AddSectionController) SpringFXMLLoader.load("/view/add_section.fxml");
+        Scene scene = new Scene((Parent) addItemController.getView());
+        final Stage dialog = new Stage();
+        dialog.initModality(Modality.NONE);
+        dialog.setTitle("Add Section");
+        dialog.initOwner(stage);
+        dialog.setScene(scene);
+        dialog.show();
+    }
+
     private void setupStatusLabelWithText(String text) {
         statusLabel.setText(text);
         statusLabel.setTooltip(new Tooltip(text));
         clearLabelAfterDelay(statusLabel, 5000);
     }
-
-//    private MediaContainer getMediaContainer() {
-//        return objectProvider.getMediaContainer(settings.getStorageType());
-//    }
 
     public Set<String> getSections() {
         return mediaAccessProvider.getSectionToMediaMap().keySet();

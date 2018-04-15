@@ -1,5 +1,6 @@
 package ua.lsi.media_tracker.dao;
 
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.Messages;
@@ -21,6 +22,7 @@ import static ua.lsi.media_tracker.enums.MessageCode.*;
  * @author LSI
  */
 @Component
+@Log4j
 public class MediaAccessProvider {
 
     @Autowired
@@ -42,32 +44,36 @@ public class MediaAccessProvider {
     }
 
     public String tryLoadFromSavedResource() {
-        String returnedMessage;
+        String message;
+        log.info("Loading from saved resource");
         mediaMap = getMediaContainer().tryLoadFromSavedResource();
         if (settings.getAutomaticLoadEnabled()) {
             if (!mediaMap.isEmpty()) {
-                returnedMessage = createMessage(AUTO_LOAD_SUCCESSFUL);
+                message = createMessage(AUTO_LOAD_SUCCESSFUL);
             } else {
-                returnedMessage = createMessage(AUTO_LOAD_UNSUCCESSFUL);
+                message = createMessage(AUTO_LOAD_UNSUCCESSFUL);
+                log.error(message);
             }
         } else {
-            returnedMessage = createMessage(AUTO_LOAD_DISABLED);
+            message = createMessage(AUTO_LOAD_DISABLED);
         }
-        return returnedMessage;
+        log.info(message);
+        return message;
     }
 
     public String loadInformation() {
-        String returnedMessage;
+        String message;
 
         mediaMap = getMediaContainer().loadInformation();
 
         if (!mediaMap.isEmpty()) {
-            returnedMessage = createMessage(LOAD_SUCCESSFUL);
+            message = createMessage(LOAD_SUCCESSFUL);
         } else {
-            returnedMessage = createMessage(LOAD_UNSUCCESSFUL);
+            message = createMessage(LOAD_UNSUCCESSFUL);
+            log.error(message);
         }
-
-        return returnedMessage;
+        log.info(message);
+        return message;
     }
 
     public String loadInformationFromFile(File file) {
@@ -77,16 +83,29 @@ public class MediaAccessProvider {
             message = createMessage(LOAD_SUCCESSFUL, file);
         } else {
             message = createMessage(LOAD_UNSUCCESSFUL);
+            log.error(message);
         }
+        log.info(message);
         return message;
     }
 
     public String saveMediaMap(SaveType saveType) {
+        String message;
         if (saveType == SaveType.MANUAL) {
-            return fileMediaContainer.saveMediaMap(saveType, mediaMap);
+            message = fileMediaContainer.saveMediaMap(saveType, mediaMap);
+        } else {
+            message = getMediaContainer().saveMediaMap(saveType, mediaMap);
         }
+        log.info(message);
+        return message;
+    }
 
-        return getMediaContainer().saveMediaMap(saveType, mediaMap);
+    public String removeMedia(Media media) {
+        return getMediaContainer().removeMedia(media);
+    }
+
+    public String removeSection(String section) {
+        return getMediaContainer().removeSection(section);
     }
 
     private MediaContainer getMediaContainer() {
@@ -98,7 +117,9 @@ public class MediaAccessProvider {
     }
 
     private String createMessage(MessageCode code) {
-        return messages.getMessage(code);
+        String message = messages.getMessage(code);
+        log.debug(message);
+        return message;
     }
 
     private MediaContainer getMediaContainer(StorageType storageType) {

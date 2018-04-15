@@ -19,8 +19,8 @@ import java.util.ResourceBundle;
  *
  * @author LSI
  */
-@Component
 @Log4j
+@Component
 public class AboutController extends AbstractController implements Initializable {
     @FXML
     public Label versionLabel;

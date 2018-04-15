@@ -1,6 +1,5 @@
 package ua.lsi.media_tracker.repository;
 
-import org.springframework.data.repository.CrudRepository;
 import ua.lsi.media_tracker.model.Media;
 
 /**
@@ -8,5 +7,14 @@ import ua.lsi.media_tracker.model.Media;
  *
  * @author LSI
  */
-public interface MediaRepository extends CrudRepository<Media, Long> {
+public interface MediaRepository {
+    boolean save(Media entity);
+
+    boolean update(Media entity);
+
+    boolean save(Iterable<Media> entities);
+
+    Iterable<Media> findAll();
+
+    boolean delete(Media entity);
 }

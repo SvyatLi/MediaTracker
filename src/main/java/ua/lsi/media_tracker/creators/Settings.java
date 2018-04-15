@@ -74,4 +74,11 @@ public class Settings {
             automaticLoadEnabled = false;
         }
     }
+
+    public File getDefaultSaveFile() {
+        defaultInfoFile = sp.getDefaultSaveFile();
+        automaticLoadEnabled = true;
+        saveSettings();
+        return defaultInfoFile;
+    }
 }

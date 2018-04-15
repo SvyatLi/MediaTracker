@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lombok.Setter;
@@ -86,8 +85,7 @@ public class UpdateItemController extends AbstractController implements Initiali
         String section = sectionComboBox.getValue();
         Media media = updateMediaFromTextFields();
         if (!oldSection.equals(section)) {
-            mediaTrackerController.removeItem(oldSection, media);
-            mediaTrackerController.addNewItem(section, media);
+            mediaTrackerController.moveItem(media, oldSection, section);
         }
         mediaTrackerController.setModified(true);
 

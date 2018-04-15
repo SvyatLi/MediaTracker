@@ -12,9 +12,11 @@ import ua.lsi.media_tracker.model.Media;
 import ua.lsi.media_tracker.model.Section;
 import ua.lsi.media_tracker.repository.MediaRepository;
 import ua.lsi.media_tracker.repository.SectionRepository;
-import ua.lsi.media_tracker.utils.FileParserAndSaver;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by LSI on 05.03.2017.
@@ -60,7 +62,18 @@ public class SqliteMediaContainer implements MediaContainer {
         if (saveType == SaveType.AUTOMATIC) {
             message = saveMediaToDB(mediaMap);
         }
+        log.info(message);
         return message;
+    }
+
+    @Override
+    public String removeMedia(Media media) {
+        return mediaRepository.delete(media) ? "Removed" : "Error";
+    }
+
+    @Override
+    public String removeSection(String section) {
+        return sectionRepository.delete(section) ? "Removed" : "Error";
     }
 
     private String saveMediaToDB(Map<String, List<Media>> mediaMap) {
@@ -70,11 +83,7 @@ public class SqliteMediaContainer implements MediaContainer {
                 Section section = sectionRepository.findSectionByName(entry.getKey());
                 List<Media> mediaList = entry.getValue();
                 if (section == null) {
-                    Section createdSection = Section.builder()
-                            .name(entry.getKey())
-                            .medias(new LinkedHashSet<>(mediaList))
-                            .build();
-                    sectionRepository.save(createdSection);
+                    Section createdSection = sectionRepository.create(entry.getKey());
                     mediaList.forEach(media -> {
                         media.setSection(createdSection);
                     });
@@ -92,8 +101,9 @@ public class SqliteMediaContainer implements MediaContainer {
             message = messages.getMessage(MessageCode.SAVE_SQLITE_SUCCESSFUL);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            message = messages.getMessage(MessageCode.SAVE_SQLITE_UNSUCCESSFUL);
+            message = messages.getMessage(MessageCode.SAVE_SQLITE_UNSUCCESSFUL) + " " + e.getMessage();
         }
+        log.info(message);
         return message;
     }
 }

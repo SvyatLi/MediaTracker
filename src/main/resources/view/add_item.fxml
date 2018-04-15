@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.Spinner?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="330.0" prefWidth="390.0" xmlns="http://javafx.com/javafx/8.0.76-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.lsi.media_tracker.controllers.AddItemController">
 	<children>
 		<Label fx:id="addingStatusLabel" alignment="CENTER" layoutX="25.0" layoutY="20.0" prefHeight="20.0" prefWidth="358.0">
@@ -21,12 +22,10 @@
 		<Label layoutX="25.0" layoutY="140.0" text="Season" />
 		<Label layoutX="197.0" layoutY="140.0" text="Episode" />
 		<TextField fx:id="nameTextField" layoutX="25.0" layoutY="110.0" prefHeight="25.0" prefWidth="339.0" />
-		<TextField fx:id="seasonTextField" layoutX="25.0" layoutY="157.0" prefHeight="25.0" prefWidth="168.0" />
-		<TextField fx:id="episodeTextField" layoutX="196.0" layoutY="157.0" prefHeight="25.0" prefWidth="168.0" />
+		<Spinner fx:id="seasonSpinner" layoutX="25.0" layoutY="157.0" prefHeight="25.0" prefWidth="168.0" />
+		<Spinner fx:id="episodeSpinner" layoutX="196.0" layoutY="157.0" prefHeight="25.0" prefWidth="168.0" />
 		<Button layoutX="270.0" layoutY="290.0" mnemonicParsing="false" onAction="#addItem" text="Add" />
 		<Button fx:id="closeButton" cancelButton="true" layoutX="320.0" layoutY="290.0" mnemonicParsing="false" onAction="#close" text="Close" />
-		<TextField fx:id="sectionTextField" layoutX="25.0" layoutY="209.0" prefHeight="25.0" prefWidth="168.0" />
-		<Button layoutX="197.0" layoutY="209.0" mnemonicParsing="false" onAction="#addSection" prefHeight="25.0" prefWidth="122.0" text="Add new section" />
       <Separator layoutX="2.0" layoutY="194.0" prefHeight="3.0" prefWidth="390.0" />
       <Separator layoutY="241.0" prefHeight="17.0" prefWidth="390.0" />
 	</children>

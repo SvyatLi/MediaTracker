@@ -71,7 +71,11 @@ public class FileMediaContainer implements MediaContainer {
         File fileToSaveTo = null;
         switch (saveType) {
             case AUTOMATIC:
-                fileToSaveTo = file;
+                if (!file.getPath().isEmpty()) {
+                    fileToSaveTo = file;
+                } else {
+                    fileToSaveTo = settings.getDefaultSaveFile();
+                }
                 break;
             case MANUAL:
             default:
@@ -108,7 +112,7 @@ public class FileMediaContainer implements MediaContainer {
                 try {
                     fileExist = file.createNewFile();
                 } catch (IOException e) {
-                    log.error(e);
+                    log.error(e.getMessage(), e);
                 }
             }
             return fileExist;

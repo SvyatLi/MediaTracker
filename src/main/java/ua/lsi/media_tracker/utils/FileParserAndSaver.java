@@ -48,6 +48,7 @@ public class FileParserAndSaver {
                     }
                     line = br.readLine();
                 }
+                log.info("Parsed from file " + mediaMap.size() + " medias");
             } catch (IOException e) {
                 log.error(e);
             }

@@ -3,13 +3,12 @@ package ua.lsi.media_tracker;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import lombok.extern.log4j.Log4j;
+import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
-import ua.lsi.media_tracker.configs.SpringAppConfig;
 import ua.lsi.media_tracker.controllers.Controller;
 
 import java.io.IOException;
 import java.io.InputStream;
-import org.springframework.boot.SpringApplication;
 
 /**
  * Created by LSI on 09.04.2016.
@@ -39,7 +38,7 @@ public class SpringFXMLLoader {
     }
 
     public static <T> T loadNode(String url) {
-        T view = null;
+        T view;
         try (InputStream fxmlStream = SpringFXMLLoader.class.getResourceAsStream(url)) {
 
             FXMLLoader loader = new FXMLLoader();

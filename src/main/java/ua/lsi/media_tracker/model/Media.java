@@ -2,8 +2,9 @@ package ua.lsi.media_tracker.model;
 
 import lombok.*;
 
-import javax.persistence.*;
 import java.text.NumberFormat;
+
+//import javax.persistence.*;
 
 /**
  * Created by LSI on 26.03.2016.
@@ -11,19 +12,14 @@ import java.text.NumberFormat;
  * @author LSI
  */
 @Data
-@Entity
 @Builder
 @EqualsAndHashCode(exclude = "section")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Media {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     private final static NumberFormat NUMBER_FORMAT = NumberFormat.getInstance();
-
+    private Integer id;
     private String name;
 
     private int season;
@@ -32,8 +28,6 @@ public class Media {
 
     private int position;
 
-    @ManyToOne
-    @JoinColumn(name = "section_id")
     private Section section;
 
     public void change(String property, String sign) {

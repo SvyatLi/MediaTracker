@@ -13,12 +13,12 @@ import java.util.Properties;
 public class SettingsProvider {
 
     private static final String FILE_NAME = "settings.properties";
+    private static final String SAVE_FILE_NAME = "default.txt";
+    private Properties properties = new Properties();
 
     public static String getUserDataDirectory() {
         return System.getProperty("user.home") + File.separator + ".mediatracker" + File.separator;
     }
-
-    private Properties properties = new Properties();
 
     public SettingsProvider addProperty(String key, String value) {
         properties.setProperty(key, value);
@@ -28,7 +28,9 @@ public class SettingsProvider {
     public void save() throws IOException {
         try {
             File propsDir = new File(getUserDataDirectory());
-            propsDir.mkdir();
+            if (!propsDir.exists()) {
+                propsDir.mkdir();
+            }
             File propsFile = new File(getUserDataDirectory() + FILE_NAME);
             propsFile.createNewFile();
 
@@ -42,7 +44,22 @@ public class SettingsProvider {
 
     }
 
+    public File getDefaultSaveFile() {
+        File file;
+        try {
+            file = new File(getUserDataDirectory() + SAVE_FILE_NAME);
+            file.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return file;
+    }
+
     public boolean propertiesExist() {
+        File propsDir = new File(getUserDataDirectory());
+        if (!propsDir.exists()){
+            propsDir.mkdir();
+        }
         File propsFile = new File(getUserDataDirectory() + FILE_NAME);
         if (propsFile.exists()) {
             try (InputStream inputStream = new FileInputStream(propsFile)) {
