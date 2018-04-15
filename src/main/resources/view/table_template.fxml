@@ -1,79 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.scene.control.*?>
-<?import ua.lsi.media_tracker.table.cell.*?>
-<TableView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-           prefWidth="580.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" editable="false">
-	<columns>
-		<TableColumn minWidth="100.0" prefWidth="318.0" text="Name" id="nameColumn">
-			<cellValueFactory>
-				<PropertyValueFactory property="name"/>
-			</cellValueFactory>
-		</TableColumn>
-		<TableColumn prefWidth="100.0" text="Season" resizable="false">
-			<columns>
-				<TableColumn prefWidth="30.0" text="-" resizable="false">
-					<cellFactory>
-						<TableCellButtonFactory/>
-					</cellFactory>
-				</TableColumn>
-				<TableColumn prefWidth="40.0" text="#" resizable="false">
-					<cellValueFactory>
-						<PropertyValueFactory property="season"/>
-					</cellValueFactory>
-				</TableColumn>
-				<TableColumn prefWidth="30.0" text="+" resizable="false">
-					<cellFactory>
-						<TableCellButtonFactory/>
-					</cellFactory>
-				</TableColumn>
-			</columns>
-		</TableColumn>
-		<TableColumn prefWidth="100.0" text="Episode" resizable="false">
-			<columns>
-				<TableColumn prefWidth="30.0" text="-" resizable="false">
-					<cellFactory>
-						<TableCellButtonFactory/>
-					</cellFactory>
-				</TableColumn>
-				<TableColumn prefWidth="40.0" text="#" resizable="false">
-					<cellValueFactory>
-						<PropertyValueFactory property="episode"/>
-					</cellValueFactory>
-				</TableColumn>
-				<TableColumn prefWidth="30.0" text="+" resizable="false">
-					<cellFactory>
-						<TableCellButtonFactory/>
-					</cellFactory>
-				</TableColumn>
-			</columns>
-		</TableColumn>
-		<TableColumn prefWidth="30.0" resizable="false" sortable="false">
-			<cellFactory>
-				<TableCellButtonEditFactory/>
-			</cellFactory>
-			<graphic>
-				<Label text="E">
-					<tooltip>
-						<Tooltip text="Edit" />
-					</tooltip>
-				</Label>
-			</graphic>
-		</TableColumn>
-		<TableColumn prefWidth="30.0" resizable="false" sortable="false">
-			<cellFactory>
-				<TableCellButtonRemoveFactory/>
-			</cellFactory>
-			<graphic>
-				<Label text="X">
-					<tooltip>
-						<Tooltip text="Remove" />
-					</tooltip>
-				</Label>
-			</graphic>
-		</TableColumn>
-	</columns>
-</TableView>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import ua.lsi.media_tracker.table.cell.TableCellButtonEditFactory?>
+<?import ua.lsi.media_tracker.table.cell.TableCellButtonFactory?>
+<?import ua.lsi.media_tracker.table.cell.TableCellButtonRemoveFactory?>
 
-
+<VBox fx:id="parentBox" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ua.lsi.media_tracker.controllers.MediaTableController">
+   <children>
+      <Label fx:id="sectionName" alignment="CENTER" prefHeight="35.0" prefWidth="580.0" text="Section name">
+         <font>
+            <Font size="24.0" />
+         </font>
+	  </Label>
+      <TableView fx:id="mediaTableView" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="580.0">
+      	<columns>
+      		<TableColumn id="nameColumn" minWidth="100.0" prefWidth="318.0" text="Name">
+      			<cellValueFactory>
+      				<PropertyValueFactory property="name" />
+      			</cellValueFactory>
+      		</TableColumn>
+      		<TableColumn prefWidth="100.0" resizable="false" text="Season">
+      			<columns>
+      				<TableColumn prefWidth="30.0" resizable="false" text="-">
+      					<cellFactory>
+      						<TableCellButtonFactory />
+      					</cellFactory>
+      				</TableColumn>
+      				<TableColumn prefWidth="40.0" resizable="false" text="#">
+      					<cellValueFactory>
+      						<PropertyValueFactory property="season" />
+      					</cellValueFactory>
+      				</TableColumn>
+      				<TableColumn prefWidth="30.0" resizable="false" text="+">
+      					<cellFactory>
+      						<TableCellButtonFactory />
+      					</cellFactory>
+      				</TableColumn>
+      			</columns>
+      		</TableColumn>
+      		<TableColumn prefWidth="100.0" resizable="false" text="Episode">
+      			<columns>
+      				<TableColumn prefWidth="30.0" resizable="false" text="-">
+      					<cellFactory>
+      						<TableCellButtonFactory />
+      					</cellFactory>
+      				</TableColumn>
+      				<TableColumn prefWidth="40.0" resizable="false" text="#">
+      					<cellValueFactory>
+      						<PropertyValueFactory property="episode" />
+      					</cellValueFactory>
+      				</TableColumn>
+      				<TableColumn prefWidth="30.0" resizable="false" text="+">
+      					<cellFactory>
+      						<TableCellButtonFactory />
+      					</cellFactory>
+      				</TableColumn>
+      			</columns>
+      		</TableColumn>
+      		<TableColumn prefWidth="30.0" resizable="false" sortable="false">
+      			<cellFactory>
+      				<TableCellButtonEditFactory />
+      			</cellFactory>
+      			<graphic>
+      				<Label text="E">
+      					<tooltip>
+      						<Tooltip text="Edit" />
+      					</tooltip>
+      				</Label>
+      			</graphic>
+      		</TableColumn>
+      		<TableColumn prefWidth="30.0" resizable="false" sortable="false">
+      			<cellFactory>
+      				<TableCellButtonRemoveFactory />
+      			</cellFactory>
+      			<graphic>
+      				<Label text="X">
+      					<tooltip>
+      						<Tooltip text="Remove" />
+      					</tooltip>
+      				</Label>
+      			</graphic>
+      		</TableColumn>
+      	</columns>
+      </TableView>
+      <BorderPane prefHeight="0.0" prefWidth="580.0">
+         <left>
+            <Button mnemonicParsing="false" onAction="#addItemToSection" text="Add Item" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <Button mnemonicParsing="false" onAction="#removeSection" text="Remove Section" BorderPane.alignment="CENTER" />
+         </right>
+      </BorderPane>
+   </children>
+</VBox>

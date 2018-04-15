@@ -16,4 +16,7 @@ public interface SectionRepository {
     Section save(Section entity);
 
     Section create(String name);
+
+    boolean delete(String name);
+
 }

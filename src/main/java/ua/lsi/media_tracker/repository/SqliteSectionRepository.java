@@ -4,6 +4,7 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.ConnectionManager;
+import ua.lsi.media_tracker.model.Media;
 import ua.lsi.media_tracker.model.Section;
 
 import java.sql.PreparedStatement;
@@ -86,6 +87,19 @@ public class SqliteSectionRepository implements SectionRepository {
         return null;
     }
 
+    @Override
+    public boolean delete(String section) {
+        try {
+            PreparedStatement ps = cm.getConnection().prepareStatement("DELETE FROM 'main'.'section' WHERE (name=?);");
+
+            ps.setString(1, section);
+            int res = ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 
     private Section createSection(ResultSet rs) throws SQLException {
         return Section.builder()

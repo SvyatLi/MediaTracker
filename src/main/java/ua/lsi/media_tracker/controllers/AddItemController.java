@@ -3,10 +3,7 @@ package ua.lsi.media_tracker.controllers;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,13 +30,11 @@ public class AddItemController extends AbstractController implements Initializab
     @FXML
     public TextField nameTextField;
     @FXML
-    public TextField seasonTextField;
+    public Spinner<Integer> seasonSpinner;
     @FXML
-    public TextField episodeTextField;
+    public Spinner<Integer> episodeSpinner;
     @FXML
     public Label addingStatusLabel;
-    @FXML
-    public TextField sectionTextField;
 
     @Autowired
     private Messages messages;
@@ -55,12 +50,15 @@ public class AddItemController extends AbstractController implements Initializab
         }
         sectionComboBox.setItems(FXCollections.observableArrayList(sections));
         sectionComboBox.getSelectionModel().selectFirst();
+        seasonSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0));
+        seasonSpinner.setEditable(true);
+        episodeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0));
+        episodeSpinner.setEditable(true);
     }
 
     @FXML
     public void close() {
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
+        ((Stage) closeButton.getScene().getWindow()).close();
     }
 
     @FXML
@@ -70,41 +68,21 @@ public class AddItemController extends AbstractController implements Initializab
         mediaTrackerController.addNewItem(section, media);
         addingStatusLabel.setText("Item Added");
         clearLabelAfterDelay(addingStatusLabel, 2000);
+        close();
+    }
+
+    public void selectSection(String section) {
+        sectionComboBox.getSelectionModel().select(section);
     }
 
     private Media createMediaFromTextFields() {
         String name = nameTextField.getText();
-        Integer season = getIntValueOrZeroFromTextInput(seasonTextField);
-        seasonTextField.setText(season.toString());
-        Integer episode = getIntValueOrZeroFromTextInput(episodeTextField);
-        episodeTextField.setText(episode.toString());
+        Integer season = seasonSpinner.getValue();
+        Integer episode = episodeSpinner.getValue();
         Media media = new Media();
         media.setName(name);
         media.setSeason(season);
         media.setEpisode(episode);
         return media;
-    }
-
-    private Integer getIntValueOrZeroFromTextInput(TextField textField) {
-        if (textField != null) {
-            String value = textField.getText();
-            if (value != null && !value.isEmpty() && value.matches("[0-9]*")) {
-                return Integer.parseInt(value, 10);
-            }
-        }
-        return 0;
-    }
-
-    @FXML
-    public void addSection() {
-        String newSection = sectionTextField.getText();
-        if (newSection != null && !newSection.isEmpty()) {
-            sectionComboBox.getItems().add(newSection);
-            sectionTextField.clear();
-            addingStatusLabel.setText("Section Added");
-        } else {
-            addingStatusLabel.setText("Wrong section name");
-        }
-        clearLabelAfterDelay(addingStatusLabel, 2000);
     }
 }

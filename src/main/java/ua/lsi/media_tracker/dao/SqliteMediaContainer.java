@@ -71,6 +71,11 @@ public class SqliteMediaContainer implements MediaContainer {
         return mediaRepository.delete(media) ? "Removed" : "Error";
     }
 
+    @Override
+    public String removeSection(String section) {
+        return sectionRepository.delete(section) ? "Removed" : "Error";
+    }
+
     private String saveMediaToDB(Map<String, List<Media>> mediaMap) {
         String message;
         try {

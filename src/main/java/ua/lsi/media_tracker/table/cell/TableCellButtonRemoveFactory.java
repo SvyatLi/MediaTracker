@@ -27,7 +27,7 @@ public class TableCellButtonRemoveFactory<S extends Media, T> extends AbstractTa
                 } else {
                     btn.setOnAction((ActionEvent event) ->
                     {
-                        String section = getTableView().getId();
+                        String section = getTableView().getParent().getId();
                         Media media = getTableView().getItems().get(getIndex());
                         MediaTrackerController controller = SpringFXMLLoader.getBeanFromContext(MediaTrackerController.class);
                         ButtonType removeButtonType = new ButtonType("Remove", ButtonBar.ButtonData.OK_DONE);

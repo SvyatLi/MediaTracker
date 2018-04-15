@@ -22,4 +22,8 @@ public interface MediaContainer {
     default String removeMedia(Media media) {
         return "";
     }
+
+    default String removeSection(String section) {
+        return "";
+    }
 }

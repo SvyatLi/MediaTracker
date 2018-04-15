@@ -104,6 +104,10 @@ public class MediaAccessProvider {
         return getMediaContainer().removeMedia(media);
     }
 
+    public String removeSection(String section) {
+        return getMediaContainer().removeSection(section);
+    }
+
     private MediaContainer getMediaContainer() {
         return getMediaContainer(settings.getStorageType());
     }
