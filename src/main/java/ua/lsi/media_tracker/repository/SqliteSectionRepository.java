@@ -10,6 +10,8 @@ import ua.lsi.media_tracker.model.Section;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by LSI on 06.07.2017.
@@ -57,6 +59,23 @@ public class SqliteSectionRepository implements SectionRepository {
         }
 
         return result;
+    }
+
+    @Override
+    public List<Section> findAll() {
+        List<Section> results = new ArrayList<>();
+        try {
+            PreparedStatement ps = cm.getConnection().prepareStatement("SELECT * FROM 'main'.'section';");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                results.add(createSection(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            log.error(e.getMessage(), e);
+        }
+
+        return results;
     }
 
     @Override

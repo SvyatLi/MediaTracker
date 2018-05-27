@@ -52,8 +52,13 @@ public class SqliteMediaContainer implements MediaContainer {
             mediaMap.put(media.getSection().getName(), mediaList);
         }
         mediaMap.values().forEach(mediaList -> mediaList.sort(Comparator.comparingInt(Media::getPosition)));
+        List<Section> sections = sectionRepository.findAll();
+        Map<String, List<Media>> sortedMediaMap = new LinkedHashMap<>();
+        sections.stream()
+                .map(Section::getName)
+                .forEach(name -> sortedMediaMap.put(name, mediaMap.get(name)));
 
-        return mediaMap;
+        return sortedMediaMap;
     }
 
     @Override

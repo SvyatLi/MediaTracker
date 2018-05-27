@@ -47,7 +47,7 @@ public class MediaTableController extends AbstractController {
     private MediaTrackerController mediaTrackerController;
 
     public Node setup(String section, List<Media> list) {
-        parentBox.setId(section);
+        mediaTableView.setId(section);
         sectionName.setText(section);
         mediaTableView.setItems((ObservableList<Media>) list);
         mediaTableView.setRowFactory(tv -> {
