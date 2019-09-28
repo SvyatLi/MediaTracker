@@ -144,15 +144,23 @@ public class MediaTrackerController extends AbstractController {
     public void removeSection(String section) {
         Map<String, List<Media>> mediaMap = mediaAccessProvider.getSectionToMediaMap();
         MediaTrackerController controller = SpringFXMLLoader.getBeanFromContext(MediaTrackerController.class);
-        mediaMap.remove(section);
-        mediaAccessProvider.removeSection(section);
-        sectionsContainer.getChildren()
-                .removeAll(sectionsContainer.getChildren().stream()
-                        .filter(x -> x.getId().equals(section))
-                        .collect(Collectors.toList()));
+        ButtonType removeButtonType = new ButtonType("Remove", ButtonBar.ButtonData.OK_DONE);
+        ButtonType cancelButtonType = new ButtonType("Don't remove", ButtonBar.ButtonData.CANCEL_CLOSE);
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.getDialogPane().setContentText("Remove section ?");
+        dialog.getDialogPane().getButtonTypes().addAll(removeButtonType, cancelButtonType);
+        dialog.showAndWait().filter(response -> response.getButtonData() == ButtonBar.ButtonData.OK_DONE)
+                .ifPresent(response -> {
+                    mediaMap.remove(section);
+                    mediaAccessProvider.removeSection(section);
+                    sectionsContainer.getChildren()
+                            .removeAll(sectionsContainer.getChildren().stream()
+                                    .filter(x -> x.getId().equals(section))
+                                    .collect(Collectors.toList()));
+                });
 
         controller.setModified(false);
-        setupStatusLabelWithText("Section \"" + section + "\" removed. You need to save changes");
+        setupStatusLabelWithText("Section \"" + section + "\" removed. Changes will be visible after restart");
     }
 
     private void createAndShowTableViews(Map<String, List<Media>> mediaMap) {
