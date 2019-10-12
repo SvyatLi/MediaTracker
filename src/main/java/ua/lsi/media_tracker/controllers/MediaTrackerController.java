@@ -1,20 +1,13 @@
 package ua.lsi.media_tracker.controllers;
 
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DataFormat;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -22,15 +15,12 @@ import lombok.Getter;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.net.www.content.audio.x_aiff;
 import ua.lsi.media_tracker.SpringFXMLLoader;
-import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.dao.MediaAccessProvider;
 import ua.lsi.media_tracker.enums.SaveType;
 import ua.lsi.media_tracker.model.Media;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,7 +61,7 @@ public class MediaTrackerController extends AbstractController {
         };
         task.setOnSucceeded(event -> {
             setupStatusLabelWithText(task.getValue());
-            createAndShowTableViews(mediaAccessProvider.getSectionToMediaMap());
+            refreshAllViews();
         });
         task.setOnFailed(event -> log.error(event.getSource().getException().getMessage(), event.getSource().getException()));
         new Thread(task).start();
@@ -81,13 +71,17 @@ public class MediaTrackerController extends AbstractController {
     public void loadData() {
         String statusMessage = mediaAccessProvider.loadInformation();
         setupStatusLabelWithText(statusMessage);
+        refreshAllViews();
+    }
+
+    private void refreshAllViews() {
         createAndShowTableViews(mediaAccessProvider.getSectionToMediaMap());
     }
 
     public void loadDataFromDraggedFile(File file) {
         String statusMessage = mediaAccessProvider.loadInformationFromFile(file);
         setupStatusLabelWithText(statusMessage);
-        createAndShowTableViews(mediaAccessProvider.getSectionToMediaMap());
+        refreshAllViews();
     }
 
     @FXML
@@ -120,6 +114,7 @@ public class MediaTrackerController extends AbstractController {
             mediaMap.put(section, mediaList);
             addLabelAndTableViewToVBox(section, mediaList);
         }
+        refreshAllViews();
     }
 
     public void moveItem(Media media, String oldSection, String newSection) {
@@ -129,6 +124,7 @@ public class MediaTrackerController extends AbstractController {
         List<Media> mediaSecondList = mediaMap.get(newSection);
         mediaSecondList.add(media);
         setupStatusLabelWithText("Item \"" + media.getName() + "\" moved. You need to save changes");
+        refreshAllViews();
     }
 
     public void removeItem(String section, Media media) {

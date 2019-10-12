@@ -17,6 +17,7 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by LSI on 05.03.2017.
@@ -27,6 +28,7 @@ import java.util.Map;
 @Log4j
 public class SqliteMediaContainer implements MediaContainer {
 
+    public static final String DEFAULT_SECTION_NAME = "Default";
     @Autowired
     private MediaRepository mediaRepository;
 
@@ -47,9 +49,10 @@ public class SqliteMediaContainer implements MediaContainer {
         Map<String, List<Media>> mediaMap = new LinkedHashMap<>();
         Iterable<Media> medias = mediaRepository.findAll();
         for (Media media : medias) {
-            List<Media> mediaList = mediaMap.getOrDefault(media.getSection().getName(), FXCollections.observableArrayList());
+            String sectionName = Optional.ofNullable(media.getSection()).map(Section::getName).orElse(DEFAULT_SECTION_NAME);
+            List<Media> mediaList = mediaMap.getOrDefault(sectionName, FXCollections.observableArrayList());
             mediaList.add(media);
-            mediaMap.put(media.getSection().getName(), mediaList);
+            mediaMap.put(sectionName, mediaList);
         }
         mediaMap.values().forEach(mediaList -> mediaList.sort(Comparator.comparingInt(Media::getPosition)));
         List<Section> sections = sectionRepository.findAll();
@@ -57,6 +60,9 @@ public class SqliteMediaContainer implements MediaContainer {
         sections.stream()
                 .map(Section::getName)
                 .forEach(name -> sortedMediaMap.put(name, mediaMap.get(name)));
+        if (mediaMap.get(DEFAULT_SECTION_NAME) != null) {
+            sortedMediaMap.put(DEFAULT_SECTION_NAME, mediaMap.get(DEFAULT_SECTION_NAME));
+        }
 
         return sortedMediaMap;
     }
@@ -73,7 +79,10 @@ public class SqliteMediaContainer implements MediaContainer {
 
     @Override
     public String removeMedia(Media media) {
-        return mediaRepository.delete(media) ? "Removed" : "Error";
+        if (media.getId() != null) {
+            return mediaRepository.delete(media) ? "Removed" : "Error";
+        }
+        return "Removed from table";
     }
 
     @Override
