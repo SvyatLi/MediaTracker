@@ -1,6 +1,7 @@
 package ua.lsi.media_tracker.controllers;
 
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -23,6 +24,7 @@ import ua.lsi.media_tracker.SpringFXMLLoader;
 import ua.lsi.media_tracker.model.Media;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by LSI on 17.04.2016.
@@ -106,7 +108,9 @@ public class MediaTableController extends AbstractController {
     private void setupHeightAndWidthForTable(TableView<Media> table) {
         table.setFixedCellSize(30);
         table.prefHeightProperty().bind(table.fixedCellSizeProperty()
-                .multiply(Bindings.size(table.getItems()).add(2.0)));
+                .multiply(Bindings.size(
+                        Optional.ofNullable(table.getItems()).orElse( FXCollections.observableArrayList())
+                ).add(2.0)));
         table.minHeightProperty().bind(table.prefHeightProperty());
         table.maxHeightProperty().bind(table.prefHeightProperty());
     }
