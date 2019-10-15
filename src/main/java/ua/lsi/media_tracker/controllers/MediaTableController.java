@@ -108,9 +108,8 @@ public class MediaTableController extends AbstractController {
     private void setupHeightAndWidthForTable(TableView<Media> table) {
         table.setFixedCellSize(30);
         table.prefHeightProperty().bind(table.fixedCellSizeProperty()
-                .multiply(Bindings.size(
-                        Optional.ofNullable(table.getItems()).orElse( FXCollections.observableArrayList())
-                ).add(2.0)));
+                .multiply(Bindings.size(table.getItems())
+                        .add(2.0)));
         table.minHeightProperty().bind(table.prefHeightProperty());
         table.maxHeightProperty().bind(table.prefHeightProperty());
     }

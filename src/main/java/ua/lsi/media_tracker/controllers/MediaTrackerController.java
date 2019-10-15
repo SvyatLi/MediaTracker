@@ -31,8 +31,8 @@ import java.util.stream.Collectors;
  *
  * @author LSI
  */
-@Service
 @Log4j
+@Service
 public class MediaTrackerController extends AbstractController {
     @FXML
     Label statusLabel;

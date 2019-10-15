@@ -47,24 +47,22 @@ public class SqliteMediaContainer implements MediaContainer {
     @Override
     public Map<String, List<Media>> loadInformation() {
         Map<String, List<Media>> mediaMap = new LinkedHashMap<>();
-        Iterable<Media> medias = mediaRepository.findAll();
-        for (Media media : medias) {
-            String sectionName = Optional.ofNullable(media.getSection()).map(Section::getName).orElse(DEFAULT_SECTION_NAME);
-            List<Media> mediaList = mediaMap.getOrDefault(sectionName, FXCollections.observableArrayList());
-            mediaList.add(media);
-            mediaMap.put(sectionName, mediaList);
-        }
-        mediaMap.values().forEach(mediaList -> mediaList.sort(Comparator.comparingInt(Media::getPosition)));
-        List<Section> sections = sectionRepository.findAll();
-        Map<String, List<Media>> sortedMediaMap = new LinkedHashMap<>();
-        sections.stream()
+        sectionRepository.findAll().stream()
                 .map(Section::getName)
-                .forEach(name -> sortedMediaMap.put(name, mediaMap.get(name)));
-        if (mediaMap.get(DEFAULT_SECTION_NAME) != null) {
-            sortedMediaMap.put(DEFAULT_SECTION_NAME, mediaMap.get(DEFAULT_SECTION_NAME));
-        }
+                .forEach(s -> mediaMap.put(s, FXCollections.observableArrayList()));
 
-        return sortedMediaMap;
+        mediaRepository.findAll()
+                .forEach(media -> {
+                    String sectionName = Optional.ofNullable(media.getSection())
+                            .map(Section::getName)
+                            .orElse(DEFAULT_SECTION_NAME);
+                    List<Media> mediaList = mediaMap.getOrDefault(sectionName, FXCollections.observableArrayList());
+                    mediaList.add(media);
+                    mediaMap.put(sectionName, mediaList);
+                });
+        mediaMap.values().forEach(mediaList -> mediaList.sort(Comparator.comparingInt(Media::getPosition)));
+
+        return mediaMap;
     }
 
     @Override
@@ -94,18 +92,11 @@ public class SqliteMediaContainer implements MediaContainer {
         String message;
         try {
             for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
-                Section section = sectionRepository.findSectionByName(entry.getKey());
+                Section section = Optional.ofNullable(sectionRepository.findSectionByName(entry.getKey()))
+                        .orElseGet(() -> sectionRepository.create(entry.getKey()));
                 List<Media> mediaList = entry.getValue();
-                if (section == null) {
-                    Section createdSection = sectionRepository.create(entry.getKey());
-                    mediaList.forEach(media -> {
-                        media.setSection(createdSection);
-                    });
-                } else {
-                    mediaList.forEach(media -> {
-                        media.setSection(section);
-                    });
-                }
+                mediaList.forEach(media -> media.setSection(section));
+
                 for (int i = 0; i < mediaList.size(); i++) {
                     mediaList.get(i).setPosition(i);
                 }
