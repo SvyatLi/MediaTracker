@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.Main;
 import ua.lsi.media_tracker.creators.FileProvider;
 import ua.lsi.media_tracker.creators.Messages;
-import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.enums.SaveType;
 import ua.lsi.media_tracker.model.Media;
@@ -35,21 +34,11 @@ public class FileMediaContainer implements MediaContainer {
     private Messages messages;
 
     @Autowired
-    private Settings settings;
-
-    @Autowired
     private FileParserAndSaver fileParserAndSaver;
 
     @Override
     public Map<String, List<Media>> tryLoadFromSavedResource() {
-        Map<String, List<Media>> mediaMap;
-        file = settings.getDefaultInfoFile();
-        if (settings.getAutomaticLoadEnabled()) {
-            mediaMap = parseFileToMap(file);
-        } else {
-            mediaMap = new LinkedHashMap<>();
-        }
-        return mediaMap;
+        return new LinkedHashMap<>();
     }
 
     @Override
@@ -68,19 +57,7 @@ public class FileMediaContainer implements MediaContainer {
 
     @Override
     public String saveMediaMap(SaveType saveType, Map<String, List<Media>> mediaMap) {
-        File fileToSaveTo = null;
-        switch (saveType) {
-            case AUTOMATIC:
-                if (!file.getPath().isEmpty()) {
-                    fileToSaveTo = file;
-                } else {
-                    fileToSaveTo = settings.getDefaultSaveFile();
-                }
-                break;
-            case MANUAL:
-            default:
-                fileToSaveTo = fileProvider.getFileForSave(file);
-        }
+        File fileToSaveTo = fileProvider.getFileForSave(file);
         String returnedMessage;
         if (checkFileExistsAndCreateIfNot(fileToSaveTo)) {
             fileParserAndSaver.saveMapToFile(mediaMap, fileToSaveTo);

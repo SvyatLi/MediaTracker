@@ -6,7 +6,6 @@ package ua.lsi.media_tracker.enums;
  * @author LSI
  */
 public enum MessageCode {
-    AUTO_LOAD_DISABLED,
     AUTO_LOAD_UNSUCCESSFUL,
     AUTO_LOAD_SUCCESSFUL,
     LOAD_UNSUCCESSFUL,

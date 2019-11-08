@@ -49,7 +49,7 @@ public class Main extends Application {
             if (db.hasFiles()) {
                 success = true;
                 File file = db.getFiles().get(0);
-                mediaTrackerController.loadDataFromDraggedFile(file);
+                mediaTrackerController.loadDataFromFile(file);
                 log.info("Data loaded from file : " + file.getAbsolutePath());
             }
             event.setDropCompleted(success);

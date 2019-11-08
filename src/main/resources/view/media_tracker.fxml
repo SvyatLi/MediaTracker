@@ -29,24 +29,15 @@
 			<menus>
 				<Menu mnemonicParsing="false" text="Data">
 					<items>
-						<MenuItem mnemonicParsing="false" onAction="#loadData" text="Load">
-							<accelerator>
-								<KeyCodeCombination alt="UP" code="L" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
-							</accelerator>
-						</MenuItem>
 						<MenuItem mnemonicParsing="false" onAction="#saveData" text="Save">
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 							</accelerator>
 						</MenuItem>
+						<MenuItem mnemonicParsing="false" onAction="#loadDataFromFile" text="Load from file"/>
 						<MenuItem mnemonicParsing="false" onAction="#exportToFile" text="Export to file" />
 						<MenuItem mnemonicParsing="false" onAction="#openAddItemDialog" text="Add Item" />
 						<MenuItem mnemonicParsing="false" onAction="#openAddSectionDialog" text="Add Section" />
-					</items>
-				</Menu>
-				<Menu mnemonicParsing="false" text="Tools">
-					<items>
-						<MenuItem mnemonicParsing="false" onAction="#openSettings" text="Settings" />
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="Help">

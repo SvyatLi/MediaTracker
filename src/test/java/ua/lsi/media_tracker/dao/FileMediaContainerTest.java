@@ -12,14 +12,16 @@ import ua.lsi.media_tracker.Main;
 import ua.lsi.media_tracker.controllers.MediaTrackerController;
 import ua.lsi.media_tracker.creators.FileProvider;
 import ua.lsi.media_tracker.creators.Messages;
-import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.enums.SaveType;
 import ua.lsi.media_tracker.model.Media;
 import ua.lsi.media_tracker.utils.FileParserAndSaver;
 
 import java.io.File;
 import java.net.URL;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -45,9 +47,6 @@ public class FileMediaContainerTest {
     @MockBean
     FileProvider fileProviderMock;
 
-    @MockBean
-    Settings settingsMock;
-
     @Autowired
     FileParserAndSaver fileParserAndSaverMock;
 
@@ -59,30 +58,6 @@ public class FileMediaContainerTest {
             file.delete();
         }
         Main.mediaTrackerController = mock(MediaTrackerController.class);
-    }
-
-    @Test
-    public void testTryLoadFromSavedResource_loadDisabled() throws Exception {
-        when(settingsMock.getAutomaticLoadEnabled()).thenReturn(false);
-        Map<String, List<Media>> result = container.tryLoadFromSavedResource();
-        Assert.assertTrue(result.isEmpty());
-    }
-
-    @Test
-    public void testTryLoadFromSavedResource_fileNotSet() throws Exception {
-        when(settingsMock.getAutomaticLoadEnabled()).thenReturn(true);
-        Map<String, List<Media>> result = container.tryLoadFromSavedResource();
-        Assert.assertTrue(result.isEmpty());
-    }
-
-    @Test
-    public void testTryLoadFromSavedResource_correctFileSet() throws Exception {
-        URL url = this.getClass().getResource("/z_Serials.txt");
-        File file = new File(url.getFile());
-        when(settingsMock.getAutomaticLoadEnabled()).thenReturn(true);
-        when(settingsMock.getDefaultInfoFile()).thenReturn(file);
-        Map<String, List<Media>> result = container.tryLoadFromSavedResource();
-        Assert.assertEquals(5, result.size());
     }
 
     @Test

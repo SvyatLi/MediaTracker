@@ -11,7 +11,6 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.Messages;
-import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
 
@@ -43,10 +42,6 @@ public class UpdateItemController extends AbstractController implements Initiali
 
     @Autowired
     @Setter
-    private Settings settings;
-
-    @Autowired
-    @Setter
     private Messages messages;
 
     @Autowired
@@ -55,8 +50,6 @@ public class UpdateItemController extends AbstractController implements Initiali
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        MediaContainer container = objectProvider.getMediaContainer(settings.getStorageType());
-//        Map<String, List<Media>> mediaMap = container.getSectionToMediaMap();
         Collection<String> sections = mediaTrackerController.getSections();
         if (sections.isEmpty()) {
             sections = Collections.singletonList(messages.getMessage(MessageCode.DEFAULT_SECTION));

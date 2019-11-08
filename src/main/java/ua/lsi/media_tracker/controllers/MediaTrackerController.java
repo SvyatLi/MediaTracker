@@ -20,6 +20,7 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.lsi.media_tracker.SpringFXMLLoader;
+import ua.lsi.media_tracker.creators.FileProvider;
 import ua.lsi.media_tracker.dao.MediaAccessProvider;
 import ua.lsi.media_tracker.enums.SaveType;
 import ua.lsi.media_tracker.model.Media;
@@ -50,6 +51,9 @@ public class MediaTrackerController extends AbstractController {
     @Autowired
     private MediaAccessProvider mediaAccessProvider;
 
+    @Autowired
+    private FileProvider fileProvider;
+
     private Boolean modified = false;
 
     public void init(Stage stage) {
@@ -72,17 +76,15 @@ public class MediaTrackerController extends AbstractController {
     }
 
     @FXML
-    public void loadData() {
-        String statusMessage = mediaAccessProvider.loadInformation();
-        setupStatusLabelWithText(statusMessage);
-        refreshAllViews();
+    public void loadDataFromFile() {
+        loadDataFromFile(fileProvider.getFileForLoad());
     }
 
     private void refreshAllViews() {
         createAndShowTableViews(mediaAccessProvider.getSectionToMediaMap());
     }
 
-    public void loadDataFromDraggedFile(File file) {
+    public void loadDataFromFile(File file) {
         String statusMessage = mediaAccessProvider.loadInformationFromFile(file);
         setupStatusLabelWithText(statusMessage);
         refreshAllViews();
@@ -174,18 +176,6 @@ public class MediaTrackerController extends AbstractController {
     private Node createTable(String section, List<Media> list) {
         MediaTableController mediaTableController = (MediaTableController) SpringFXMLLoader.load("/view/table_template.fxml");
         return mediaTableController.setup(section, list);
-    }
-
-    @FXML
-    public void openSettings() {
-        SettingsDialogController settingsDialogController = (SettingsDialogController) SpringFXMLLoader.load("/view/settings_dialog.fxml");
-        Scene scene = new Scene((Parent) settingsDialogController.getView());
-        final Stage dialog = new Stage();
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.setTitle("Settings");
-        dialog.initOwner(stage);
-        dialog.setScene(scene);
-        dialog.show();
     }
 
     @FXML

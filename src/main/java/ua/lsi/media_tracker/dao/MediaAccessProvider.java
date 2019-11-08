@@ -4,7 +4,6 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.Messages;
-import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.enums.SaveType;
 import ua.lsi.media_tracker.model.Media;
@@ -31,9 +30,6 @@ public class MediaAccessProvider {
     private SqliteMediaContainer sqliteMediaContainer;
 
     @Autowired
-    private Settings settings;
-
-    @Autowired
     private Messages messages;
 
     private Map<String, List<Media>> mediaMap;
@@ -46,16 +42,13 @@ public class MediaAccessProvider {
         String message;
         log.info("Loading from saved resource");
         mediaMap = getMediaContainer().tryLoadFromSavedResource();
-        if (settings.getAutomaticLoadEnabled()) {
-            if (!mediaMap.isEmpty()) {
-                message = createMessage(AUTO_LOAD_SUCCESSFUL);
-            } else {
-                message = createMessage(AUTO_LOAD_UNSUCCESSFUL);
-                log.error(message);
-            }
+        if (!mediaMap.isEmpty()) {
+            message = createMessage(AUTO_LOAD_SUCCESSFUL);
         } else {
-            message = createMessage(AUTO_LOAD_DISABLED);
+            message = createMessage(AUTO_LOAD_UNSUCCESSFUL);
+            log.error(message);
         }
+
         log.info(message);
         return message;
     }

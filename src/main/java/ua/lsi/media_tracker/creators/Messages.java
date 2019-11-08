@@ -18,10 +18,9 @@ public class Messages {
 
     public Messages() {
         messagesMap = new HashMap<>();
-        messagesMap.put(MessageCode.AUTO_LOAD_DISABLED, "Automatic load disabled");
         messagesMap.put(MessageCode.AUTO_LOAD_UNSUCCESSFUL, "Automatic load not successful");
         messagesMap.put(MessageCode.AUTO_LOAD_SUCCESSFUL, "Automatic load successful");
-        messagesMap.put(MessageCode.LOAD_SUCCESSFUL, "Load successful");
+        messagesMap.put(MessageCode.LOAD_SUCCESSFUL, "Load successful ");
         messagesMap.put(MessageCode.LOAD_UNSUCCESSFUL, "File not selected");
         messagesMap.put(MessageCode.SAVE_SUCCESSFUL, "Data saved to file : ");
         messagesMap.put(MessageCode.SAVE_UNSUCCESSFUL, "File to save not selected");

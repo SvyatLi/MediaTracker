@@ -44,17 +44,6 @@ public class SettingsProvider {
 
     }
 
-    public File getDefaultSaveFile() {
-        File file;
-        try {
-            file = new File(getUserDataDirectory() + SAVE_FILE_NAME);
-            file.createNewFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return file;
-    }
-
     public boolean propertiesExist() {
         File propsDir = new File(getUserDataDirectory());
         if (!propsDir.exists()){
