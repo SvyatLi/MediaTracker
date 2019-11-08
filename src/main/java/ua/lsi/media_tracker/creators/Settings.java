@@ -44,7 +44,7 @@ public class Settings {
         try {
             sp.addProperty(AUTOMATIC_LOAD_ENABLED.name(), automaticLoadEnabled.toString())
                     .addProperty(DEFAULT_INFO_FILE.name(), defaultFileAbsolutePath)
-                    .addProperty(STORAGE_TYPE.name(), storageType.name())
+                    .addProperty(STORAGE_TYPE.name(), StorageType.SQLITE.name())
                     .save();
         } catch (IOException e) {
             log.error(e);
@@ -64,13 +64,13 @@ public class Settings {
             }
             String storageTypeInSettings = sp.getProperty(STORAGE_TYPE.name(), null);
             if (storageTypeInSettings != null) {
-                storageType = StorageType.valueOf(storageTypeInSettings);
+                storageType = StorageType.SQLITE;
             } else {
-                storageType = StorageType.FILE;
+                storageType = StorageType.SQLITE;
             }
         } else {
             log.info("Setting default values");
-            storageType = StorageType.FILE;
+            storageType = StorageType.SQLITE;
             automaticLoadEnabled = false;
         }
     }

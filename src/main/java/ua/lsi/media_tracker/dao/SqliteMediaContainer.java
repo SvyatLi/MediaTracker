@@ -13,6 +13,8 @@ import ua.lsi.media_tracker.model.Section;
 import ua.lsi.media_tracker.repository.MediaRepository;
 import ua.lsi.media_tracker.repository.SectionRepository;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -96,11 +98,15 @@ public class SqliteMediaContainer implements MediaContainer {
                         .orElseGet(() -> sectionRepository.create(entry.getKey()));
                 List<Media> mediaList = entry.getValue();
                 mediaList.forEach(media -> media.setSection(section));
+                List<Media> savedMediaList = new ArrayList<>();
 
                 for (int i = 0; i < mediaList.size(); i++) {
-                    mediaList.get(i).setPosition(i);
+                    Media media = mediaList.get(i);
+                    media.setPosition(i);
+                    savedMediaList.add(mediaRepository.save(media));
                 }
-                mediaRepository.save(mediaList);
+                mediaList.clear();
+                mediaList.addAll(savedMediaList);
             }
             Main.mediaTrackerController.setModified(false);
             message = messages.getMessage(MessageCode.SAVE_SQLITE_SUCCESSFUL);

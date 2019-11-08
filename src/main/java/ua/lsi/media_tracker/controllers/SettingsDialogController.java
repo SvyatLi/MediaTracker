@@ -36,8 +36,6 @@ public class SettingsDialogController extends AbstractController implements Init
     public Label defaultFilePath;
     @FXML
     public Label settingsSavedLabel;
-    @FXML
-    public ComboBox<StorageType> storageTypeComboBox;
 
     private Settings settings;
     private Messages messages;
@@ -60,15 +58,13 @@ public class SettingsDialogController extends AbstractController implements Init
             defaultFilePath.setText(defaultFile.getAbsolutePath());
         }
         automaticLoadEnabled.setSelected(settings.getAutomaticLoadEnabled());
-        storageTypeComboBox.setItems(FXCollections.observableArrayList(StorageType.values()));
-        storageTypeComboBox.getSelectionModel().select(settings.getStorageType());
     }
 
     @FXML
     public void saveSettings() {
         settings.setAutomaticLoadEnabled(automaticLoadEnabled.isSelected());
         settings.setDefaultInfoFile(defaultFile);
-        settings.setStorageType(storageTypeComboBox.getValue());
+        settings.setStorageType(StorageType.SQLITE);
         settings.saveSettings();
         if (defaultFile == null || !defaultFile.exists()) {
             automaticLoadEnabled.setSelected(false);

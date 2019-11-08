@@ -7,7 +7,6 @@ import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.creators.Settings;
 import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.enums.SaveType;
-import ua.lsi.media_tracker.enums.StorageType;
 import ua.lsi.media_tracker.model.Media;
 
 import java.io.File;
@@ -89,13 +88,14 @@ public class MediaAccessProvider {
         return message;
     }
 
-    public String saveMediaMap(SaveType saveType) {
-        String message;
-        if (saveType == SaveType.MANUAL) {
-            message = fileMediaContainer.saveMediaMap(saveType, mediaMap);
-        } else {
-            message = getMediaContainer().saveMediaMap(saveType, mediaMap);
-        }
+    public String saveMediaMap() {
+        String message = getMediaContainer().saveMediaMap(SaveType.AUTOMATIC, mediaMap);
+        log.info(message);
+        return message;
+    }
+
+    public String saveMediaMapToFile() {
+        String message = fileMediaContainer.saveMediaMap(SaveType.MANUAL, mediaMap);
         log.info(message);
         return message;
     }
@@ -109,7 +109,7 @@ public class MediaAccessProvider {
     }
 
     private MediaContainer getMediaContainer() {
-        return getMediaContainer(settings.getStorageType());
+        return sqliteMediaContainer;
     }
 
     private String createMessage(MessageCode code, File file) {
@@ -120,16 +120,5 @@ public class MediaAccessProvider {
         String message = messages.getMessage(code);
         log.debug(message);
         return message;
-    }
-
-    private MediaContainer getMediaContainer(StorageType storageType) {
-        switch (storageType) {
-            case FILE:
-                return fileMediaContainer;
-            case SQLITE:
-                return sqliteMediaContainer;
-            default:
-                return fileMediaContainer;
-        }
     }
 }

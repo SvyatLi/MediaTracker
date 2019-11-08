@@ -6,7 +6,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -86,34 +90,27 @@ public class MediaTrackerController extends AbstractController {
 
     @FXML
     public void saveData() {
-        String statusMessage = mediaAccessProvider.saveMediaMap(SaveType.AUTOMATIC);
+        String statusMessage = mediaAccessProvider.saveMediaMap();
         setupStatusLabelWithText(statusMessage);
     }
 
     @FXML
-    public void saveDataWithDialog() {
-        String statusMessage = mediaAccessProvider.saveMediaMap(SaveType.MANUAL);
+    public void exportToFile() {
+        String statusMessage = mediaAccessProvider.saveMediaMapToFile();
         setupStatusLabelWithText(statusMessage);
     }
 
     public void addNewItem(String section, Media media) {
-
         Map<String, List<Media>> mediaMap = mediaAccessProvider.getSectionToMediaMap();
         if (mediaMap.isEmpty()) {
             sectionsContainer.getChildren().clear();
         }
-        List<Media> mediaList;
-        if (mediaMap.containsKey(section)) {
-            mediaList = mediaMap.get(section);
+        List<Media> mediaList = mediaMap.getOrDefault(section, FXCollections.observableArrayList());
+        if (media != null) {
             mediaList.add(media);
-        } else {
-            mediaList = FXCollections.observableArrayList();
-            if (media != null) {
-                mediaList.add(media);
-            }
-            mediaMap.put(section, mediaList);
-            addLabelAndTableViewToVBox(section, mediaList);
         }
+        mediaMap.put(section, mediaList);
+        addLabelAndTableViewToVBox(section, mediaList);
         refreshAllViews();
     }
 
@@ -153,10 +150,11 @@ public class MediaTrackerController extends AbstractController {
                             .removeAll(sectionsContainer.getChildren().stream()
                                     .filter(x -> x.getId().equals(section))
                                     .collect(Collectors.toList()));
+                    refreshAllViews();
                 });
 
-        controller.setModified(false);
-        setupStatusLabelWithText("Section \"" + section + "\" removed. Changes will be visible after restart");
+        controller.setModified(true);
+        setupStatusLabelWithText("Section \"" + section + "\" removed.");
     }
 
     private void createAndShowTableViews(Map<String, List<Media>> mediaMap) {

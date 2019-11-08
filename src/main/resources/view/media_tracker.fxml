@@ -39,7 +39,7 @@
 								<KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
 							</accelerator>
 						</MenuItem>
-						<MenuItem mnemonicParsing="false" onAction="#saveDataWithDialog" text="Save as" />
+						<MenuItem mnemonicParsing="false" onAction="#exportToFile" text="Export to file" />
 						<MenuItem mnemonicParsing="false" onAction="#openAddItemDialog" text="Add Item" />
 						<MenuItem mnemonicParsing="false" onAction="#openAddSectionDialog" text="Add Section" />
 					</items>
