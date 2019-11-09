@@ -1,5 +1,6 @@
 package ua.lsi.media_tracker.repository;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @Log4j
 @Component
+@RequiredArgsConstructor
 public class SqliteMediaRepository implements MediaRepository {
 
     private static final String INSERT_MEDIA = "INSERT INTO 'main'.'media' ('position', 'name', 'season', 'episode', 'section_id') VALUES ( ? , ?, ?, ?, ?);";
@@ -27,11 +29,8 @@ public class SqliteMediaRepository implements MediaRepository {
     private static final String SELECT_ALL_MEDIA = "SELECT * FROM 'main'.'media';";
     private static final String SELECT_MEDIA_BY_NAME = "SELECT * FROM 'main'.'media' WHERE name=?;";
 
-    @Autowired
-    ConnectionManager cm;
-
-    @Autowired
-    SectionRepository sectionRepository;
+    private final ConnectionManager cm;
+    private final SectionRepository sectionRepository;
 
     @Override
     public Media save(Media entity) {

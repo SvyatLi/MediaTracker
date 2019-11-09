@@ -17,6 +17,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -33,6 +34,7 @@ import java.util.Optional;
  */
 @Component
 @Scope("prototype")
+@RequiredArgsConstructor
 public class MediaTableController extends AbstractController {
     private static final DataFormat SERIALIZED_MIME_TYPE = new DataFormat("application/x-java-serialized-object");
 
@@ -45,8 +47,7 @@ public class MediaTableController extends AbstractController {
     @FXML
     VBox parentBox;
 
-    @Autowired
-    private MediaTrackerController mediaTrackerController;
+    private final  MediaTrackerController mediaTrackerController;
 
     public Node setup(String section, List<Media> list) {
         mediaTableView.setId(section);

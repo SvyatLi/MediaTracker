@@ -1,10 +1,9 @@
 package ua.lsi.media_tracker.repository;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.ConnectionManager;
-import ua.lsi.media_tracker.model.Media;
 import ua.lsi.media_tracker.model.Section;
 
 import java.sql.PreparedStatement;
@@ -18,13 +17,13 @@ import java.util.List;
  *
  * @author LSI
  */
-@Component
 @Log4j
+@Component
+@RequiredArgsConstructor
 public class SqliteSectionRepository implements SectionRepository {
 
 
-    @Autowired
-    ConnectionManager cm;
+    private final ConnectionManager cm;
 
     @Override
     public Section findSectionByName(String name) {

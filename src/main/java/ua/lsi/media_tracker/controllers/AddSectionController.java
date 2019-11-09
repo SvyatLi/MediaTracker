@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
  * @author LSI
  */
 @Component
+@RequiredArgsConstructor
 public class AddSectionController extends AbstractController {
 
     @FXML
@@ -20,8 +22,7 @@ public class AddSectionController extends AbstractController {
     @FXML
     public TextField sectionTextField;
 
-    @Autowired
-    private MediaTrackerController mediaTrackerController;
+    private final MediaTrackerController mediaTrackerController;
 
     @FXML
     public void addSection() {

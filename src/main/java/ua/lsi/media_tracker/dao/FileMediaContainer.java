@@ -1,8 +1,8 @@
 package ua.lsi.media_tracker.dao;
 
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.Main;
 import ua.lsi.media_tracker.creators.FileProvider;
@@ -23,18 +23,17 @@ import java.util.Map;
  *
  * @author LSI
  */
-@Component
 @Log4j
+@Component
+@RequiredArgsConstructor
 public class FileMediaContainer implements MediaContainer {
     private File file;
 
-    @Autowired
-    private FileProvider fileProvider;
+    private final FileProvider fileProvider;
 
-    private Messages messages;
+    private final Messages messages;
 
-    @Autowired
-    private FileParserAndSaver fileParserAndSaver;
+    private final FileParserAndSaver fileParserAndSaver;
 
     @Override
     public Map<String, List<Media>> tryLoadFromSavedResource() {
@@ -95,10 +94,5 @@ public class FileMediaContainer implements MediaContainer {
             return fileExist;
         }
         return false;
-    }
-
-    @Autowired
-    public void setMessages(Messages messages) {
-        this.messages = messages;
     }
 }

@@ -37,21 +37,6 @@ public class SpringFXMLLoader {
         }
     }
 
-    public static <T> T loadNode(String url) {
-        T view;
-        try (InputStream fxmlStream = SpringFXMLLoader.class.getResourceAsStream(url)) {
-
-            FXMLLoader loader = new FXMLLoader();
-            loader.setControllerFactory(APPLICATION_CONTEXT::getBean);
-
-            view = loader.load(fxmlStream);
-        } catch (IOException e) {
-            log.error("Can't load node", e);
-            throw new RuntimeException(e);
-        }
-        return view;
-    }
-
     public static <T> T getBeanFromContext(Class<T> clazz) {
         return APPLICATION_CONTEXT.getBean(clazz);
     }

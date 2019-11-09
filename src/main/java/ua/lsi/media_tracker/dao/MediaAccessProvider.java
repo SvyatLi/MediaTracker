@@ -1,7 +1,7 @@
 package ua.lsi.media_tracker.dao;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.enums.MessageCode;
@@ -19,18 +19,14 @@ import static ua.lsi.media_tracker.enums.MessageCode.*;
  *
  * @author LSI
  */
-@Component
 @Log4j
+@Component
+@RequiredArgsConstructor
 public class MediaAccessProvider {
 
-    @Autowired
-    private FileMediaContainer fileMediaContainer;
-
-    @Autowired
-    private SqliteMediaContainer sqliteMediaContainer;
-
-    @Autowired
-    private Messages messages;
+    private final FileMediaContainer fileMediaContainer;
+    private final SqliteMediaContainer sqliteMediaContainer;
+    private final Messages messages;
 
     private Map<String, List<Media>> mediaMap;
 

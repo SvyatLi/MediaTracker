@@ -1,6 +1,7 @@
 package ua.lsi.media_tracker.utils;
 
 import javafx.collections.FXCollections;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import ua.lsi.media_tracker.enums.MessageCode;
 import ua.lsi.media_tracker.model.Media;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,21 +20,21 @@ import java.util.Map;
  *
  * @author LSI
  */
-@Component
 @Log4j
+@Component
+@RequiredArgsConstructor
 public class FileParserAndSaver {
     private final static String sectionStarter = "//";
     private final static String matcher = ".*\\s\\-\\ss\\d*e\\d*";
     private final static String matcherSeparator = "\\s\\-\\s";
 
-    @Autowired
-    private Messages messages;
+    private final Messages messages;
 
     public Map<String, List<Media>> getMapOfMediaFromFile(File file) {
         Map<String, List<Media>> mediaMap = new LinkedHashMap<>();
         String currentSection = messages.getMessage(MessageCode.DEFAULT_SECTION);
         if (file != null) {
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF8"))) {
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
                 String line = br.readLine();
                 while (line != null) {
                     if (line.contains(sectionStarter)) {
@@ -59,7 +61,7 @@ public class FileParserAndSaver {
     public String saveMapToFile(Map<String, List<Media>> mediaMap, File file) {
         String statusMessage = messages.getMessage(MessageCode.SAVE_NOT_SAVED);
         boolean somethingSaved = false;
-        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF8"))) {
+        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
             for (Map.Entry<String, List<Media>> entry : mediaMap.entrySet()) {
                 bw.newLine();
                 bw.write("//" + entry.getKey());

@@ -16,6 +16,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
  */
 @Log4j
 @Service
+@RequiredArgsConstructor
 public class MediaTrackerController extends AbstractController {
     @FXML
     Label statusLabel;
@@ -48,11 +50,8 @@ public class MediaTrackerController extends AbstractController {
     @Getter
     private Stage stage;
 
-    @Autowired
-    private MediaAccessProvider mediaAccessProvider;
-
-    @Autowired
-    private FileProvider fileProvider;
+    private final MediaAccessProvider mediaAccessProvider;
+    private final FileProvider fileProvider;
 
     private Boolean modified = false;
 

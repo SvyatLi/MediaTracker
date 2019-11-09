@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,7 @@ import java.util.ResourceBundle;
  * @author LSI
  */
 @Component
+@RequiredArgsConstructor
 public class UpdateItemController extends AbstractController implements Initializable {
     @FXML
     public Button closeButton;
@@ -40,13 +42,8 @@ public class UpdateItemController extends AbstractController implements Initiali
     private Media media;
     private String oldSection;
 
-    @Autowired
-    @Setter
-    private Messages messages;
-
-    @Autowired
-    @Setter
-    private MediaTrackerController mediaTrackerController;
+    private final Messages messages;
+    private final MediaTrackerController mediaTrackerController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

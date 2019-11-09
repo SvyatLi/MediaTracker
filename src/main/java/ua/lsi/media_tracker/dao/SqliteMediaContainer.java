@@ -1,6 +1,7 @@
 package ua.lsi.media_tracker.dao;
 
 import javafx.collections.FXCollections;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,19 +27,15 @@ import java.util.Optional;
  *
  * @author LSI
  */
-@Component
 @Log4j
+@Component
+@RequiredArgsConstructor
 public class SqliteMediaContainer implements MediaContainer {
 
     public static final String DEFAULT_SECTION_NAME = "Default";
-    @Autowired
-    private MediaRepository mediaRepository;
-
-    @Autowired
-    private SectionRepository sectionRepository;
-
-    @Autowired
-    private Messages messages;
+    private final  MediaRepository mediaRepository;
+    private final  SectionRepository sectionRepository;
+    private final  Messages messages;
 
 
     @Override

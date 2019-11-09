@@ -3,9 +3,14 @@ package ua.lsi.media_tracker.controllers;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.enums.MessageCode;
@@ -22,6 +27,7 @@ import java.util.ResourceBundle;
  * @author LSI
  */
 @Component
+@RequiredArgsConstructor
 public class AddItemController extends AbstractController implements Initializable {
     @FXML
     public Button closeButton;
@@ -36,11 +42,8 @@ public class AddItemController extends AbstractController implements Initializab
     @FXML
     public Label addingStatusLabel;
 
-    @Autowired
-    private Messages messages;
-
-    @Autowired
-    private MediaTrackerController mediaTrackerController;
+    private final Messages messages;
+    private final MediaTrackerController mediaTrackerController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
