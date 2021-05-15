@@ -3,19 +3,15 @@ package ua.lsi.media_tracker.dao;
 import javafx.collections.FXCollections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ua.lsi.media_tracker.Main;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.enums.MessageCode;
-import ua.lsi.media_tracker.enums.SaveType;
 import ua.lsi.media_tracker.model.Media;
 import ua.lsi.media_tracker.model.Section;
 import ua.lsi.media_tracker.repository.MediaRepository;
 import ua.lsi.media_tracker.repository.SectionRepository;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -36,12 +32,6 @@ public class SqliteMediaContainer implements MediaContainer {
     private final  MediaRepository mediaRepository;
     private final  SectionRepository sectionRepository;
     private final  Messages messages;
-
-
-    @Override
-    public Map<String, List<Media>> tryLoadFromSavedResource() {
-        return loadInformation();
-    }
 
     @Override
     public Map<String, List<Media>> loadInformation() {
@@ -65,26 +55,20 @@ public class SqliteMediaContainer implements MediaContainer {
     }
 
     @Override
-    public String saveMediaMap(SaveType saveType, Map<String, List<Media>> mediaMap) {
-        String message = null;
-        if (saveType == SaveType.AUTOMATIC) {
-            message = saveMediaToDB(mediaMap);
-        }
-        log.info(message);
-        return message;
+    public String saveMediaMap(Map<String, List<Media>> mediaMap) {
+        return saveMediaToDB(mediaMap);
     }
 
     @Override
-    public String removeMedia(Media media) {
+    public void removeMedia(Media media) {
         if (media.getId() != null) {
-            return mediaRepository.delete(media) ? "Removed" : "Error";
+            mediaRepository.delete(media);
         }
-        return "Removed from table";
     }
 
     @Override
-    public String removeSection(String section) {
-        return sectionRepository.delete(section) ? "Removed" : "Error";
+    public void removeSection(String section) {
+        sectionRepository.delete(section);
     }
 
     private String saveMediaToDB(Map<String, List<Media>> mediaMap) {
@@ -105,7 +89,6 @@ public class SqliteMediaContainer implements MediaContainer {
                 mediaList.clear();
                 mediaList.addAll(savedMediaList);
             }
-            Main.mediaTrackerController.setModified(false);
             message = messages.getMessage(MessageCode.SAVE_SQLITE_SUCCESSFUL);
         } catch (Exception e) {
             log.error(e.getMessage(), e);

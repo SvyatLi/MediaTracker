@@ -34,7 +34,7 @@ public class TableCellButtonFactory<S extends Media, T> extends AbstractTableCel
                         media.change(columnName, sign);
                         getTableView().getColumns().get(0).setVisible(false);
                         getTableView().getColumns().get(0).setVisible(true);
-                        Main.mediaTrackerController.setModified(true);
+                        Main.mediaTrackerController.saveData();
                     });
                     btn.setText(getTableColumn().getText());
                     setDefaultButtonParameters(btn, null);

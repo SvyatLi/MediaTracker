@@ -8,8 +8,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.enums.MessageCode;
@@ -77,7 +75,7 @@ public class UpdateItemController extends AbstractController implements Initiali
         if (!oldSection.equals(section)) {
             mediaTrackerController.moveItem(media, oldSection, section);
         }
-        mediaTrackerController.setModified(true);
+        mediaTrackerController.saveData();
 
         close();
     }

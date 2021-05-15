@@ -5,7 +5,6 @@ import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Component;
 import ua.lsi.media_tracker.creators.Messages;
 import ua.lsi.media_tracker.enums.MessageCode;
-import ua.lsi.media_tracker.enums.SaveType;
 import ua.lsi.media_tracker.model.Media;
 
 import java.io.File;
@@ -37,29 +36,14 @@ public class MediaAccessProvider {
     public String tryLoadFromSavedResource() {
         String message;
         log.info("Loading from saved resource");
-        mediaMap = getMediaContainer().tryLoadFromSavedResource();
+        mediaMap = sqliteMediaContainer.loadInformation();
         if (!mediaMap.isEmpty()) {
-            message = createMessage(AUTO_LOAD_SUCCESSFUL);
+            message = createSuccessMessage(AUTO_LOAD_SUCCESSFUL);
         } else {
-            message = createMessage(AUTO_LOAD_UNSUCCESSFUL);
+            message = createSuccessMessage(AUTO_LOAD_UNSUCCESSFUL);
             log.error(message);
         }
 
-        log.info(message);
-        return message;
-    }
-
-    public String loadInformation() {
-        String message;
-
-        mediaMap = getMediaContainer().loadInformation();
-
-        if (!mediaMap.isEmpty()) {
-            message = createMessage(LOAD_SUCCESSFUL);
-        } else {
-            message = createMessage(LOAD_UNSUCCESSFUL);
-            log.error(message);
-        }
         log.info(message);
         return message;
     }
@@ -68,9 +52,9 @@ public class MediaAccessProvider {
         String message;
         mediaMap = fileMediaContainer.loadInformationFromFile(file);
         if (!mediaMap.isEmpty()) {
-            message = createMessage(LOAD_SUCCESSFUL, file);
+            message = createSuccessMessage(file);
         } else {
-            message = createMessage(LOAD_UNSUCCESSFUL);
+            message = createSuccessMessage(LOAD_UNSUCCESSFUL);
             log.error(message);
         }
         log.info(message);
@@ -78,34 +62,28 @@ public class MediaAccessProvider {
     }
 
     public String saveMediaMap() {
-        String message = getMediaContainer().saveMediaMap(SaveType.AUTOMATIC, mediaMap);
-        log.info(message);
-        return message;
+        return sqliteMediaContainer.saveMediaMap(mediaMap);
     }
 
     public String saveMediaMapToFile() {
-        String message = fileMediaContainer.saveMediaMap(SaveType.MANUAL, mediaMap);
+        String message = fileMediaContainer.saveToFile(mediaMap);
         log.info(message);
         return message;
     }
 
-    public String removeMedia(Media media) {
-        return getMediaContainer().removeMedia(media);
+    public void removeMedia(Media media) {
+        sqliteMediaContainer.removeMedia(media);
     }
 
-    public String removeSection(String section) {
-        return getMediaContainer().removeSection(section);
+    public void removeSection(String section) {
+        sqliteMediaContainer.removeSection(section);
     }
 
-    private MediaContainer getMediaContainer() {
-        return sqliteMediaContainer;
+    private String createSuccessMessage(File file) {
+        return messages.getMessageRelatedToFile(LOAD_SUCCESSFUL, file);
     }
 
-    private String createMessage(MessageCode code, File file) {
-        return messages.getMessageRelatedToFile(code, file);
-    }
-
-    private String createMessage(MessageCode code) {
+    private String createSuccessMessage(MessageCode code) {
         String message = messages.getMessage(code);
         log.debug(message);
         return message;

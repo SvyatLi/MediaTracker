@@ -2,8 +2,8 @@ package ua.lsi.media_tracker.creators;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import ua.lsi.media_tracker.utils.SettingsProvider;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -22,7 +22,12 @@ public class ConnectionManager {
     private ConnectionManager(@Value("${app.file.name}")
                                       String fileName) {
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:" + SettingsProvider.getUserDataDirectory() + fileName);
+            connection = DriverManager.getConnection("jdbc:sqlite:" +
+                    System.getProperty("user.home") +
+                    File.separator +
+                    ".mediatracker" +
+                    File.separator +
+                    fileName);
             PreparedStatement mediaCreate = connection.prepareStatement("CREATE TABLE IF NOT EXISTS main.media " +
                     "( id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     " \"name\" TEXT," +

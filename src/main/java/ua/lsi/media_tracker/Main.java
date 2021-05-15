@@ -67,8 +67,4 @@ public class Main extends Application {
         mediaTrackerController.autoLoad();
     }
 
-    @Override
-    public void stop() {
-        mediaTrackerController.promptSaveOnClose();
-    }
 }

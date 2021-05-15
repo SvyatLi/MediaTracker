@@ -18,12 +18,10 @@ import javafx.stage.StageStyle;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.lsi.media_tracker.SpringFXMLLoader;
 import ua.lsi.media_tracker.creators.FileProvider;
 import ua.lsi.media_tracker.dao.MediaAccessProvider;
-import ua.lsi.media_tracker.enums.SaveType;
 import ua.lsi.media_tracker.model.Media;
 
 import java.io.File;
@@ -52,8 +50,6 @@ public class MediaTrackerController extends AbstractController {
 
     private final MediaAccessProvider mediaAccessProvider;
     private final FileProvider fileProvider;
-
-    private Boolean modified = false;
 
     public void init(Stage stage) {
         this.stage = stage;
@@ -127,11 +123,9 @@ public class MediaTrackerController extends AbstractController {
 
     public void removeItem(String section, Media media) {
         Map<String, List<Media>> mediaMap = mediaAccessProvider.getSectionToMediaMap();
-        MediaTrackerController controller = SpringFXMLLoader.getBeanFromContext(MediaTrackerController.class);
         List<Media> mediaList = mediaMap.get(section);
         mediaList.remove(media);
         mediaAccessProvider.removeMedia(media);
-        controller.setModified(false);
         setupStatusLabelWithText("Item \"" + media.getName() + "\" removed. You need to save changes");
     }
 
@@ -154,7 +148,7 @@ public class MediaTrackerController extends AbstractController {
                     refreshAllViews();
                 });
 
-        controller.setModified(true);
+        controller.saveData();
         setupStatusLabelWithText("Section \"" + section + "\" removed.");
     }
 
@@ -225,21 +219,5 @@ public class MediaTrackerController extends AbstractController {
 
     public Set<String> getSections() {
         return mediaAccessProvider.getSectionToMediaMap().keySet();
-    }
-
-    public void setModified(Boolean modified) {
-        this.modified = modified;
-    }
-
-    public void promptSaveOnClose() {
-        if (modified) {
-            ButtonType removeButtonType = new ButtonType("Save and exit", ButtonBar.ButtonData.OK_DONE);
-            ButtonType cancelButtonType = new ButtonType("Exit", ButtonBar.ButtonData.CANCEL_CLOSE);
-            Dialog<ButtonType> dialog = new Dialog<>();
-            dialog.getDialogPane().setContentText("Save changes ?");
-            dialog.getDialogPane().getButtonTypes().addAll(removeButtonType, cancelButtonType);
-            dialog.showAndWait().filter(response -> response.getButtonData() == ButtonBar.ButtonData.OK_DONE)
-                    .ifPresent(response -> saveData());
-        }
     }
 }
